@@ -4,6 +4,8 @@ import { useUser } from "@clerk/nextjs";
 import { useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import createCommentAction from "@/actions/createCommentAction";
+import { toast } from "sonner";
+import { Send } from "lucide-react";
 
 function CommentForm({ postId }: { postId: string }) {
   const { user } = useUser();
@@ -31,9 +33,18 @@ function CommentForm({ postId }: { postId: string }) {
     <form
       ref={ref}
       action={(formData) => {
-        const promise = handleCommentAction(formData);
-
+        const commentInput = formData.get("commentInput") as string;
         //Toast
+        if (!commentInput.trim()) {
+          toast.error("You must provide a comment input");
+        } else {
+          const promise = handleCommentAction(formData);
+          toast.promise(promise, {
+            loading: "Creating comment...",
+            success: "Comment created",
+            error: "Failed to create comment",
+          });
+        }
       }}
       className="flex items-center space-x-1"
     >
@@ -52,7 +63,9 @@ function CommentForm({ postId }: { postId: string }) {
           placeholder="add a comment ..."
           className="outline-none flex-1 text-sm bg-transparent"
         />
-        <button type="submit">Post</button>
+        <button type="submit">
+          <Send size={20} className="mr-2" color="#4881c2" />
+        </button>
       </div>
     </form>
   );

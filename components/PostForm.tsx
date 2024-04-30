@@ -3,9 +3,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
-import { ImageIcon, XIcon } from "lucide-react";
+import { ImageIcon, Send, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import createPostAction from "@/actions/createPostActions";
+import { toast } from "sonner";
 
 function PostForm() {
   const ref = useRef<HTMLFormElement>(null);
@@ -21,6 +22,9 @@ function PostForm() {
     const text = formDataCopy.get("postInput") as string;
 
     if (!text.trim()) {
+      setTimeout(() => {
+        toast.error("You must provide a post input");
+      }, 500);
       throw new Error("You must provide a post input");
     }
     setPreview(null);
@@ -45,9 +49,14 @@ function PostForm() {
         ref={ref}
         action={(formData) => {
           //handle form submission with server action
-          handlePostAction(formData);
+          const promise = handlePostAction(formData);
 
           //Toast notfication based on the promise above
+          toast.promise(promise, {
+            loading: "Creating post...",
+            success: "Post created",
+            error: "Failed to create post",
+          });
         }}
         className="p-3 bg-white rounded-lg border"
       >
@@ -60,24 +69,26 @@ function PostForm() {
             </AvatarFallback>
           </Avatar>
 
-          <input
-            type="text"
-            name="postInput"
-            placeholder="Start writing a post .."
-            className="flex-1 outline-none rounded-full py-3 px-4 border"
-          />
-          <input
-            ref={fileInputRef}
-            type="file"
-            name="image"
-            accept="image/*"
-            hidden
-            onChange={handleImageChange}
-          />
+          <div className="flex flex-1 bg-white border rounded-full">
+            <input
+              type="text"
+              name="postInput"
+              placeholder="Start writing a post .."
+              className="outline-none flex-1 text-sm bg-transparent py-3 px-4"
+            />
+            <input
+              ref={fileInputRef}
+              type="file"
+              name="image"
+              accept="image/*"
+              hidden
+              onChange={handleImageChange}
+            />
 
-          <button type="submit" hidden>
-            Post
-          </button>
+            <button type="submit">
+              <Send size={20} className="mr-4" color="#4881c2" />
+            </button>
+          </div>
         </div>
         {/* Preview conditional check */}
         {preview && (
@@ -87,7 +98,11 @@ function PostForm() {
         )}
 
         <div className="flex justify-end mt-2 space-x-2">
-          <Button type="button" onClick={() => fileInputRef.current?.click()}>
+          <Button
+            type="button"
+            variant={preview ? "secondary" : "outline"}
+            onClick={() => fileInputRef.current?.click()}
+          >
             <ImageIcon className="mr-2" size={16} color="currentColor" />
             {preview ? "Change" : "Add"} image
           </Button>

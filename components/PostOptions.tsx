@@ -10,6 +10,7 @@ import { LikePostRequestBody } from "@/app/api/posts/[post_id]/like/route";
 import { UnlikePostRequestBody } from "@/app/api/posts/[post_id]/unlike/route";
 import CommentFeed from "./CommentFeed";
 import CommentForm from "./CommentForm";
+import { toast } from "sonner";
 
 function PostOptions({ post }: { post: IPostDocument }) {
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -25,6 +26,9 @@ function PostOptions({ post }: { post: IPostDocument }) {
 
   const likeOrUnlikePost = async () => {
     if (!user?.id) {
+      setTimeout(() => {
+        toast.error("You must sign in");
+      }, 500);
       throw new Error("User not authenticated");
     }
 
@@ -97,7 +101,15 @@ function PostOptions({ post }: { post: IPostDocument }) {
         <Button
           variant="ghost"
           className="postButton"
-          onClick={likeOrUnlikePost}
+          onClick={() => {
+            const promise = likeOrUnlikePost();
+
+            toast.promise(promise, {
+              loading: "Liking post...",
+              success: "Post liked",
+              error: "Failed to like post",
+            });
+          }}
         >
           {/* If user has liked the post, show filled thumbs up icon */}
           <ThumbsUpIcon

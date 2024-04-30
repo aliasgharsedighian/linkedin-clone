@@ -13,7 +13,7 @@ import { Button } from "./ui/button";
 
 function Header() {
   return (
-    <div className="flex items-center p-2 max-w-6xl auto">
+    <div className="flex items-center p-2 max-w-6xl mx-auto">
       <Image
         className="rounded-lg"
         src="/assets/images/logo.png"
@@ -50,7 +50,7 @@ function Header() {
         </Link>
         <Link href="/" className="icon">
           <MessageSquare className="h-5" />
-          <p>Home</p>
+          <p>Messages</p>
         </Link>
 
         <SignedIn>
