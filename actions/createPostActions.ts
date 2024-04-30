@@ -5,6 +5,7 @@ import { Post } from "@/mongodb/models/Post";
 import { IUser } from "@/types/user";
 import { currentUser } from "@clerk/nextjs/server";
 import { randomUUID } from "crypto";
+import { revalidatePath } from "next/cache";
 
 export default async function createPostAction(formData: FormData) {
   const user = await currentUser();
@@ -36,27 +37,24 @@ export default async function createPostAction(formData: FormData) {
 
       const imageBuffer: any = await image.arrayBuffer();
 
-      const formdata = new FormData();
-      formdata.append("key", "700a99941c1160d98138d5e03458c711");
-      formdata.append("image", imageBuffer);
+      const formData = new FormData();
+      formData.append("key", "e5e2ca7c62d7a5e496621a919b1848f5");
+      formData.append("image", image);
 
-      const requestOptions = {
+      const res = await fetch("https://api.imgbb.com/1/upload", {
         method: "POST",
-        body: formdata,
-      };
+        body: formData,
+      });
 
-      fetch("https://api.imgbb.com/1/upload", requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          image_url = result.data.url;
-        })
-        .catch((error) => console.error(error));
+      const data: any = await res.json();
+
+      image_url = data.data.url;
 
       //2.create post in database with image
       const body: AddPostRequestBody = {
         user: userDB,
         text: postInput,
-        imageUrl: "https://i.ibb.co/0Xbbbzz/OIG.jpg",
+        imageUrl: image_url,
       };
 
       await Post.create(body);
@@ -73,5 +71,5 @@ export default async function createPostAction(formData: FormData) {
     throw new Error("Failed to create post", error);
   }
 
-  //revalidatePath "/" - home page
+  revalidatePath("/");
 }
