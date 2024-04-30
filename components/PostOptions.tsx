@@ -97,10 +97,10 @@ function PostOptions({ post }: { post: IPostDocument }) {
         </div>
       </div>
 
-      <div className="flex p-2 justify-between px-2 border-t">
+      <div className="flex p-2 justify-between border-t">
         <Button
           variant="ghost"
-          className="postButton"
+          className="postButton px-2 md:px-4 py-1 md:py-2"
           onClick={() => {
             const promise = likeOrUnlikePost();
 
@@ -113,32 +113,41 @@ function PostOptions({ post }: { post: IPostDocument }) {
         >
           {/* If user has liked the post, show filled thumbs up icon */}
           <ThumbsUpIcon
-            className={cn("mr-1", liked && "text-[#4881c2] fill-[#4881c2]")}
+            className={cn(
+              "mr-1 w-4 md:w-6",
+              liked && "text-[#4881c2] fill-[#4881c2]"
+            )}
           />
           Like
         </Button>
 
         <Button
           variant="ghost"
-          className="postButton"
+          className="postButton px-2 md:px-4 py-1 md:py-2"
           onClick={() => setIsCommentsOpen(!isCommentsOpen)}
         >
           <MessageCircle
             className={cn(
-              "mr-1",
+              "mr-1 w-4 md:w-6",
               isCommentsOpen && "text-gray-600 fill-gray-600"
             )}
           />
           Comment
         </Button>
 
-        <Button variant="ghost" className="postButton">
-          <Repeat2 className="mr-1" />
+        <Button
+          variant="ghost"
+          className="postButton px-2 md:px-4 py-1 md:py-2"
+        >
+          <Repeat2 className="mr-1 w-4 md:w-6" />
           Repost
         </Button>
 
-        <Button variant="ghost" className="postButton">
-          <Send className="mr-1" />
+        <Button
+          variant="ghost"
+          className="postButton px-2 md:px-4 py-1 md:py-2"
+        >
+          <Send className="mr-1 w-4 md:w-6" />
           Send
         </Button>
       </div>

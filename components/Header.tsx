@@ -10,19 +10,20 @@ import Link from "next/link";
 import React from "react";
 import { UserButton, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "./ui/button";
+import MobileSearchModal from "./MobileSearchModal";
 
 function Header() {
   return (
-    <div className="flex items-center p-2 max-w-6xl mx-auto">
+    <div className="relative flex items-center p-2 max-w-6xl mx-auto">
       <Image
-        className="rounded-lg"
+        className="rounded-lg mr-4 sm:mr-0"
         src="/assets/images/logo.png"
         width={40}
         height={40}
         alt="logo"
       />
 
-      <div className="flex-1">
+      <div className="hidden sm:flex flex-1">
         <form className="flex items-center space-x-1 bg-gray-100 p-2 rounded-md flex-1 mx-2 max-w-96">
           <SearchIcon className="h-4 text-gray-400" />
           <input
@@ -33,24 +34,25 @@ function Header() {
         </form>
       </div>
 
-      <div className="flex items-center space-x-4 px-6">
+      <div className="flex items-center gap-4 px-2 md:px-6 justify-between md:justify-end w-full">
+        <MobileSearchModal />
         <Link href="/" className="icon">
-          <HomeIcon className="h-5" />
-          <p>Home</p>
+          <HomeIcon className="h-6 md:h-5" />
+          <p className="hidden sm:inline-block">Home</p>
         </Link>
 
-        <Link href="/" className="icon hidden md:flex">
-          <UserIcon className="h-5" />
-          <p>Network</p>
+        <Link href="/" className="icon">
+          <UserIcon className="h-6 md:h-5" />
+          <p className="hidden sm:inline-block">Network</p>
         </Link>
 
-        <Link href="/" className="icon hidden md:flex">
-          <Briefcase className="h-5" />
-          <p>Jobs</p>
+        <Link href="/" className="icon">
+          <Briefcase className="h-6 md:h-5" />
+          <p className="hidden sm:inline-block">Jobs</p>
         </Link>
         <Link href="/" className="icon">
-          <MessageSquare className="h-5" />
-          <p>Messages</p>
+          <MessageSquare className="h-6 md:h-5" />
+          <p className="hidden sm:inline-block">Messages</p>
         </Link>
 
         <SignedIn>

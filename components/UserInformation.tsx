@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { IPostDocument } from "@/mongodb/models/Post";
+import MobileUserInformationExpand from "./MobileUserInformationExpand";
 
 async function UserInformation({ posts }: { posts: IPostDocument[] }) {
   const user = await currentUser();
@@ -17,7 +18,7 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
   );
 
   return (
-    <div className="flex flex-col justify-center items-center bg-white mr-6 rounded-lg border py-4">
+    <div className="flex flex-col justify-center items-center bg-white rounded-lg border py-4">
       <Avatar>
         {user?.id ? (
           <AvatarImage src={imageUrl} />
@@ -52,17 +53,23 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
         </div>
       </SignedOut>
       <SignedIn>
-        <hr className="w-full border-gray-200 my-5" />
+        <div className="w-full hidden md:flex flex-col">
+          <hr className="w-full border-gray-200 my-5" />
 
-        <div className="flex justify-between w-full px-4 text-sm">
-          <p className="font-semibold text-gray-400">Posts</p>
-          <p className="text-blue-400">{userPosts.length}</p>
-        </div>
+          <div className="flex justify-between w-full px-4 text-sm">
+            <p className="font-semibold text-gray-400">Posts</p>
+            <p className="text-blue-400">{userPosts.length}</p>
+          </div>
 
-        <div className="flex justify-between w-full px-4 text-sm">
-          <p className="font-semibold text-gray-400">Comments</p>
-          <p className="text-blue-400">{userComments.length}</p>
+          <div className="flex justify-between w-full px-4 text-sm">
+            <p className="font-semibold text-gray-400">Comments</p>
+            <p className="text-blue-400">{userComments.length}</p>
+          </div>
         </div>
+        <MobileUserInformationExpand
+          userPosts={userPosts}
+          userComments={userComments}
+        />
       </SignedIn>
     </div>
   );

@@ -13,8 +13,8 @@ export default async function Home() {
   const posts = await Post.getAllPosts();
 
   return (
-    <div className="grid grid-cols-8 mt-5 sm:px-5">
-      <section className="hidden md:inline md:col-span-2">
+    <div className="grid md:grid-cols-8 gap-6 mt-5 sm:px-5">
+      <section className="md:col-span-2 justify-center">
         <UserInformation posts={posts} />
       </section>
 
