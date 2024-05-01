@@ -23,6 +23,34 @@ export async function GET(
   }
 }
 
+export async function PUT(
+  request: Request,
+  { params }: { params: { post_id: string } }
+) {
+  auth().protect();
+  await connectDB();
+
+  const { userId }: DeletePostRequestBody = await request.json();
+  try {
+    const post = await Post.findById(params.post_id);
+
+    if (!post) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    if (post.user.userId !== userId) {
+      throw new Error("Post does not belong to the user");
+    }
+
+    await post.editPost("232223");
+  } catch (error) {
+    return NextResponse.json(
+      { error: "An error occurred while editing the post" },
+      { status: 500 }
+    );
+  }
+}
+
 export interface DeletePostRequestBody {
   userId: string;
 }

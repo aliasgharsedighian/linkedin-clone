@@ -22,6 +22,7 @@ interface IPostMethods {
   commentOnPost(comment: ICommentBase): Promise<void>;
   getAllComments(): Promise<void>;
   removePost(): Promise<void>;
+  editPost(editText: string): Promise<void>;
 }
 
 interface IPostStatics {
@@ -71,6 +72,18 @@ PostSchema.methods.removePost = async function () {
     await this.model("Post").deleteOne({ _id: this._id });
   } catch (error) {
     console.log("error when removing post", error);
+  }
+};
+
+PostSchema.methods.editPost = async function (editText: string) {
+  try {
+    await this.model("Post").updateOne(
+      { _id: this._id },
+      { $set: { text: editText } }
+    );
+    console.log("test22");
+  } catch (error) {
+    console.log("error when updating post", error);
   }
 };
 
