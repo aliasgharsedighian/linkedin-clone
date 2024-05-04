@@ -4,6 +4,7 @@ import mongoose, { Schema, Document, models } from "mongoose";
 export interface ICommentBase {
   user: IUser;
   text: string;
+  likes: string[];
 }
 
 export interface IComment extends Document, ICommentBase {
@@ -20,6 +21,7 @@ const CommentSchema = new Schema<IComment>(
       lastName: { type: String },
     },
     text: { type: String, required: true },
+    likes: [],
   },
   { timestamps: true }
 );

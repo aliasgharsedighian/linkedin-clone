@@ -141,7 +141,7 @@ function Post({ post }: { post: IPostDocument }) {
             action={(formData) => {
               const editInput = formData.get("editInput") as string;
               if (!editInput.trim()) {
-                toast.error("You must provide a comment input");
+                toast.error("You must provide a post input");
               } else {
                 handleUpdatePostAction(post._id, editInput);
               }

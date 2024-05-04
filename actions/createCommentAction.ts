@@ -40,6 +40,7 @@ export default async function createCommentAction(
   const comment: ICommentBase = {
     user: userDB,
     text: commentInput,
+    likes: [],
   };
 
   try {

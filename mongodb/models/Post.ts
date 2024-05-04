@@ -1,6 +1,7 @@
 import { IUser } from "@/types/user";
 import mongoose, { Schema, Document, models, Model } from "mongoose";
 import { Comment, IComment, ICommentBase } from "./comment";
+import { ObjectId } from "mongodb";
 
 export interface IPostBase {
   user: IUser;
@@ -18,6 +19,7 @@ export interface IPost extends IPostBase, Document {
 // Define the documents methods(for each instance of a post)
 interface IPostMethods {
   likePost(userId: string): Promise<void>;
+  likeComment(userId: string): Promise<void>;
   unlikePost(userId: string): Promise<void>;
   commentOnPost(comment: ICommentBase): Promise<void>;
   getAllComments(): Promise<void>;
@@ -59,6 +61,24 @@ PostSchema.methods.likePost = async function (userId: string) {
   }
 };
 
+PostSchema.methods.likeComment = async function (userId: string) {
+  // const currentComment = this.findOne({
+  //   _id: new ObjectId("6630c87e3ba444c78e50b3c5"),
+  // });
+  const test = await this.model("Post").findOne({
+    _id: this._id,
+  });
+  const test2 = await test.comments;
+  const test3 = await this.model("Post").find();
+  console.log(test3);
+  // try {
+  //   console.log("test222");
+  //   await this.updateOne({ $addToSet: { likes: userId } });
+  // } catch (error) {
+  //   console.log("error when liking comment", error);
+  // }
+};
+
 PostSchema.methods.unlikePost = async function (userId: string) {
   try {
     await this.updateOne({ $pull: { likes: userId } });
@@ -81,7 +101,6 @@ PostSchema.methods.editPost = async function (editText: string) {
       { _id: this._id },
       { $set: { text: editText } }
     );
-    console.log("test22");
   } catch (error) {
     console.log("error when updating post", error);
   }
