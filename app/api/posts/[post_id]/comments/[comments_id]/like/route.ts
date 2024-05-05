@@ -1,8 +1,13 @@
 import connectDB from "@/mongodb/db";
 import { Post } from "@/mongodb/models/Post";
+import { IUser } from "@/types/user";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { LikePostRequestBody } from "../../../like/route";
+
+export interface LikeCommentRequestBody {
+  userId: IUser | any;
+  commentId: string;
+}
 
 export async function GET(
   request: Request,
@@ -31,7 +36,7 @@ export async function POST(
   auth().protect();
   await connectDB();
 
-  const { userId }: LikePostRequestBody = await request.json();
+  const { userId, commentId }: LikeCommentRequestBody = await request.json();
 
   try {
     const post = await Post.findById(params.post_id);
@@ -40,7 +45,7 @@ export async function POST(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    await post.likeComment(userId);
+    await post.likeComment(userId, commentId);
     return NextResponse.json({ message: "Post liked successfully" });
   } catch (error) {
     return NextResponse.json(

@@ -19,8 +19,9 @@ export interface IPost extends IPostBase, Document {
 // Define the documents methods(for each instance of a post)
 interface IPostMethods {
   likePost(userId: string): Promise<void>;
-  likeComment(userId: string): Promise<void>;
-  unlikePost(userId: string): Promise<void>;
+  likeComment(userId: IUser, commentId: string): Promise<void>;
+  unlikePost(user: string): Promise<void>;
+  unlikeComment(user: IUser, commentId: string): Promise<void>;
   commentOnPost(comment: ICommentBase): Promise<void>;
   getAllComments(): Promise<void>;
   removePost(): Promise<void>;
@@ -61,22 +62,20 @@ PostSchema.methods.likePost = async function (userId: string) {
   }
 };
 
-PostSchema.methods.likeComment = async function (userId: string) {
-  // const currentComment = this.findOne({
-  //   _id: new ObjectId("6630c87e3ba444c78e50b3c5"),
-  // });
-  const test = await this.model("Post").findOne({
-    _id: this._id,
-  });
-  const test2 = await test.comments;
-  const test3 = await this.model("Post").find();
-  console.log(test3);
-  // try {
-  //   console.log("test222");
-  //   await this.updateOne({ $addToSet: { likes: userId } });
-  // } catch (error) {
-  //   console.log("error when liking comment", error);
-  // }
+PostSchema.methods.likeComment = async function (
+  userId: IUser,
+  commentId: string
+) {
+  try {
+    await mongoose
+      .model("Comment")
+      .findOneAndUpdate(
+        { _id: new ObjectId(commentId) },
+        { $addToSet: { likes: userId } }
+      );
+  } catch (error) {
+    console.log("error when liking comment", error);
+  }
 };
 
 PostSchema.methods.unlikePost = async function (userId: string) {
@@ -84,6 +83,22 @@ PostSchema.methods.unlikePost = async function (userId: string) {
     await this.updateOne({ $pull: { likes: userId } });
   } catch (error) {
     console.log("error when unliking post", error);
+  }
+};
+
+PostSchema.methods.unlikeComment = async function (
+  userId: IUser,
+  commentId: string
+) {
+  try {
+    await mongoose
+      .model("Comment")
+      .findOneAndUpdate(
+        { _id: new ObjectId(commentId) },
+        { $pull: { likes: userId } }
+      );
+  } catch (error) {
+    console.log("error when unliking comment", error);
   }
 };
 
