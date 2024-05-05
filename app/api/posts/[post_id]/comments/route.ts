@@ -45,7 +45,7 @@ export async function POST(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    const comment: ICommentBase = {
+    const comment: ICommentBase | any = {
       user,
       text,
     };
