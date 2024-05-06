@@ -235,26 +235,53 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                 <DialogTitle className="text-start">Likes</DialogTitle>
               </DialogHeader>
               <div className="flex flex-col gap-4">
-                {likes?.map((like: any) => (
-                  <div key={like} className="flex items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src={like.userImage} />
-                      <AvatarFallback>
-                        {like.firstName?.charAt(0)}
-                        {like?.lastName?.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-semibold">
-                        {like.firstName} {like?.lastName}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        @{like?.firstName}
-                        {like?.firstName}-{like?.userId?.toString().slice(-4)}
-                      </p>
+                {likes
+                  ?.filter((like: any) => like.userId === user?.id)
+                  .map((like: any) => (
+                    <div
+                      key={like}
+                      className="flex items-center gap-2 border-b pb-2"
+                    >
+                      <Avatar>
+                        <AvatarImage src={like.userImage} />
+                        <AvatarFallback>
+                          {like.firstName?.charAt(0)}
+                          {like?.lastName?.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold">
+                          {like.firstName} {like?.lastName}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          @{like?.firstName}
+                          {like?.firstName}-{like?.userId?.toString().slice(-4)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                {likes
+                  ?.filter((like: any) => like.userId !== user?.id)
+                  .map((like: any) => (
+                    <div key={like} className="flex items-center gap-2">
+                      <Avatar>
+                        <AvatarImage src={like.userImage} />
+                        <AvatarFallback>
+                          {like.firstName?.charAt(0)}
+                          {like?.lastName?.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold">
+                          {like.firstName} {like?.lastName}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          @{like?.firstName}
+                          {like?.firstName}-{like?.userId?.toString().slice(-4)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
               </div>
             </DialogContent>
           </Dialog>

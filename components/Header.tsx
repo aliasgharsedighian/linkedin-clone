@@ -15,10 +15,9 @@ import { headers } from "next/headers";
 
 function Header() {
   const headersList = headers();
-  const protocol = "http://";
+  const protocol = "https://";
   const domain = headersList.get("host") || "";
   const fullUrl = headersList.get("referer") || "";
-  console.log(fullUrl === protocol + domain + "/");
 
   return (
     <div className="relative flex items-center p-2 max-w-6xl mx-auto">
