@@ -72,12 +72,13 @@ function PostForm() {
             </AvatarFallback>
           </Avatar>
 
-          <div className="flex flex-1 bg-white border rounded-full">
-            <input
-              type="text"
+          <div className="relative flex flex-1 bg-white border rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto">
+            <textarea
               name="postInput"
-              placeholder="Start writing a post .."
-              className="outline-none flex-1 text-sm bg-transparent py-3 px-4"
+              rows={1}
+              placeholder="Start writing a post ..."
+              className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto"
+              style={{ maxHeight: "150px" }}
             />
             <input
               ref={fileInputRef}
@@ -89,6 +90,7 @@ function PostForm() {
             />
 
             <button
+              className="absolute right-0 bottom-3"
               type="submit"
               aria-disabled={isPending}
               disabled={isPending}

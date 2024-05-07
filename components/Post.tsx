@@ -183,15 +183,17 @@ function Post({ post }: { post: IPostDocument }) {
               }
             }}
           >
-            <div className="flex flex-1 bg-white border rounded-full px-3 py-2 mx-3 mb-3">
-              <input
-                className="outline-none flex-1 text-sm bg-transparent"
-                type="text"
+            <div className="relative flex flex-1 bg-white border rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto mb-3">
+              <textarea
+                className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto"
+                rows={1}
                 defaultValue={post.text}
                 name="editInput"
                 placeholder="Edit your text..."
+                style={{ maxHeight: "150px" }}
               />
               <button
+                className="absolute right-0 bottom-3"
                 type="submit"
                 aria-disabled={isPendingEdit}
                 disabled={isPendingEdit}

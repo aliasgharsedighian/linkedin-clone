@@ -60,14 +60,20 @@ function CommentForm({ postId }: { postId: string }) {
         </AvatarFallback>
       </Avatar>
 
-      <div className="flex flex-1 bg-white border rounded-full px-3 py-2">
-        <input
-          type="text"
+      <div className="relative flex flex-1 bg-white border rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto">
+        <textarea
           name="commentInput"
+          rows={1}
           placeholder="add a comment ..."
-          className="outline-none flex-1 text-sm bg-transparent"
+          className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto"
+          style={{ maxHeight: "150px" }}
         />
-        <button type="submit" aria-disabled={isPending} disabled={isPending}>
+        <button
+          className="absolute right-0 bottom-3"
+          type="submit"
+          aria-disabled={isPending}
+          disabled={isPending}
+        >
           {isPending ? (
             <div className="mr-2" role="status">
               <svg

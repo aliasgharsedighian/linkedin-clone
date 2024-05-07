@@ -15,7 +15,7 @@ function UserImage({ imageUrl }: { imageUrl: string }) {
         </div>
       </div>
       <Image
-        className="mx-8 absolute top-14 rounded-full border-4 border-[#f4f2ed]"
+        className="w-[120px] h-[120px] object-cover mx-8 absolute top-14 rounded-full border-4 border-[#f4f2ed]"
         src={imageUrl}
         alt={imageUrl}
         width={120}
