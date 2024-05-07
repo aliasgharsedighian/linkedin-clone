@@ -61,17 +61,17 @@ function Header() {
           </p>
         </Link>
 
-        <Link href="/" className="icon">
+        <Link href="/profile" className="icon">
           <UserIcon
             className={`h-6 md:h-5 ${
-              fullUrl === protocol + domain + "/network"
+              fullUrl === protocol + domain + "/profile"
                 ? "stroke-gray-950"
                 : "stroke-gray-300"
             }`}
           />
           <p
             className={`hidden sm:inline-block  ${
-              fullUrl === protocol + domain + "/network"
+              fullUrl === protocol + domain + "/profile"
                 ? "text-black font-bold"
                 : "text-gray-400 font-normal"
             }`}

@@ -4,6 +4,7 @@ import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { IPostDocument } from "@/mongodb/models/Post";
 import MobileUserInformationExpand from "./MobileUserInformationExpand";
+import Link from "next/link";
 
 async function UserInformation({ posts }: { posts: IPostDocument[] }) {
   const user = await currentUser();
@@ -19,30 +20,35 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
 
   return (
     <div className="flex flex-col justify-center items-center bg-white rounded-lg border py-4">
-      <Avatar>
-        {user?.id ? (
-          <AvatarImage src={imageUrl} />
-        ) : (
-          <AvatarImage src="https://github.com/shadcn.png" />
-        )}
+      <Link
+        className="flex flex-col justify-center items-center"
+        href="/profile"
+      >
+        <Avatar>
+          {user?.id ? (
+            <AvatarImage src={imageUrl} />
+          ) : (
+            <AvatarImage src="https://github.com/shadcn.png" />
+          )}
 
-        <AvatarFallback>
-          {firstName?.charAt(0)} {lastName?.charAt(0)}
-        </AvatarFallback>
-      </Avatar>
+          <AvatarFallback>
+            {firstName?.charAt(0)} {lastName?.charAt(0)}
+          </AvatarFallback>
+        </Avatar>
 
-      <SignedIn>
-        <div className="text-center">
-          <p className="font-semibold">
-            {firstName} {lastName}
-          </p>
+        <SignedIn>
+          <div className="text-center">
+            <p className="font-semibold">
+              {firstName} {lastName}
+            </p>
 
-          <p className="text-xs">
-            @{firstName}
-            {lastName}-{user?.id.slice(-4)}
-          </p>
-        </div>
-      </SignedIn>
+            <p className="text-xs">
+              @{firstName}
+              {lastName}-{user?.id.slice(-4)}
+            </p>
+          </div>
+        </SignedIn>
+      </Link>
 
       <SignedOut>
         <div className="text-center space-y-2">
