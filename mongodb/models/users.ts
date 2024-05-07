@@ -2,9 +2,12 @@ import { IUserData } from "@/types/userData";
 import mongoose, { Schema, Document, models } from "mongoose";
 
 export interface IUsersBase {
-  data: IUserData | any;
-  object: string;
-  type: string;
+  created_at: number;
+  emailAddress: string;
+  firstName: string;
+  userId: string;
+  imageUrl: string;
+  lastName: string;
 }
 
 export interface IUsers extends Document, IUsersBase {
@@ -14,14 +17,12 @@ export interface IUsers extends Document, IUsersBase {
 
 const UsersSchema = new Schema<IUsers>(
   {
-    data: {
-      created_at: { type: Number },
-      emailAddress: { type: String },
-      firstName: { type: String },
-      userId: { type: String },
-      imageUrl: { type: String },
-      lastName: { type: String },
-    },
+    created_at: { type: Number },
+    emailAddress: { type: String },
+    firstName: { type: String },
+    userId: { type: String },
+    imageUrl: { type: String },
+    lastName: { type: String },
   },
   { timestamps: true }
 );

@@ -253,10 +253,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                         <p className="font-semibold">
                           {like.firstName} {like?.lastName}
                         </p>
-                        <p className="text-xs text-gray-400">
-                          @{like?.firstName}
-                          {like?.firstName}-{like?.userId?.toString().slice(-4)}
-                        </p>
+                        <p className="text-xs text-gray-400">You</p>
                       </div>
                     </div>
                   ))}

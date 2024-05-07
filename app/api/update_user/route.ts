@@ -1,17 +1,14 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import mongoose from "mongoose";
 import connectDB from "@/mongodb/db";
 import { Users } from "@/mongodb/models/users";
-import { Post } from "@/mongodb/models/Post";
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
-  console.log("test webhook");
+  // console.log("test webhook");
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -61,41 +58,34 @@ export async function POST(req: Request) {
     evt.data;
   const eventType = evt.type;
   const bodySendToMongodb = {
-    data: {
-      created_at: created_at,
-      firstName: first_name,
-      userId: id,
-      imageUrl: image_url,
-      lastName: last_name,
-      emailAddress: email_addresses[0].email_address,
-    },
+    created_at: created_at,
+    firstName: first_name,
+    userId: id,
+    imageUrl: image_url,
+    lastName: last_name,
+    emailAddress: email_addresses[0].email_address,
   };
 
   await connectDB();
 
-  // const user = await Users.findOne({
-  //   data: {
-  //     userId: "user_29w83sxmDNGwOuEthce5gg56FcC",
-  //   },
-  // });
+  const user = await Users.findOne({ userId: id });
+  if (user) {
+    // console.log("user Exist");
+    const updateUser = await Users.findOneAndUpdate(
+      { userId: id },
+      bodySendToMongodb
+    );
+    return NextResponse.json({
+      message: "update user successfully",
+      updateUser,
+    });
+  }
 
-  // console.log(user);
+  // console.log("user not exist");
   const createUser = await Users.create(bodySendToMongodb);
-  console.log("User created successfully");
+  // console.log("User created successfully");
   return NextResponse.json({
     message: "User created successfully",
     createUser,
   });
-
-  // if (user) {
-  //   const updateUser = await Users.updateOne(
-  //     { userId: id },
-  //     { $set: { data: bodySendToMongodb } }
-  //   );
-  //   console.log("User updated successfully");
-  //   return NextResponse.json({
-  //     message: "User updated successfully",
-  //     updateUser,
-  //   });
-  // }
 }
