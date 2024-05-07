@@ -14,6 +14,7 @@ export default async function ProfilePage() {
   const userInfo = await Users.findOne({ userId: userId });
 
   const { _id, emailAddress, firstName, imageUrl, lastName } = userInfo;
+  const { headline, currentPosition, country, city } = userInfo?.extendData;
 
   return (
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
@@ -24,6 +25,10 @@ export default async function ProfilePage() {
             firstName={firstName}
             lastName={lastName}
             id={_id.toString()}
+            headline={headline}
+            currentPosition={currentPosition}
+            country={country}
+            city={city}
           />
         </div>
       </section>

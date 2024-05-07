@@ -3,6 +3,7 @@
 import { Users } from "@/mongodb/models/users";
 import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { ObjectId } from "mongodb";
 
 export default async function updateProfileAction(
   userId: string,
@@ -13,6 +14,8 @@ export default async function updateProfileAction(
   const lastName = formData.get("lastNameInput");
   const headline = formData.get("headlineInput");
   const currentPosition = formData.get("currentPositionInput");
+  const country = formData.get("countryInput");
+  const city = formData.get("cityInput");
 
   if (!user?.id) {
     throw new Error("User not authenticated");
@@ -28,12 +31,20 @@ export default async function updateProfileAction(
   }
 
   try {
-    const bodySendToMongodb = {
-      firstName,
-      lastName,
+    const extendData = {
       headline,
       currentPosition,
+      country,
+      city,
     };
+
+    // const test = await Users.findOne({ _id: new ObjectId(userId) });
+    // console.log(test);
+
+    const test = await Users.findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $set: { firstName, lastName, extendData } }
+    );
     revalidatePath("/profile");
   } catch (error) {
     throw new Error(`An error occurred while updating the profile`);

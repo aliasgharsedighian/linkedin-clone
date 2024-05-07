@@ -1,24 +1,12 @@
-import {
-  SearchIcon,
-  HomeIcon,
-  UserIcon,
-  Briefcase,
-  MessageSquare,
-} from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { UserButton, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import MobileSearchModal from "./MobileSearchModal";
-import { headers } from "next/headers";
+import HeaderNavigation from "./HeaderNavigation";
 
 function Header() {
-  const headersList = headers();
-  const protocol = "https://";
-  const domain = headersList.get("host") || "";
-  const fullUrl = headersList.get("referer") || "";
-
   return (
     <div className="relative flex items-center p-2 max-w-6xl mx-auto">
       <Image
@@ -42,80 +30,7 @@ function Header() {
 
       <div className="flex items-center gap-4 px-2 md:px-6 justify-between md:justify-end w-full">
         <MobileSearchModal />
-        <Link href="/" className="icon">
-          <HomeIcon
-            className={`h-6 md:h-5 ${
-              fullUrl === protocol + domain + "/"
-                ? "stroke-gray-950"
-                : "stroke-gray-300"
-            }`}
-          />
-          <p
-            className={`hidden sm:inline-block  ${
-              fullUrl === protocol + domain + "/"
-                ? "text-black font-bold"
-                : "text-gray-400 font-normal"
-            }`}
-          >
-            Home
-          </p>
-        </Link>
-
-        <Link href="/profile" className="icon">
-          <UserIcon
-            className={`h-6 md:h-5 ${
-              fullUrl === protocol + domain + "/profile"
-                ? "stroke-gray-950"
-                : "stroke-gray-300"
-            }`}
-          />
-          <p
-            className={`hidden sm:inline-block  ${
-              fullUrl === protocol + domain + "/profile"
-                ? "text-black font-bold"
-                : "text-gray-400 font-normal"
-            }`}
-          >
-            Network
-          </p>
-        </Link>
-
-        <Link href="/" className="icon">
-          <Briefcase
-            className={`h-6 md:h-5 ${
-              fullUrl === protocol + domain + "/jobs"
-                ? "stroke-gray-950"
-                : "stroke-gray-300"
-            }`}
-          />
-          <p
-            className={`hidden sm:inline-block  ${
-              fullUrl === protocol + domain + "/jobs"
-                ? "text-black font-bold"
-                : "text-gray-400 font-normal"
-            }`}
-          >
-            Jobs
-          </p>
-        </Link>
-        <Link href="/" className="icon">
-          <MessageSquare
-            className={`h-6 md:h-5 ${
-              fullUrl === protocol + domain + "/message"
-                ? "stroke-gray-950"
-                : "stroke-gray-300"
-            }`}
-          />
-          <p
-            className={`hidden sm:inline-block  ${
-              fullUrl === protocol + domain + "/message"
-                ? "text-black font-bold"
-                : "text-gray-400 font-normal"
-            }`}
-          >
-            Messages
-          </p>
-        </Link>
+        <HeaderNavigation />
 
         <SignedIn>
           <UserButton />

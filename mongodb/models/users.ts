@@ -8,6 +8,12 @@ export interface IUsersBase {
   userId: string;
   imageUrl: string;
   lastName: string;
+  extendData: {
+    headline: string;
+    currentPosition: string;
+    country: string;
+    city: string;
+  };
 }
 
 export interface IUsers extends Document, IUsersBase {
@@ -23,6 +29,12 @@ const UsersSchema = new Schema<IUsers>(
     userId: { type: String },
     imageUrl: { type: String },
     lastName: { type: String },
+    extendData: {
+      headline: { type: String },
+      currentPosition: { type: String },
+      country: { type: String },
+      city: { type: String },
+    },
   },
   { timestamps: true }
 );

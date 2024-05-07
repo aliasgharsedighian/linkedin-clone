@@ -24,10 +24,11 @@ export async function GET(
   }
 }
 
-export async function PUT(
+export async function POST(
   request: Request,
   { params }: { params: { user_id: string } }
 ) {
-  auth().protect();
-  await connectDB();
+  //   auth().protect();
+  //   await connectDB();
+  //   console.log(await request.json());
 }
