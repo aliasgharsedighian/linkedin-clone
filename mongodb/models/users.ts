@@ -14,6 +14,13 @@ export interface IUsersBase {
     country: string;
     city: string;
   };
+  following: {
+    emailAddress: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
+    imageUrl: string;
+  };
 }
 
 export interface IUsers extends Document, IUsersBase {
@@ -34,6 +41,13 @@ const UsersSchema = new Schema<IUsers>(
       currentPosition: { type: String },
       country: { type: String },
       city: { type: String },
+    },
+    following: {
+      emailAddress: { type: String },
+      userId: { type: String },
+      firstName: { type: String },
+      lastName: { type: String },
+      imageUrl: { type: String },
     },
   },
   { timestamps: true }

@@ -11,7 +11,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import EditProfileForm from "./EditProfileForm";
+import Link from "next/link";
 
 interface PageProps {
   firstName: string;
@@ -21,6 +23,7 @@ interface PageProps {
   currentPosition: string;
   country: string;
   city: string;
+  following: any;
 }
 
 function UserInfo({
@@ -31,6 +34,7 @@ function UserInfo({
   currentPosition,
   country,
   city,
+  following,
 }: PageProps) {
   const [openDialog, setOpenDialog] = useState(false);
   return (
@@ -67,7 +71,48 @@ function UserInfo({
             {city},{country}
           </p>
         ))}
-      <p className="text-sm text-sky-600">500+ connections</p>
+      <Dialog>
+        <DialogTrigger className="flex flex-end">
+          <p className="text-sm text-sky-600">
+            {following?.length ? following.length : "0"} connections
+          </p>
+        </DialogTrigger>
+        <DialogContent className="mx-0 px-0">
+          <DialogHeader className="border-b pb-4">
+            <DialogTitle className="text-start mx-4">Conncetions</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-4">
+            {following ? (
+              following.map((follow: any) => (
+                <Link
+                  href={`/user/${follow?.userId}`}
+                  key={follow.userId}
+                  className="flex items-center gap-2 mx-4"
+                >
+                  <Avatar>
+                    <AvatarImage src={follow?.imageUrl} />
+                    <AvatarFallback>
+                      {follow?.firstName?.charAt(0)}
+                      {follow?.lastName?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-semibold">
+                      {follow.firstName} {follow?.lastName}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      @{follow?.firstName}
+                      {follow?.firstName}-{follow?.userId?.toString().slice(-4)}
+                    </p>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p className="mx-4">you haven't any connections</p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

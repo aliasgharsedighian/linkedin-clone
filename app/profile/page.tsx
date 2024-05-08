@@ -11,10 +11,13 @@ export const revalidate = 0;
 export default async function ProfilePage() {
   await connectDB();
   const { userId } = auth();
-  const userInfo = await Users.findOne({ userId: userId });
+  const userInfo: any = await Users.findOne({ userId: userId }).lean();
 
-  const { _id, emailAddress, firstName, imageUrl, lastName } = userInfo;
-  const { headline, currentPosition, country, city } = userInfo?.extendData;
+  const { _id, emailAddress, firstName, imageUrl, lastName, following } =
+    userInfo;
+  const { headline, currentPosition, country, city } = userInfo?.extendData
+    ? userInfo.extendData
+    : { headline: null, currentPosition: null, country: null, city: null };
 
   return (
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
@@ -29,6 +32,7 @@ export default async function ProfilePage() {
             currentPosition={currentPosition}
             country={country}
             city={city}
+            following={following}
           />
         </div>
       </section>
