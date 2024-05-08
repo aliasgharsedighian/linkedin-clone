@@ -5,17 +5,20 @@ import { UserButton, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import MobileSearchModal from "./MobileSearchModal";
 import HeaderNavigation from "./HeaderNavigation";
+import Link from "next/link";
 
 function Header() {
   return (
     <div className="relative flex items-center p-2 max-w-6xl mx-auto">
-      <Image
-        className="rounded-lg mr-4 sm:mr-0"
-        src="/assets/images/logo.png"
-        width={40}
-        height={40}
-        alt="logo"
-      />
+      <Link href="/">
+        <Image
+          className="rounded-lg mr-4 sm:mr-0"
+          src="/assets/images/logo.png"
+          width={40}
+          height={40}
+          alt="logo"
+        />
+      </Link>
 
       <div className="hidden sm:flex flex-1">
         <form className="flex items-center space-x-1 bg-gray-100 p-2 rounded-md flex-1 mx-2 max-w-96">

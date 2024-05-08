@@ -25,6 +25,7 @@ import PostOptions from "./PostOptions";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import editPostAction from "@/actions/editPostAction";
+import Link from "next/link";
 
 function Post({ post }: { post: IPostDocument }) {
   const { user } = useUser();
@@ -69,7 +70,13 @@ function Post({ post }: { post: IPostDocument }) {
   return (
     <div className="bg-white rounded-md border">
       <div className="p-4 flex space-x-2">
-        <div>
+        <Link
+          href={
+            post.user.userId === user?.id
+              ? "/profile"
+              : `/user/${post.user.userId}`
+          }
+        >
           <Avatar>
             <AvatarImage src={post.user?.userImage} />
             <AvatarFallback>
@@ -77,7 +84,7 @@ function Post({ post }: { post: IPostDocument }) {
               {post.user?.lastName?.charAt(0)}
             </AvatarFallback>
           </Avatar>
-        </div>
+        </Link>
         <div className="flex justify-between flex-1">
           <div>
             <p className="font-semibold">
@@ -225,7 +232,7 @@ function Post({ post }: { post: IPostDocument }) {
             </div>
           </form>
         ) : (
-          <p className="px-4 pb-2 mt-2">{post.text}</p>
+          <p className="px-4 pb-2 mt-2 whitespace-break-spaces">{post.text}</p>
         )}
         {/* If image uploaded put it here ... */}
         {post.imageUrl && (

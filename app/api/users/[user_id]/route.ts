@@ -28,7 +28,14 @@ export async function POST(
   request: Request,
   { params }: { params: { user_id: string } }
 ) {
-  //   auth().protect();
-  //   await connectDB();
-  //   console.log(await request.json());
+  // auth().protect();
+  // await connectDB();
+
+  const comment = await request.json();
+  const newComment = {
+    key: comment.id,
+  };
+  console.log(newComment);
+
+  return NextResponse.json({ data: "test" }, { status: 202 });
 }
