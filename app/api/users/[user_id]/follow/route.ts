@@ -16,7 +16,6 @@ export async function POST(
     const userRequest = {
       id: user.id,
     };
-    console.log(userRequest);
   } catch (error) {
     return NextResponse.json({ message: "error on user request" });
   }

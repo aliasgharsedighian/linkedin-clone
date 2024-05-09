@@ -3,6 +3,7 @@ import connectDB from "@/mongodb/db";
 import { Users } from "@/mongodb/models/users";
 import { auth } from "@clerk/nextjs/server";
 import UserPageUserInfo from "./UserPageUserInfo";
+import { redirect } from "next/navigation";
 
 export const revalidate = 0;
 
@@ -21,6 +22,11 @@ export default async function UserPage({
   const { headline, currentPosition, country, city } = userInfo?.extendData
     ? userInfo.extendData
     : { headline: null, currentPosition: null, country: null, city: null };
+
+  if (userId && userId === user_id) {
+    redirect("/profile");
+  }
+
   return (
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
       <section className="col-span-full md:col-span-6 w-full">

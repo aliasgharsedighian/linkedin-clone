@@ -1,10 +1,8 @@
 "use client";
 
-import { Edit2Icon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { revalidatePath } from "next/cache";
+import { toast } from "sonner";
 
 interface PageProps {
   firstName: string;
@@ -42,6 +40,7 @@ function UserPageUserInfo({
   following,
   currentUserFollowing,
 }: PageProps) {
+  const { user } = useUser();
   const [followedUser, setFollowedUser] = useState(false);
 
   useEffect(() => {
@@ -50,9 +49,13 @@ function UserPageUserInfo({
     } else {
       setFollowedUser(false);
     }
-  }, []);
+  }, [currentUserFollowing, user]);
 
   const handleFollowUser = async () => {
+    const orginalFollowed = followedUser;
+
+    setFollowedUser(!followedUser);
+
     const promise = await fetch(
       `/api/users/${id}/${followedUser ? "unfollow" : "follow"}`,
       {
@@ -66,14 +69,10 @@ function UserPageUserInfo({
       }
     );
     const data = await promise.json();
-    console.log(data);
-    if (promise.ok) {
-      if (data.type === "follow") {
-        setFollowedUser(true);
-      }
-      if (data.type === "unfollow") {
-        setFollowedUser(false);
-      }
+
+    if (!promise.ok) {
+      setFollowedUser(orginalFollowed);
+      throw new Error("Failed to follow or unfollow user");
     }
   };
 
@@ -82,7 +81,15 @@ function UserPageUserInfo({
       <div className="flex justify-end">
         <SignedIn>
           <Button
-            onClick={() => handleFollowUser()}
+            onClick={() => {
+              const promise = handleFollowUser();
+
+              toast.promise(promise, {
+                loading: "Follow/Unfollow user...",
+                success: "User Followed/Unfollowed",
+                error: "Failed to follow user",
+              });
+            }}
             variant="ghost"
             className="text-sm text-white bg-sky-600 hover:bg-sky-700 hover:text-white"
           >
@@ -108,12 +115,11 @@ function UserPageUserInfo({
       <p className="text-sm text-gray-500">
         {currentPosition} {"Islamic Azad University"}
       </p>
-      {country ||
-        (city && (
-          <p className="text-sm text-gray-500">
-            {city},{country}
-          </p>
-        ))}
+      {country && city && (
+        <p className="text-sm text-gray-500">
+          {city},{country}
+        </p>
+      )}
       <Dialog>
         <DialogTrigger className="flex flex-end">
           <p className="text-sm text-sky-600">
