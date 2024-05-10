@@ -4,6 +4,7 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import connectDB from "@/mongodb/db";
 import { Users } from "@/mongodb/models/users";
 import { NextResponse } from "next/server";
+import { Post } from "@/mongodb/models/Post";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -75,6 +76,26 @@ export async function POST(req: Request) {
       { userId: id },
       bodySendToMongodb
     );
+
+    // const find = await Post.findOne({ $isValid: { userId: id } });
+
+    // console.log(find);
+    const updatePost = await Post.updateMany(
+      {
+        "user.userId": id,
+      },
+      {
+        $set: {
+          user: {
+            userId: id,
+            userImage: image_url,
+            firstName: first_name,
+            lastName: last_name,
+          },
+        },
+      }
+    );
+
     return NextResponse.json({
       message: "update user successfully",
       updateUser,
@@ -83,6 +104,7 @@ export async function POST(req: Request) {
 
   // console.log("user not exist");
   const createUser = await Users.create(bodySendToMongodb);
+
   // console.log("User created successfully");
   return NextResponse.json({
     message: "User created successfully",
