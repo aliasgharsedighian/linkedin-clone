@@ -61,7 +61,7 @@ function PostForm() {
           //handle form submission with server action
           handlePostAction(formData);
         }}
-        className="p-3 bg-white rounded-lg border"
+        className="p-3 bg-white dark:bg-[var(--dark-post-background)] rounded-lg border dark:border-[var(--dark-border)]"
       >
         <div className="flex items-center space-x-2">
           <Avatar>
@@ -72,12 +72,12 @@ function PostForm() {
             </AvatarFallback>
           </Avatar>
 
-          <div className="relative flex flex-1 bg-white border rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto">
+          <div className="relative flex flex-1 bg-white border dark:border-[var(--dark-border)] rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto">
             <textarea
               name="postInput"
               rows={1}
               placeholder="Start writing a post ..."
-              className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto"
+              className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto dark:bg-[var(--dark-post-background)] dark:text-white"
               style={{ maxHeight: "150px" }}
             />
             <input
@@ -130,6 +130,7 @@ function PostForm() {
 
         <div className="flex justify-end mt-2 space-x-2">
           <Button
+            className="dark:bg-[var(--dark-post-background)] dark:text-white dark:border-[var(--dark-border)]"
             type="button"
             variant={preview ? "secondary" : "outline"}
             onClick={() => fileInputRef.current?.click()}
@@ -152,7 +153,7 @@ function PostForm() {
           )}
         </div>
       </form>
-      <hr className="mt-2 border-gray-300" />
+      <hr className="mt-2 border-gray-300 dark:border-[var(--dark-border)]" />
     </div>
   );
 }

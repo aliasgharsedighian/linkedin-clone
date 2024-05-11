@@ -5,6 +5,7 @@ import React from "react";
 import Image from "next/image";
 import UserInfo from "@/components/profile/UserInfo";
 import UserImage from "@/components/profile/UserImage";
+import ThemeSetting from "@/components/profile/ThemeSetting";
 
 export const revalidate = 0;
 
@@ -21,7 +22,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
-      <section className="col-span-full md:col-span-6 w-full">
+      <section className="col-span-full md:col-span-6 w-full flex flex-col gap-6">
         <div className="flex flex-col gap-4">
           <UserImage imageUrl={imageUrl} />
           <UserInfo
@@ -35,6 +36,7 @@ export default async function ProfilePage() {
             following={following}
           />
         </div>
+        <ThemeSetting />
       </section>
       <section className="hidden md:col-span-2 justify-center">test2</section>
     </div>

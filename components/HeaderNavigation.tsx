@@ -8,10 +8,17 @@ function HeaderNavigation() {
   const path = usePathname();
   return (
     <>
-      <Link href="/" className="icon">
+      <Link
+        href="/"
+        className={`icon ${
+          path === "/" ? "border-b-2 border-black dark:border-white" : ""
+        }`}
+      >
         <HomeIcon
-          className={`h-6 md:h-5 ${
-            path === "/" ? "stroke-gray-950" : "stroke-gray-300"
+          className={`h-6 md:h-5  ${
+            path === "/"
+              ? "stroke-gray-950"
+              : "stroke-gray-300 dark:stroke-gray-950"
           }`}
         />
         <p
@@ -23,10 +30,17 @@ function HeaderNavigation() {
         </p>
       </Link>
 
-      <Link href="/profile" className="icon">
+      <Link
+        href="/profile"
+        className={`icon ${
+          path === "/profile" ? "border-b-2 border-black dark:border-white" : ""
+        }`}
+      >
         <UserIcon
           className={`h-6 md:h-5 ${
-            path === "/profile" ? "stroke-gray-950" : "stroke-gray-300"
+            path === "/profile"
+              ? "stroke-gray-950"
+              : "stroke-gray-300 dark:stroke-gray-950"
           }`}
         />
         <p
@@ -40,10 +54,17 @@ function HeaderNavigation() {
         </p>
       </Link>
 
-      <Link href="/" className="icon">
+      <Link
+        href="/"
+        className={`icon ${
+          path === "/jobs" ? "border-b-2 border-black dark:border-white" : ""
+        }`}
+      >
         <Briefcase
           className={`h-6 md:h-5 ${
-            path === "/jobs" ? "stroke-gray-950" : "stroke-gray-300"
+            path === "/jobs"
+              ? "stroke-gray-950"
+              : "stroke-gray-300 dark:stroke-gray-950"
           }`}
         />
         <p
@@ -56,10 +77,17 @@ function HeaderNavigation() {
           Jobs
         </p>
       </Link>
-      <Link href="/" className="icon">
+      <Link
+        href="/"
+        className={`icon ${
+          path === "/message" ? "border-b-2 border-black dark:border-white" : ""
+        }`}
+      >
         <MessageSquare
           className={`h-6 md:h-5 ${
-            path === "/message" ? "stroke-gray-950" : "stroke-gray-300"
+            path === "/message"
+              ? "stroke-gray-950"
+              : "stroke-gray-300 dark:stroke-gray-950"
           }`}
         />
         <p

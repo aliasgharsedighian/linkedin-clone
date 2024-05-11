@@ -68,7 +68,7 @@ function Post({ post }: { post: IPostDocument }) {
   };
 
   return (
-    <div className="bg-white rounded-md border">
+    <div className="bg-white dark:bg-[var(--dark-post-background)] rounded-md border dark:border-[var(--dark-border)]">
       <div className="p-4 flex space-x-2">
         <Link
           href={
@@ -87,7 +87,7 @@ function Post({ post }: { post: IPostDocument }) {
         </Link>
         <div className="flex justify-between flex-1">
           <div>
-            <p className="font-semibold">
+            <p className="font-semibold dark:text-white">
               {post.user?.firstName} {post.user?.lastName}{" "}
               {isAuthor && (
                 <Badge className="ml-2" variant="secondary">
@@ -108,7 +108,7 @@ function Post({ post }: { post: IPostDocument }) {
             <div className="flex items-start gap-2">
               <Button
                 variant={edit ? "default" : "ghost"}
-                className="px-3 py-2"
+                className="px-3 py-2 dark:text-white dark:hover:bg-gray-600"
                 onClick={() => {
                   setEdit(!edit);
                 }}
@@ -190,9 +190,9 @@ function Post({ post }: { post: IPostDocument }) {
               }
             }}
           >
-            <div className="relative flex flex-1 bg-white border rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto mb-3">
+            <div className="relative flex flex-1 bg-white border dark:border-[var(--dark-border)] rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto mb-3">
               <textarea
-                className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto"
+                className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto dark:bg-[var(--dark-post-background)] dark:text-white"
                 rows={1}
                 defaultValue={post.text}
                 name="editInput"
@@ -232,7 +232,9 @@ function Post({ post }: { post: IPostDocument }) {
             </div>
           </form>
         ) : (
-          <p className="px-4 pb-2 mt-2 whitespace-break-spaces">{post.text}</p>
+          <p className="px-4 pb-2 mt-2 whitespace-break-spaces dark:text-white">
+            {post.text}
+          </p>
         )}
         {/* If image uploaded put it here ... */}
         {post.imageUrl && (

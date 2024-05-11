@@ -10,7 +10,7 @@ function MobileUserInformationExpand({ userPosts, userComments }: any) {
   return (
     <div className="w-full flex flex-col md:hidden mt-4">
       <Button
-        className="flex gap-1 items-center"
+        className="flex gap-1 items-center dark:text-white dark:hover:bg-gray-600"
         variant="ghost"
         onClick={() => setExpandInfo(!expandInfo)}
       >

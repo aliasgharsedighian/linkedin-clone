@@ -19,7 +19,7 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
   );
 
   return (
-    <div className="flex flex-col justify-center items-center bg-white rounded-lg border py-4">
+    <div className="flex flex-col justify-center items-center bg-white dark:bg-[var(--dark-post-background)] rounded-lg border dark:border-[var(--dark-border)] py-4">
       <Link
         className="flex flex-col justify-center items-center"
         href="/profile"
@@ -37,7 +37,7 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
         </Avatar>
 
         <SignedIn>
-          <div className="text-center">
+          <div className="text-center dark:text-white">
             <p className="font-semibold">
               {firstName} {lastName}
             </p>
@@ -52,7 +52,7 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
 
       <SignedOut>
         <div className="text-center space-y-2">
-          <p>You are not signed in</p>
+          <p className="dark:text-white">You are not signed in</p>
           <Button asChild className="bg-[#0b63c4] text-white">
             <SignInButton>Sign in</SignInButton>
           </Button>
@@ -60,7 +60,7 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
       </SignedOut>
       <SignedIn>
         <div className="w-full hidden md:flex flex-col">
-          <hr className="w-full border-gray-200 my-5" />
+          <hr className="w-full border-gray-200 my-5 dark:border-[var(--dark-border)]" />
 
           <div className="flex justify-between w-full px-4 text-sm">
             <p className="font-semibold text-gray-400">Posts</p>

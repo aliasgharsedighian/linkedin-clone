@@ -136,12 +136,14 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
 
         <div
           className={`px-4 py-2 rounded-md w-full sm:w-auto md:min-w-[300px] ${
-            comment.user.userId === user?.id ? "bg-sky-100" : "bg-slate-100"
+            comment.user.userId === user?.id
+              ? "bg-sky-100 dark:bg-sky-950"
+              : "bg-slate-100 dark:bg-gray-700"
           }`}
         >
           <div className="flex justify-between">
             <div>
-              <p className="font-semibold">
+              <p className="font-semibold dark:text-white">
                 {comment.user.firstName} {comment.user?.lastName}{" "}
               </p>
               <p className="text-xs text-gray-400">
@@ -185,7 +187,10 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                             handleDeleteComment(comment._id);
                           }}
                         >
-                          <Trash2 size={14} className="hover:text-blue-400" />
+                          <Trash2
+                            size={14}
+                            className="hover:text-blue-400 dark:text-white"
+                          />
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -196,7 +201,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                 ))}
             </div>
           </div>
-          <p className="mt-3 text-sm">{comment.text}</p>
+          <p className="mt-3 text-sm dark:text-white">{comment.text}</p>
         </div>
       </div>
       <div className={`flex gap-2 items-center`}>
@@ -210,7 +215,9 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
               error: "Failed to like comment",
             });
           }}
-          className={`w-fit text-xs ${liked && "bg-sky-100 font-semibold"}`}
+          className={`w-fit text-xs dark:text-white ${
+            liked && "bg-sky-100 dark:bg-gray-600 dark:text-white font-semibold"
+          }`}
           variant="ghost"
         >
           Like
@@ -218,21 +225,24 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
         <div className="flex gap-1">
           <ThumbsUpIcon
             className={cn(
-              "mr-1 w-4 md:w-4",
-              liked && "text-[#4881c2] fill-[#4881c2]"
+              "mr-1 w-4 md:w-4 dark:text-white",
+              liked &&
+                "text-[#4881c2] dark:text-white fill-[#4881c2] dark:fill-white"
             )}
           />
           <Dialog>
             <DialogTrigger>
               {likes && likes.length > 0 && (
-                <span className="text-xs cursor-pointer hover:underline hover:text-[#4881c2]">
+                <span className="text-xs cursor-pointer hover:underline hover:text-[#4881c2] dark:text-white">
                   {likes.length}
                 </span>
               )}
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="dark:bg-[var(--dark-post-background)] dark:border-[var(--dark-border)]">
               <DialogHeader>
-                <DialogTitle className="text-start">Likes</DialogTitle>
+                <DialogTitle className="text-start dark:text-white">
+                  Likes
+                </DialogTitle>
               </DialogHeader>
               <div className="flex flex-col gap-4">
                 {likes
@@ -240,7 +250,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                   .map((like: any) => (
                     <div
                       key={like}
-                      className="flex items-center gap-2 border-b pb-2"
+                      className="flex items-center gap-2 border-b dark:border-[var(--dark-border)] pb-2"
                     >
                       <Avatar>
                         <AvatarImage src={like.userImage} />
@@ -250,7 +260,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-semibold">
+                        <p className="font-semibold dark:text-white">
                           {like.firstName} {like?.lastName}
                         </p>
                         <p className="text-xs text-gray-400">You</p>
@@ -269,7 +279,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-semibold">
+                        <p className="font-semibold dark:text-white">
                           {like.firstName} {like?.lastName}
                         </p>
                         <p className="text-xs text-gray-400">

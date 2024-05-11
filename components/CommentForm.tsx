@@ -60,12 +60,12 @@ function CommentForm({ postId }: { postId: string }) {
         </AvatarFallback>
       </Avatar>
 
-      <div className="relative flex flex-1 bg-white border rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto">
+      <div className="relative flex flex-1 bg-white border dark:border-[var(--dark-border)] rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto">
         <textarea
           name="commentInput"
           rows={1}
           placeholder="add a comment ..."
-          className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto"
+          className="outline-none flex-1 text-sm bg-transparent py-3 pl-4 pr-10 min-h-[43px] resize-y no-scrollbar h-auto dark:bg-[var(--dark-post-background)] dark:text-white"
           style={{ maxHeight: "150px" }}
         />
         <button

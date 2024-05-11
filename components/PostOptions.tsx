@@ -97,10 +97,10 @@ function PostOptions({ post }: { post: IPostDocument }) {
         </div>
       </div>
 
-      <div className="flex p-2 justify-between border-t">
+      <div className="flex p-2 justify-between border-t dark:border-[var(--dark-border)]">
         <Button
           variant="ghost"
-          className="postButton px-2 md:px-4 py-1 md:py-2"
+          className="postButton px-2 md:px-4 py-1 md:py-2 dark:text-white dark:hover:bg-gray-600"
           onClick={() => {
             const promise = likeOrUnlikePost();
 
@@ -123,7 +123,7 @@ function PostOptions({ post }: { post: IPostDocument }) {
 
         <Button
           variant="ghost"
-          className="postButton px-2 md:px-4 py-1 md:py-2"
+          className="postButton px-2 md:px-4 py-1 md:py-2 dark:text-white dark:hover:bg-gray-600"
           onClick={() => setIsCommentsOpen(!isCommentsOpen)}
         >
           <MessageCircle
@@ -137,7 +137,7 @@ function PostOptions({ post }: { post: IPostDocument }) {
 
         <Button
           variant="ghost"
-          className="postButton px-2 md:px-4 py-1 md:py-2"
+          className="postButton px-2 md:px-4 py-1 md:py-2 dark:text-white dark:hover:bg-gray-600"
         >
           <Repeat2 className="mr-1 w-4 md:w-6" />
           Repost
@@ -145,7 +145,7 @@ function PostOptions({ post }: { post: IPostDocument }) {
 
         <Button
           variant="ghost"
-          className="postButton px-2 md:px-4 py-1 md:py-2"
+          className="postButton px-2 md:px-4 py-1 md:py-2 dark:text-white dark:hover:bg-gray-600"
         >
           <Send className="mr-1 w-4 md:w-6" />
           Send

@@ -9,7 +9,7 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <div className="relative flex items-center p-2 max-w-6xl mx-auto">
+    <div className="relative flex items-center max-w-6xl mx-auto">
       <Link href="/">
         <Image
           className="rounded-lg mr-4 sm:mr-0"
@@ -31,7 +31,7 @@ function Header() {
         </form>
       </div>
 
-      <div className="flex items-center gap-4 px-2 md:px-6 justify-between md:justify-end w-full">
+      <div className="flex items-center gap-1 md:gap-4 lg:gap-6 px-2 md:px-6 justify-between md:justify-end w-full">
         <MobileSearchModal />
         <HeaderNavigation />
 
