@@ -16,26 +16,10 @@ import EditProfileForm from "./EditProfileForm";
 import Link from "next/link";
 
 interface PageProps {
-  firstName: string;
-  lastName: string;
-  id: any;
-  headline: string;
-  currentPosition: string;
-  country: string;
-  city: string;
-  following: any;
+  userInfo: any;
 }
 
-function UserInfo({
-  firstName,
-  lastName,
-  id,
-  headline,
-  currentPosition,
-  country,
-  city,
-  following,
-}: PageProps) {
+function UserInfo({ userInfo }: PageProps) {
   const [openDialog, setOpenDialog] = useState(false);
   return (
     <div className="flex flex-col gap-2 mx-6">
@@ -52,29 +36,30 @@ function UserInfo({
                 Edit Profile
               </DialogTitle>
             </DialogHeader>
-            <EditProfileForm id={id} setOpenDialog={setOpenDialog} />
+            <EditProfileForm id={userInfo.id} setOpenDialog={setOpenDialog} />
           </DialogContent>
         </Dialog>
       </div>
       <div className="mt-4 dark:text-white">
         <p className="text-xl font-bold">
-          {firstName} {lastName}
+          {userInfo.firstName} {userInfo.lastName}
         </p>
-        <p>{headline}</p>
+        <p>{userInfo.extendData.headline}</p>
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        {currentPosition} {"Islamic Azad University"}
+        {userInfo.currentPosition} {"Islamic Azad University"}
       </p>
-      {country ||
-        (city && (
+      {userInfo.extendData.country ||
+        (userInfo.extendData.city && (
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {city},{country}
+            {userInfo.extendData.city},{userInfo.extendData.country}
           </p>
         ))}
       <Dialog>
         <DialogTrigger className="flex flex-end">
           <p className="text-sm text-sky-600">
-            {following?.length ? following.length : "0"} connections
+            {userInfo.following?.length ? userInfo.following.length : "0"}{" "}
+            connections
           </p>
         </DialogTrigger>
         <DialogContent className="mx-0 px-0 dark:bg-[var(--dark-post-background)] dark:border-[var(--dark-border)]">
@@ -84,8 +69,8 @@ function UserInfo({
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-4">
-            {following ? (
-              following.map((follow: any) => (
+            {userInfo.following ? (
+              userInfo.following.map((follow: any) => (
                 <Link
                   href={`/user/${follow?.userId}`}
                   key={follow.userId}

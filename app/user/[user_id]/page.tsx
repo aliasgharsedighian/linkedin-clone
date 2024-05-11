@@ -7,6 +7,14 @@ import { redirect } from "next/navigation";
 
 export const revalidate = 0;
 
+const fetchUserData = async (userId: string | null) => {
+  const res = await fetch(`http://localhost:5050/api/users/${userId}`, {
+    cache: "no-cache",
+  });
+  const data = await res.json();
+  return data;
+};
+
 export default async function UserPage({
   params: { user_id },
 }: {
@@ -14,14 +22,15 @@ export default async function UserPage({
 }) {
   await connectDB();
   const { userId } = auth();
-  const userInfo: any = await Users.findOne({ userId: user_id }).lean();
+  const userInfoDb: any = await Users.findOne({ userId: user_id }).lean();
+  const userInfo = await fetchUserData(userInfoDb._id);
   const currentUserInfo: any = await Users.findOne({ userId: userId }).lean();
 
-  const { _id, emailAddress, firstName, imageUrl, lastName, following } =
-    userInfo;
-  const { headline, currentPosition, country, city } = userInfo?.extendData
-    ? userInfo.extendData
-    : { headline: null, currentPosition: null, country: null, city: null };
+  // const { _id, emailAddress, firstName, imageUrl, lastName, following } =
+  //   userInfo;
+  // const { headline, currentPosition, country, city } = userInfo?.extendData
+  //   ? userInfo.extendData
+  //   : { headline: null, currentPosition: null, country: null, city: null };
 
   if (userId && userId === user_id) {
     redirect("/profile");
@@ -31,17 +40,9 @@ export default async function UserPage({
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
       <section className="col-span-full md:col-span-6 w-full">
         <div className="flex flex-col gap-4">
-          <UserImage imageUrl={imageUrl} />
+          <UserImage userInfo={userInfo} />
           <UserPageUserInfo
-            firstName={firstName}
-            lastName={lastName}
-            id={_id.toString()}
-            headline={headline}
-            currentPosition={currentPosition}
-            country={country}
-            city={city}
-            user_id={user_id}
-            following={following}
+            userInfo={userInfo}
             currentUserFollowing={currentUserInfo?.following}
           />
         </div>

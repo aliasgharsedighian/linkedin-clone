@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-function UserImage({ imageUrl }: { imageUrl: string }) {
+function UserImage({ userInfo }: { userInfo: any }) {
   const path = usePathname();
 
   return (
@@ -21,8 +21,8 @@ function UserImage({ imageUrl }: { imageUrl: string }) {
       </div>
       <Image
         className="w-[120px] h-[120px] object-cover mx-8 absolute top-14 rounded-full border-4 border-[#f4f2ed]"
-        src={imageUrl}
-        alt={imageUrl}
+        src={userInfo.imageUrl}
+        alt={userInfo.imageUrl}
         width={120}
         height={120}
       />

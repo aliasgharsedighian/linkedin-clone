@@ -16,35 +16,20 @@ import Link from "next/link";
 import { toast } from "sonner";
 
 interface PageProps {
-  firstName: string;
-  lastName: string;
-  id: any;
-  headline: string;
-  currentPosition: string;
-  country: string;
-  city: string;
-  user_id: string;
-  following: any;
+  userInfo: any;
   currentUserFollowing: any;
 }
 
-function UserPageUserInfo({
-  firstName,
-  lastName,
-  id,
-  headline,
-  currentPosition,
-  country,
-  city,
-  user_id,
-  following,
-  currentUserFollowing,
-}: PageProps) {
+function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
   const { user } = useUser();
   const [followedUser, setFollowedUser] = useState(false);
 
   useEffect(() => {
-    if (currentUserFollowing?.find((item: any) => item.userId === user_id)) {
+    if (
+      currentUserFollowing?.find(
+        (item: any) => item.userId === userInfo?.userId
+      )
+    ) {
       setFollowedUser(true);
     } else {
       setFollowedUser(false);
@@ -57,11 +42,11 @@ function UserPageUserInfo({
     setFollowedUser(!followedUser);
 
     const promise = await fetch(
-      `/api/users/${id}/${followedUser ? "unfollow" : "follow"}`,
+      `/api/users/${userInfo._id}/${followedUser ? "unfollow" : "follow"}`,
       {
         method: "POST",
         body: JSON.stringify({
-          id: user_id,
+          id: userInfo.userId,
         }),
         headers: {
           "content-type": "application/json",
@@ -74,6 +59,7 @@ function UserPageUserInfo({
       setFollowedUser(orginalFollowed);
       throw new Error("Failed to follow or unfollow user");
     }
+    location.reload();
   };
 
   return (
@@ -108,22 +94,22 @@ function UserPageUserInfo({
 
       <div className="mt-4 dark:text-white">
         <p className="text-xl font-bold">
-          {firstName} {lastName}
+          {userInfo.firstName} {userInfo.lastName}
         </p>
-        <p>{headline}</p>
+        <p>{userInfo?.extendData?.headline}</p>
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        {currentPosition} {"Islamic Azad University"}
+        {userInfo?.extendData.currentPosition} {"Islamic Azad University"}
       </p>
-      {country && city && (
+      {userInfo?.extendData.country && userInfo?.extendData.city && (
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {city},{country}
+          {userInfo?.extendData.city},{userInfo?.extendData.country}
         </p>
       )}
       <Dialog>
         <DialogTrigger className="flex flex-end">
           <p className="text-sm text-sky-600">
-            {following?.length ? following.length : "0"} connections
+            {userInfo?.length ? userInfo?.following.length : "0"} connections
           </p>
         </DialogTrigger>
         <DialogContent className="mx-0 px-0 dark:bg-[var(--dark-post-background)] dark:border-[var(--dark-border)]">
@@ -133,8 +119,8 @@ function UserPageUserInfo({
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-4">
-            {following ? (
-              following.map((follow: any) => (
+            {userInfo?.following ? (
+              userInfo?.following.map((follow: any) => (
                 <Link
                   href={`/user/${follow?.userId}`}
                   key={follow.userId}

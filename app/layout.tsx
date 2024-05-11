@@ -18,8 +18,8 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <ThemeProviders>
-          <body className="min-h-screen flex flex-col">
+        <body className="min-h-screen flex flex-col">
+          <ThemeProviders>
             {/* Toaster */}
             <Toaster position="bottom-left" />
 
@@ -29,8 +29,8 @@ export default function RootLayout({
             <div className="bg-[#f4f2ed] flex-1 w-full dark:bg-black">
               <main className="max-w-6xl mx-auto">{children}</main>
             </div>
-          </body>
-        </ThemeProviders>
+          </ThemeProviders>
+        </body>
       </html>
     </ClerkProvider>
   );

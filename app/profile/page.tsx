@@ -9,32 +9,26 @@ import ThemeSetting from "@/components/profile/ThemeSetting";
 
 export const revalidate = 0;
 
+const fetchUserData = async (userId: string | null) => {
+  const res = await fetch(`http://localhost:5050/api/users/${userId}`, {
+    cache: "no-cache",
+  });
+  const data = await res.json();
+  return data;
+};
+
 export default async function ProfilePage() {
   await connectDB();
   const { userId } = auth();
-  const userInfo: any = await Users.findOne({ userId: userId }).lean();
-
-  const { _id, emailAddress, firstName, imageUrl, lastName, following } =
-    userInfo;
-  const { headline, currentPosition, country, city } = userInfo?.extendData
-    ? userInfo.extendData
-    : { headline: null, currentPosition: null, country: null, city: null };
+  const userInfoDb: any = await Users.findOne({ userId: userId }).lean();
+  const userInfo = await fetchUserData(userInfoDb._id);
 
   return (
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
       <section className="col-span-full md:col-span-6 w-full flex flex-col gap-6">
         <div className="flex flex-col gap-4">
-          <UserImage imageUrl={imageUrl} />
-          <UserInfo
-            firstName={firstName}
-            lastName={lastName}
-            id={_id.toString()}
-            headline={headline}
-            currentPosition={currentPosition}
-            country={country}
-            city={city}
-            following={following}
-          />
+          <UserImage userInfo={userInfo} />
+          <UserInfo userInfo={userInfo} />
         </div>
         <ThemeSetting />
       </section>
