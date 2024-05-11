@@ -163,7 +163,7 @@ function UserPageUserInfo({
               ))
             ) : (
               <p className="mx-4 dark:text-white">
-                user haven't any connections
+                user have not any connections
               </p>
             )}
           </div>

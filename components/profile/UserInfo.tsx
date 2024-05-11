@@ -111,7 +111,7 @@ function UserInfo({
               ))
             ) : (
               <p className="mx-4 dark:text-white">
-                you haven't any connections
+                you have not any connections
               </p>
             )}
           </div>
