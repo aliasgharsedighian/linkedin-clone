@@ -166,7 +166,7 @@
 }
 .dark-mode-toggle-label svg {
   position: absolute;
-  z-index: 100;
+  z-index: 10;
 }
 .dark-mode-toggle-label svg.sun {
   left: 10px;

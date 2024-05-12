@@ -3,9 +3,28 @@ import connectDB from "@/mongodb/db";
 import { Users } from "@/mongodb/models/users";
 import { auth } from "@clerk/nextjs/server";
 import UserPageUserInfo from "./UserPageUserInfo";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export const revalidate = 0;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { user_id: string };
+}) {
+  const userInfoDb: any = await Users.findOne({
+    userId: params.user_id,
+  }).lean();
+  const detail = await fetchUserData(userInfoDb._id);
+
+  if (!detail) return notFound;
+
+  const title = `${detail.firstName} ${detail.lastName}`;
+
+  return {
+    title,
+  };
+}
 
 const fetchUserData = async (userId: string | null) => {
   const res = await fetch(`http://localhost:5050/api/users/${userId}`, {

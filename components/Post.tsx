@@ -26,9 +26,12 @@ import { toast } from "sonner";
 import { useTransition } from "react";
 import editPostAction from "@/actions/editPostAction";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 function Post({ post }: { post: IPostDocument }) {
   const { user } = useUser();
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   const [isPending, startTransition] = useTransition();
   const [isPendingEdit, startTransitionEdit] = useTransition();
@@ -107,7 +110,13 @@ function Post({ post }: { post: IPostDocument }) {
           {isAuthor && (
             <div className="flex items-start gap-2">
               <Button
-                variant={edit ? "default" : "ghost"}
+                variant={
+                  edit
+                    ? currentTheme === "dark"
+                      ? "outline"
+                      : "default"
+                    : "ghost"
+                }
                 className="px-3 py-2 dark:text-white dark:hover:bg-gray-600"
                 onClick={() => {
                   setEdit(!edit);
