@@ -23,7 +23,9 @@ function HeaderNavigation() {
         />
         <p
           className={`hidden sm:inline-block  ${
-            path === "/" ? "text-black font-bold" : "text-gray-400 font-normal"
+            path === "/"
+              ? "text-black font-bold dark:text-white"
+              : "text-gray-400 font-normal"
           }`}
         >
           Home
@@ -46,7 +48,7 @@ function HeaderNavigation() {
         <p
           className={`hidden sm:inline-block  ${
             path === "/profile"
-              ? "text-black font-bold"
+              ? "text-black font-bold dark:text-white"
               : "text-gray-400 font-normal"
           }`}
         >
@@ -70,7 +72,7 @@ function HeaderNavigation() {
         <p
           className={`hidden sm:inline-block  ${
             path === "/jobs"
-              ? "text-black font-bold"
+              ? "text-black font-bold dark:text-white"
               : "text-gray-400 font-normal"
           }`}
         >
@@ -93,7 +95,7 @@ function HeaderNavigation() {
         <p
           className={`hidden sm:inline-block  ${
             path === "/message"
-              ? "text-black font-bold"
+              ? "text-black font-bold dark:text-white"
               : "text-gray-400 font-normal"
           }`}
         >

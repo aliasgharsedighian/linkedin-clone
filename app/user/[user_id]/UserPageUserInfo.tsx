@@ -22,7 +22,7 @@ interface PageProps {
 
 function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
   const { user } = useUser();
-  const [followedUser, setFollowedUser] = useState(false);
+  const [followedUser, setFollowedUser] = useState("loading");
 
   useEffect(() => {
     if (
@@ -30,19 +30,26 @@ function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
         (item: any) => item.userId === userInfo?.userId
       )
     ) {
-      setFollowedUser(true);
+      setFollowedUser("following");
     } else {
-      setFollowedUser(false);
+      setFollowedUser("follow");
     }
   }, [currentUserFollowing, user]);
 
   const handleFollowUser = async () => {
     const orginalFollowed = followedUser;
 
-    setFollowedUser(!followedUser);
+    if (followedUser === "follow") {
+      setFollowedUser("following");
+    }
+    if (followedUser === "following") {
+      setFollowedUser("follow");
+    }
 
     const promise = await fetch(
-      `/api/users/${userInfo._id}/${followedUser ? "unfollow" : "follow"}`,
+      `/api/users/${userInfo._id}/${
+        followedUser === "following" ? "unfollow" : "follow"
+      }`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -79,7 +86,11 @@ function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
             variant="ghost"
             className="text-sm text-white bg-sky-600 hover:bg-sky-700 hover:text-white"
           >
-            {followedUser ? "Following" : "Follow"}
+            {followedUser === "loading"
+              ? "Loading ..."
+              : followedUser === "following"
+              ? "Following"
+              : "Follow"}
           </Button>
         </SignedIn>
 
@@ -109,7 +120,8 @@ function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
       <Dialog>
         <DialogTrigger className="flex flex-end">
           <p className="text-sm text-sky-600">
-            {userInfo?.length ? userInfo?.following.length : "0"} connections
+            {userInfo?.following?.length ? userInfo?.following.length : "0"}{" "}
+            connections
           </p>
         </DialogTrigger>
         <DialogContent className="mx-0 px-0 dark:bg-[var(--dark-post-background)] dark:border-[var(--dark-border)]">

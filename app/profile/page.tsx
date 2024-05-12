@@ -23,12 +23,13 @@ export default async function ProfilePage() {
   const userInfoDb: any = await Users.findOne({ userId: userId }).lean();
   const userInfo = await fetchUserData(userInfoDb._id);
 
+  console.log();
   return (
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
       <section className="col-span-full md:col-span-6 w-full flex flex-col gap-6">
         <div className="flex flex-col gap-4">
           <UserImage userInfo={userInfo} />
-          <UserInfo userInfo={userInfo} />
+          <UserInfo userInfo={userInfo} dbId={userInfoDb._id.toString()} />
         </div>
         <ThemeSetting />
       </section>

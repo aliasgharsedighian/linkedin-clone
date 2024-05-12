@@ -17,9 +17,10 @@ import Link from "next/link";
 
 interface PageProps {
   userInfo: any;
+  dbId: string;
 }
 
-function UserInfo({ userInfo }: PageProps) {
+function UserInfo({ userInfo, dbId }: PageProps) {
   const [openDialog, setOpenDialog] = useState(false);
   return (
     <div className="flex flex-col gap-2 mx-6">
@@ -30,13 +31,13 @@ function UserInfo({ userInfo }: PageProps) {
               <Edit2Icon size={20} />
             </div>
           </DialogTrigger>
-          <DialogContent className="mx-0 px-0">
+          <DialogContent className="mx-0 px-0 dark:bg-[var(--dark-post-background)] dark:border-[var(--dark-border)]">
             <DialogHeader className="border-b pb-4">
-              <DialogTitle className="text-start mx-4">
+              <DialogTitle className="text-start mx-4 dark:text-white">
                 Edit Profile
               </DialogTitle>
             </DialogHeader>
-            <EditProfileForm id={userInfo.id} setOpenDialog={setOpenDialog} />
+            <EditProfileForm id={dbId} setOpenDialog={setOpenDialog} />
           </DialogContent>
         </Dialog>
       </div>
