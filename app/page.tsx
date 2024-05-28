@@ -4,12 +4,14 @@ import UserInformation from "@/components/UserInformation";
 import Widget from "@/components/Widget";
 import connectDB from "@/mongodb/db";
 import { Post } from "@/mongodb/models/Post";
+import connectMySql from "@/mySqldb/db";
 import { SignedIn } from "@clerk/nextjs";
 
 export const revalidate = 0;
 
 export default async function Home() {
   await connectDB();
+  await connectMySql();
   const posts = await Post.getAllPosts();
 
   return (
