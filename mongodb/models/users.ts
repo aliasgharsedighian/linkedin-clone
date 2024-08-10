@@ -6,6 +6,7 @@ export interface IUsersBase {
   emailAddress: string;
   firstName: string;
   userId: string;
+  pushNotficationToken: string;
   imageUrl: string;
   lastName: string;
   extendData: {
@@ -34,6 +35,7 @@ const UsersSchema = new Schema<IUsers>(
     emailAddress: { type: String },
     firstName: { type: String },
     userId: { type: String },
+    pushNotficationToken: { type: String },
     imageUrl: { type: String },
     lastName: { type: String },
     extendData: {

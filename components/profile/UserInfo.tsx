@@ -45,15 +45,15 @@ function UserInfo({ userInfo, dbId }: PageProps) {
         <p className="text-xl font-bold">
           {userInfo.firstName} {userInfo.lastName}
         </p>
-        <p>{userInfo.extendData.headline}</p>
+        <p>{userInfo?.extendData?.headline}</p>
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-400">
         {userInfo.currentPosition} {"Islamic Azad University"}
       </p>
-      {userInfo.extendData.country ||
-        (userInfo.extendData.city && (
+      {userInfo?.extendData?.country ||
+        (userInfo?.extendData?.city && (
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {userInfo.extendData.city},{userInfo.extendData.country}
+            {userInfo?.extendData.city},{userInfo?.extendData.country}
           </p>
         ))}
       <Dialog>

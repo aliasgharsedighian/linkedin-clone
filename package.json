@@ -18,6 +18,8 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "firebase": "^10.12.5",
+    "firebase-admin": "^12.3.1",
     "lucide-react": "^0.376.0",
     "mongoose": "^8.3.2",
     "mysql2": "^3.9.8",
