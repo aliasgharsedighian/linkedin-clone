@@ -21,7 +21,7 @@ function Header() {
       </Link>
 
       <div className="hidden sm:flex flex-1">
-        <form className="flex items-center space-x-1 bg-gray-100 dark:bg-[var(--dark-post-background)] dark:border dark:border-[var(--dark-border)] p-2 rounded-md flex-1 mx-2 max-w-96">
+        <form className="flex items-center space-x-1 bg-[#edf3f8] dark:bg-[var(--dark-post-background)] dark:border dark:border-[var(--dark-border)] p-2 rounded-md flex-1 mx-2 max-w-96">
           <SearchIcon className="h-4 text-gray-400" />
           <input
             type="text"

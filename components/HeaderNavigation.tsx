@@ -80,21 +80,21 @@ function HeaderNavigation() {
         </p>
       </Link>
       <Link
-        href="/"
+        href="/messaging"
         className={`icon ${
           path === "/message" ? "border-b-2 border-black dark:border-white" : ""
         }`}
       >
         <MessageSquare
           className={`h-6 md:h-5 ${
-            path === "/message"
+            path.startsWith("/messaging")
               ? "stroke-gray-950"
               : "stroke-gray-300 dark:stroke-gray-950"
           }`}
         />
         <p
           className={`hidden sm:inline-block  ${
-            path === "/message"
+            path.startsWith("/messaging")
               ? "text-black font-bold dark:text-white"
               : "text-gray-400 font-normal"
           }`}

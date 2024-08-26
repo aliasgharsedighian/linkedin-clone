@@ -2,11 +2,15 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import connectDB from "@/mongodb/db";
 import { Users } from "@/mongodb/models/users";
 import React from "react";
-import Image from "next/image";
 import UserInfo from "@/components/profile/UserInfo";
 import UserImage from "@/components/profile/UserImage";
 import ThemeSetting from "@/components/profile/ThemeSetting";
-import NotficationCheck from "@/components/NotficationCheck";
+import dynamic from "next/dynamic";
+
+const NotficationCheck = dynamic(
+  () => import("@/components/NotficationCheck"),
+  { ssr: false }
+);
 
 export const revalidate = 0;
 

@@ -31,7 +31,7 @@ function NotficationCheck({ userInfo }: any) {
   }, [token]);
 
   if (!("Notification" in window)) {
-    console.info("This browser does not support desktop notification");
+    // console.info("This browser does not support desktop notification");
     return (
       <div>
         <p>This browser does not support desktop notification</p>
