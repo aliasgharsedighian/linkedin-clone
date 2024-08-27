@@ -82,7 +82,9 @@ function HeaderNavigation() {
       <Link
         href="/messaging"
         className={`icon ${
-          path === "/message" ? "border-b-2 border-black dark:border-white" : ""
+          path.startsWith("/messaging")
+            ? "border-b-2 border-black dark:border-white"
+            : ""
         }`}
       >
         <MessageSquare
