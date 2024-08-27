@@ -34,7 +34,6 @@ export default function ThreadMessageLayout({
           <div className="basis-3/5">
             <div className="flex flex-col text-sm h-full w-full">
               {children}
-              <PostFormMessage />
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import PostFormMessage from "../PostFormMessage";
 
 function UserMessaging({
   params: { message_id },
@@ -12,17 +13,27 @@ function UserMessaging({
         <span className="text-[12px]">Active Now</span>
       </div>
       <div className="px-3 border-b flex-1 max-h-[500px] overflow-auto">
-        <p>body test</p>
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p> <p>body test</p>{" "}
-        <p>body test</p> <p>body test</p> <p>body test</p>
+        <p>body test{message_id}</p>
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
+        <p>body test{message_id}</p>
       </div>
+      <PostFormMessage />
     </>
   );
 }

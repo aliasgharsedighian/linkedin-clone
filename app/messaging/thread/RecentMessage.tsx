@@ -1,17 +1,31 @@
+"use client";
+
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const CreateArray = (length: number) => [...Array(length)];
 
 function RecentMessage() {
+  const path = usePathname();
   return (
     <div className="flex flex-col gap-0 overflow-auto max-h-[700px] ">
       <Link
         href="/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
-        className="border-l-4 border-[var(--base-green)] "
+        className={`  ${
+          path === "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
+            ? "border-l-4 border-[var(--base-green)]"
+            : ""
+        }`}
       >
-        <div className="px-4 py-6 bg-[#edf3f8] hover:bg-gray-200 flex items-start gap-3">
+        <div
+          className={`px-4 py-6 hover:bg-gray-200 flex items-start gap-3 ${
+            path === "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
+              ? "bg-[#edf3f8]"
+              : "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
+          }`}
+        >
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             <AvatarFallback>
@@ -33,10 +47,22 @@ function RecentMessage() {
       {CreateArray(10).map((n, i) => (
         <Link
           key={i}
-          href="/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
-          className=""
+          href={`/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnLindex${i}`}
+          className={` ${
+            path ===
+            `/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnLindex${i}`
+              ? "border-l-4 border-[var(--base-green)]"
+              : ""
+          }`}
         >
-          <div className="px-4 py-6 hover:bg-gray-200 flex items-start gap-3">
+          <div
+            className={`px-4 py-6 hover:bg-gray-200 flex items-start gap-3 ${
+              path ===
+              `/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnLindex${i}`
+                ? "bg-[#edf3f8]"
+                : "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
+            }`}
+          >
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
               <AvatarFallback>

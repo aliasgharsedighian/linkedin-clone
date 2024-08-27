@@ -1,10 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
 
 function PostFormMessage() {
+  const path = usePathname();
+  const [message, setMessage] = useState("");
+  const [friends, setFriends] = useState([]);
+
   return (
     <form action="">
       <div className="py-2 px-3 border-b flex gap-2 items-start">
@@ -12,6 +17,8 @@ function PostFormMessage() {
           className="resize-none"
           rows={3}
           placeholder="Write a Message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <Button type="button" className="p-0 h-auto" variant="ghost">
           <svg
@@ -85,7 +92,11 @@ function PostFormMessage() {
           type="submit"
           className="bg-blue-600 text-white py-2 px-4 h-auto rounded-3xl text-[12px]"
           variant="ghost"
-          disabled
+          disabled={
+            path === "/messaging/thread/new"
+              ? friends.length === 0 || !message
+              : !message
+          }
         >
           Send
         </Button>
