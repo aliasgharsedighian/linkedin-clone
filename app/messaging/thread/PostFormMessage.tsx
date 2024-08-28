@@ -23,7 +23,7 @@ function PostFormMessage() {
   };
 
   return (
-    <form action="">
+    <form className="fixed md:static bottom-0 w-full bg-white z-10" action="">
       <div className="py-2 px-3 border-b flex gap-2 items-start">
         <Textarea
           className="resize-none"

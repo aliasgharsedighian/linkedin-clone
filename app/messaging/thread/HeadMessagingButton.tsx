@@ -5,14 +5,14 @@ import React from "react";
 function HeadMessagingButton() {
   return (
     <div className="flex items-center">
-      <Button variant="ghost">
+      <Button className="p-1 md:p-2" variant="ghost">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-6"
+          className="size-5 md:size-6"
         >
           <path
             strokeLinecap="round"
@@ -22,14 +22,14 @@ function HeadMessagingButton() {
         </svg>
       </Button>
       <Link href="/messaging/thread/new">
-        <Button variant="ghost">
+        <Button className="p-1 md:p-2" variant="ghost">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className="size-5 md:size-6"
           >
             <path
               strokeLinecap="round"
