@@ -12,7 +12,7 @@ export const revalidate = 0;
 
 export default async function Home() {
   await connectDB();
-  await connectMySql();
+  // await connectMySql();
   const posts = await Post.getAllPosts();
 
   // await connectRedisDb.set("hello", "hello test");

@@ -90,14 +90,16 @@ function Post({ post }: { post: IPostDocument }) {
         </Link>
         <div className="flex justify-between flex-1">
           <div>
-            <p className="font-semibold dark:text-white">
-              {post.user?.firstName} {post.user?.lastName}{" "}
+            <div className="flex items-center gap-2 font-semibold dark:text-white">
+              <p>
+                {post.user?.firstName} {post.user?.lastName}{" "}
+              </p>
               {isAuthor && (
                 <Badge className="ml-2" variant="secondary">
                   Author
                 </Badge>
               )}
-            </p>
+            </div>
             <p className="text-xs text-gray-400">
               @{post.user?.firstName}
               {post.user?.firstName}-{post.user?.userId.toString().slice(-4)}
