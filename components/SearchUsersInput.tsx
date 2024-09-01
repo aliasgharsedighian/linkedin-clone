@@ -3,15 +3,28 @@
 import { SearchIcon, X } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 function SearchUsersInput() {
+  const formRef = useRef<any>();
+
   const [searchInput, setSearchInput] = useState("");
-  const [openSuggest, setOpenSuggest] = React.useState(true);
+  const [openSuggest, setOpenSuggest] = React.useState(false);
   const [suggestionData, setSuggestionData] = useState<any>([]);
   const [suggestionLink, setSuggestionLink] = useState(false);
+
+  useEffect(() => {
+    let handler: any = (e: FormEvent<HTMLDivElement>) => {
+      if (formRef?.current && !formRef.current.contains(e.target)) {
+        setOpenSuggest(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, [formRef, openSuggest]);
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -66,10 +79,12 @@ function SearchUsersInput() {
         }
       } catch (error) {
         setSuggestionData([]);
+        setOpenSuggest(false);
       }
     }
     if (text === "") {
       setSuggestionData([]);
+      setOpenSuggest(false);
     }
   }, 1000);
 
@@ -79,6 +94,12 @@ function SearchUsersInput() {
 
   return (
     <form
+      ref={formRef}
+      onClick={() => {
+        if (searchInput.trim()) {
+          setOpenSuggest(true);
+        }
+      }}
       onSubmit={handleSearchSubmit}
       className="relative flex items-center space-x-1 bg-[#edf3f8] dark:bg-[var(--dark-post-background)] dark:border dark:border-[var(--dark-border)] p-2 rounded-md flex-1 mx-2 max-w-96"
     >
@@ -96,20 +117,21 @@ function SearchUsersInput() {
             sendValueToApi("");
             setSuggestionData([]);
             setSearchInput("");
+            setOpenSuggest(false);
           }}
           className="h-4 text-gray-400 cursor-pointer"
         />
       )}
-      <div className="absolute min-w-fit bg-white w-full p-0 left-0 right-0 top-10 shadow-lg">
-        <div className="w-full flex flex-col">
-          {openSuggest ? (
-            suggestionData.length > 0 ? (
+      {openSuggest && (
+        <div className="absolute min-w-fit bg-white dark:bg-[var(--dark-post-background)] w-full p-0 left-0 right-0 top-12 shadow-lg border dark:border-[var(--dark-border)] rounded-md">
+          <div className="w-full flex flex-col">
+            {suggestionData.length > 0 ? (
               <div className="w-full flex flex-col">
                 {suggestionData.length > 0
                   ? suggestionData.map((framework: any) =>
                       suggestionLink ? (
                         <Link
-                          className="w-full flex items-start gap-4 hover:font-IRANSansBold hover:bg-slate-100 py-2 border-b last:border-none px-2"
+                          className="w-full flex items-start gap-4 hover:font-IRANSansBold hover:bg-slate-100 dark:hover:bg-slate-600 py-2 border-b last:border-none px-2"
                           key={framework.user_id}
                           href={`/user/${framework.user_id}`}
                           onClick={() => setOpenSuggest(false)}
@@ -141,10 +163,10 @@ function SearchUsersInput() {
                     )
                   : null}
               </div>
-            ) : null
-          ) : null}
+            ) : null}
+          </div>
         </div>
-      </div>
+      )}
     </form>
   );
 }

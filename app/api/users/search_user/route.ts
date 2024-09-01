@@ -19,13 +19,13 @@ export async function POST(req: Request) {
       minMatchCharLength: 1,
       // maxPatternLength: 32,
       // location: 0,
-      threshold: 0.0,
+      threshold: 0.1,
       // distance: 100,
       // useExtendedSearch: false,
       // ignoreLocation: false,
       // ignoreFieldNorm: false,
       // fieldNormWeight: 1,
-      keys: ["fullName", "emailAddress", "userId"],
+      keys: ["fullName", "emailAddress", "userId", "firstname", "lastname"],
     };
 
     const usersList = await Users.find();
@@ -36,6 +36,8 @@ export async function POST(req: Request) {
         emailAddress: item.emailAddress,
         userId: item.userId,
         imageUrl: item.imageUrl,
+        firstname: item.firstName,
+        lastname: item.lastName,
       };
     });
 
