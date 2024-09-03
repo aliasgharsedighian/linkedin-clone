@@ -2,15 +2,30 @@ import { SearchIcon } from "lucide-react";
 import HeadMessagingButton from "./HeadMessagingButton";
 import RecentMessage from "./RecentMessage";
 import PostFormMessage from "./PostFormMessage";
+import connectDB from "@/mongodb/db";
+import { auth } from "@clerk/nextjs/server";
+import { Users } from "@/mongodb/models/users";
 
-export default function ThreadMessageLayout({
+const fetchUserData = async (userId: string | null) => {
+  const res = await fetch(`http://localhost:5050/api/users/${userId}`, {
+    cache: "no-cache",
+  });
+  const data = await res.json();
+  return data;
+};
+
+export default async function ThreadMessageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await connectDB();
+  const { userId } = auth();
+  const userInfoDb: any = await Users.findOne({ userId: userId }).lean();
+  const userInfo = await fetchUserData(userInfoDb?._id);
   return (
     <div className="h-full grid md:grid-cols-8 gap-6 sm:px-5 mt-3 md:mt-8">
-      <section className="h-full col-span-full lg:col-span-6 w-full flex flex-col bg-white dark:bg-zinc-800 border dark:border-[var(--dark-border)] rounded-md md:rounded-lg max-h-screen">
+      <section className="col-span-full lg:col-span-6 w-full flex flex-col bg-white dark:bg-zinc-800 border dark:border-[var(--dark-border)] rounded-md md:rounded-lg md:h-[calc(100vh-10rem)]">
         <div className="sticky md:static top-[67px] flex items-center justify-between gap-4 px-4 pt-3 pb-1 border-b dark:border-[var(--dark-border)] bg-white dark:bg-zinc-800 z-10 rounded-t-md">
           <div className="flex items-center gap-4">
             <p className="font-bold">Messaging</p>
@@ -28,11 +43,11 @@ export default function ThreadMessageLayout({
           <HeadMessagingButton />
         </div>
         <div className="h-full flex w-full max-h-dvh">
-          <div className="h-full w-full md:basis-2/5 border-r">
-            <RecentMessage />
+          <div className="h-full w-full md:basis-2/5 border-r bg-white">
+            <RecentMessage userInfo={userInfo} />
           </div>
-          <div className="basis-3/5 hidden md:flex">
-            <div className="flex flex-col text-sm h-full w-full">
+          <div className="h-full basis-3/5 hidden md:flex">
+            <div className="flex flex-col justify-between text-sm h-full w-full">
               {children}
             </div>
           </div>

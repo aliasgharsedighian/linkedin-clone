@@ -115,6 +115,34 @@
   --dark-post-background: #1b1f23;
   --dark-border: #929395;
   --base-green: #01754f;
+  --light-border: #e0e0e0;
+  --normal-border: #8f8f8f80;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--light-border);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--normal-border);
+  border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* darkmode-toggle start */
