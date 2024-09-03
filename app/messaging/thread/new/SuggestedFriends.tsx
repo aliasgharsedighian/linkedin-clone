@@ -12,7 +12,7 @@ interface PageProps {
 function SuggestedFriends({ userInfo }: PageProps) {
   return (
     <>
-      <div className="px-3 border-b flex-1 max-h-[500px] overflow-auto">
+      <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 max-h-[500px] overflow-auto">
         <div className="flex flex-col gap-4 mt-3">
           {userInfo.following ? (
             userInfo.following.map((follow: any) => (

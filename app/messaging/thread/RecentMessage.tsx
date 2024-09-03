@@ -33,7 +33,7 @@ function RecentMessage() {
           }`}
         >
           <div
-            className={`px-4 py-6 hover:bg-gray-200 flex items-start gap-3 ${
+            className={`px-4 py-6 hover:bg-gray-200 dark:hover:bg-zinc-600 flex items-start gap-3 ${
               path === "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
                 ? "bg-[#edf3f8]"
                 : "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
@@ -49,7 +49,7 @@ function RecentMessage() {
             <div className="text-sm w-full flex items-start justify-between">
               <div>
                 <p className="">Ali Asghar Sedighian</p>
-                <p>You: خیلی ممنون ❤️</p>
+                <p>You:2 خیلی ممنون ❤️</p>
               </div>
               <div>
                 <p>Jul 24</p>
@@ -70,7 +70,7 @@ function RecentMessage() {
             }`}
           >
             <div
-              className={`px-4 py-6 hover:bg-gray-200 flex items-start gap-3 ${
+              className={`px-4 py-6 hover:bg-gray-200 dark:hover:bg-zinc-600 flex items-start gap-3 ${
                 path ===
                 `/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnLindex${i}`
                   ? "bg-[#edf3f8]"
@@ -193,7 +193,7 @@ function RecentMessage() {
       {/* this is for mobile mode */}
       {showMessage && (
         <div
-          className={`flex-col flex md:hidden ${
+          className={`flex-col flex md:hidden justify-between h-[calc(100vh-8rem)] ${
             showMessage ? "flex" : "hidden"
           }`}
         >
@@ -220,26 +220,21 @@ function RecentMessage() {
               <span className="text-[12px]">Active Now</span>
             </div>
           </div> */}
-          <div className="px-3 border-b flex-1 md:max-h-[500px] overflow-auto break-words w-screen">
+          <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 flex-grow h-full md:max-h-[500px] overflow-y-auto break-words w-screen">
             <p>body test{messageSlug}</p>
             <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
-            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
+            <p>body test{messageSlug}</p>
             <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
             <p>body test{messageSlug}</p>
+            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
+            <p>body test{messageSlug}</p>
+            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
+            <p>body test{messageSlug}</p>
+            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
+            <p>body test{messageSlug}</p>
+            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
+            <p>body test{messageSlug}</p>
+            <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
           </div>
           <PostFormMessage />
         </div>

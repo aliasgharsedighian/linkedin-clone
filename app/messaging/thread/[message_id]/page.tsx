@@ -12,7 +12,7 @@ function UserMessaging({
         <p className="font-bold">Ali Asghar Sedighian</p>
         <span className="text-[12px]">Active Now</span>
       </div>
-      <div className="px-3 border-b flex-1 max-h-[500px] overflow-auto">
+      <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 max-h-[500px] overflow-auto">
         <p>body test{message_id}</p>
         <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
         <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}

@@ -9,9 +9,9 @@ export default function ThreadMessageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid md:grid-cols-8 gap-6 sm:px-5 mt-3 md:mt-8">
-      <section className="col-span-full lg:col-span-6 w-full flex flex-col bg-white border rounded-md md:rounded-lg max-h-screen">
-        <div className="sticky md:static top-[67px] flex items-center justify-between gap-4 px-4 pt-3 pb-1 border-b bg-white z-10 rounded-t-md">
+    <div className="h-full grid md:grid-cols-8 gap-6 sm:px-5 mt-3 md:mt-8">
+      <section className="h-full col-span-full lg:col-span-6 w-full flex flex-col bg-white dark:bg-zinc-800 border dark:border-[var(--dark-border)] rounded-md md:rounded-lg max-h-screen">
+        <div className="sticky md:static top-[67px] flex items-center justify-between gap-4 px-4 pt-3 pb-1 border-b dark:border-[var(--dark-border)] bg-white dark:bg-zinc-800 z-10 rounded-t-md">
           <div className="flex items-center gap-4">
             <p className="font-bold">Messaging</p>
             <form className="hidden sm:flex items-center space-x-1 bg-[#edf3f8] dark:bg-[var(--dark-post-background)] dark:border dark:border-[var(--dark-border)] px-2 py-1 rounded-sm">
@@ -27,8 +27,8 @@ export default function ThreadMessageLayout({
           </div>
           <HeadMessagingButton />
         </div>
-        <div className="flex w-full max-h-dvh">
-          <div className="w-full md:basis-2/5 border-r">
+        <div className="h-full flex w-full max-h-dvh">
+          <div className="h-full w-full md:basis-2/5 border-r">
             <RecentMessage />
           </div>
           <div className="basis-3/5 hidden md:flex">

@@ -23,10 +23,10 @@ export default async function NewMessage() {
   if (userId) {
     return (
       <>
-        <div className="py-2 px-3 border-b">
+        <div className="py-2 px-3 border-b dark:border-[var(--dark-border)]">
           <p className="font-bold">New Message</p>
         </div>
-        <div className="py-1 px-3 border-b">
+        <div className="py-1 px-3 border-b dark:border-[var(--dark-border)]">
           <Input
             className="py-1 px-3 h-auto rounded-full"
             placeholder="type a name or multiple names"

@@ -15,7 +15,7 @@ export default function MessagingLayout({
   return (
     <>
       <SignedIn>
-        <main className="max-w-6xl mx-auto col-span-full md:col-span-6">
+        <main className="h-full max-w-6xl mx-auto col-span-full md:col-span-6">
           {children}
         </main>
       </SignedIn>
