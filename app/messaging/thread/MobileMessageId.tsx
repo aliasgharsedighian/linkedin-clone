@@ -6,7 +6,7 @@ import PostFormMessage from "./PostFormMessage";
 function MobileMessageId({ showMessage, messageSlug }: any) {
   return (
     <div
-      className={`flex-col flex md:hidden justify-between h-[calc(100vh-8.5rem)] ${
+      className={`flex-col flex md:hidden justify-between h-[calc(100vh-7.5rem)] ${
         showMessage ? "flex" : "hidden"
       }`}
     >
@@ -33,7 +33,7 @@ function MobileMessageId({ showMessage, messageSlug }: any) {
               <span className="text-[12px]">Active Now</span>
             </div>
           </div> */}
-      <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 flex-grow h-full md:max-h-[500px] overflow-y-auto break-words w-screen">
+      <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 flex-grow h-full md:max-h-[500px] overflow-y-auto break-words w-screen py-3">
         <p>body test{messageSlug}</p>
         <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
         <p>body test{messageSlug}</p>
@@ -47,7 +47,7 @@ function MobileMessageId({ showMessage, messageSlug }: any) {
         <p>body test{messageSlug}</p>
         <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
         <p>body test{messageSlug}</p>
-        <p>body test{messageSlug}</p> <p>body test{messageSlug}</p>{" "}
+        <p>body test{messageSlug}</p> <p>body test{messageSlug}</p> last
       </div>
       <PostFormMessage />
     </div>

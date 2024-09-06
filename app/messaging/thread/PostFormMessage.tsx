@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
@@ -12,6 +12,7 @@ import {
 import EmojiPicker from "emoji-picker-react";
 
 function PostFormMessage() {
+  const emojiRef = useRef<any>();
   const path = usePathname();
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
@@ -19,8 +20,20 @@ function PostFormMessage() {
 
   const onEmojiClick = (emojiObject: any) => {
     setMessage((prevInput) => prevInput + emojiObject.emoji);
-    setEmojiOpen(false);
+    // setEmojiOpen(false);
   };
+
+  useEffect(() => {
+    let handler: any = (e: FormEvent<HTMLDivElement>) => {
+      if (emojiRef?.current && !emojiRef.current.contains(e.target)) {
+        setEmojiOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  }, [emojiRef, emojiOpen]);
 
   return (
     <form className="bottom-0 w-full bg-white dark:bg-zinc-800 z-10" action="">
@@ -83,11 +96,13 @@ function PostFormMessage() {
               />
             </svg>
           </Button>
-          <Popover
-            open={emojiOpen}
-            onOpenChange={() => setEmojiOpen(!emojiOpen)}
-          >
-            <PopoverTrigger>
+          <div className="relative">
+            <Button
+              onClick={() => setEmojiOpen(true)}
+              type="button"
+              className="p-0 h-auto"
+              variant="ghost"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -102,19 +117,20 @@ function PostFormMessage() {
                   d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
                 />
               </svg>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="w-[450px] h-[350px]">
-                <EmojiPicker
-                  className="!absolute"
-                  lazyLoadEmojis={false}
-                  searchDisabled={true}
-                  skinTonesDisabled={true}
-                  onEmojiClick={onEmojiClick}
-                />
-              </div>
-            </PopoverContent>
-          </Popover>
+            </Button>
+
+            <div ref={emojiRef} className="absolute bottom-0 right-0">
+              <EmojiPicker
+                // lazyLoadEmojis={false}
+                searchDisabled={true}
+                // skinTonesDisabled={true}
+                onEmojiClick={onEmojiClick}
+                open={emojiOpen}
+
+                // theme="dark"
+              />
+            </div>
+          </div>
         </div>
         <Button
           type="submit"

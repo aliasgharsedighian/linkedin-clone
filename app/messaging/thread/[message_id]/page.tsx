@@ -12,7 +12,7 @@ function UserMessaging({
         <p className="font-bold">Ali Asghar Sedighian</p>
         <span className="text-[12px]">Active Now</span>
       </div>
-      <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 max-h-[500px] overflow-auto">
+      <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 overflow-auto py-3">
         <p>body test{message_id}</p>
         <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
         <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
@@ -32,6 +32,7 @@ function UserMessaging({
         <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
         <p>body test{message_id}</p> <p>body test{message_id}</p>{" "}
         <p>body test{message_id}</p>
+        <p>last</p>
       </div>
       <PostFormMessage />
     </>

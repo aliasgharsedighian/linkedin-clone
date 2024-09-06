@@ -4,7 +4,7 @@ import React from "react";
 
 function HeadMessagingButton() {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center h-[40px]">
       <Button className="p-1 md:p-2" variant="ghost">
         <svg
           xmlns="http://www.w3.org/2000/svg"

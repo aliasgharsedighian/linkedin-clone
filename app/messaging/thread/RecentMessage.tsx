@@ -35,7 +35,7 @@ function RecentMessage({ userInfo }: any) {
           <div
             className={`px-4 py-6 hover:bg-gray-200 dark:hover:bg-zinc-600 flex items-start gap-3 ${
               path === "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
-                ? "bg-[#edf3f8]"
+                ? "bg-[#edf3f8] dark:bg-zinc-600"
                 : "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
             }`}
           >
@@ -73,7 +73,7 @@ function RecentMessage({ userInfo }: any) {
               className={`px-4 py-6 hover:bg-gray-200 dark:hover:bg-zinc-600 flex items-start gap-3 ${
                 path ===
                 `/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnLindex${i}`
-                  ? "bg-[#edf3f8]"
+                  ? "bg-[#edf3f8] dark:bg-zinc-600"
                   : "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
               }`}
             >
@@ -102,9 +102,7 @@ function RecentMessage({ userInfo }: any) {
       </div>
 
       {!showMessage && (
-        <div
-          className={`flex md:hidden flex-col gap-0 overflow-auto max-h-[700px]`}
-        >
+        <div className={`flex md:hidden flex-col gap-0 overflow-auto`}>
           <Link
             onClick={() => getMessageData("user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL")}
             href="/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
@@ -117,7 +115,7 @@ function RecentMessage({ userInfo }: any) {
             <div
               className={`px-4 py-6 hover:bg-gray-200 flex items-start gap-3 ${
                 path === "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
-                  ? "bg-[#edf3f8]"
+                  ? "bg-[#edf3f8] dark:bg-zinc-600"
                   : "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
               }`}
             >
@@ -161,7 +159,7 @@ function RecentMessage({ userInfo }: any) {
                 className={`px-4 py-6 hover:bg-gray-200 flex items-start gap-3 ${
                   path ===
                   `/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnLindex${i}`
-                    ? "bg-[#edf3f8]"
+                    ? "bg-[#edf3f8] dark:bg-zinc-600"
                     : "/messaging/thread/user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL"
                 }`}
               >

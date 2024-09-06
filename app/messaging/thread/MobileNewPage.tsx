@@ -4,7 +4,7 @@ import SuggestedFriends from "./new/SuggestedFriends";
 
 function MobileNewPage({ userInfo }: any) {
   return (
-    <div className="flex flex-col justify-between h-[calc(100vh-8.5rem)]">
+    <div className="flex md:hidden flex-col justify-between h-[calc(100vh-7.5rem)]">
       <div className="py-2 px-3 border-b dark:border-[var(--dark-border)]">
         <p className="font-bold">New Message</p>
       </div>

@@ -153,7 +153,13 @@ function MobileSearchModal() {
                                   className="w-full flex items-start gap-4 hover:font-IRANSansBold hover:bg-slate-100 py-2 border-b last:border-none px-2"
                                   key={framework.user_id}
                                   href={`/user/${framework.user_id}`}
-                                  onClick={() => setOpenSuggest(false)}
+                                  onClick={() => {
+                                    sendValueToApi("");
+                                    setSuggestionData([]);
+                                    setSearchInput("");
+                                    setOpenSuggest(false);
+                                    setOpenSearchBox(false);
+                                  }}
                                 >
                                   <Avatar>
                                     <AvatarImage src={framework?.image} />

@@ -131,10 +131,15 @@ function SearchUsersInput() {
                   ? suggestionData.map((framework: any) =>
                       suggestionLink ? (
                         <Link
+                          onClick={() => {
+                            sendValueToApi("");
+                            setSuggestionData([]);
+                            setSearchInput("");
+                            setOpenSuggest(false);
+                          }}
                           className="w-full flex items-start gap-4 hover:font-IRANSansBold hover:bg-slate-100 dark:hover:bg-slate-600 py-2 border-b last:border-none px-2"
                           key={framework.user_id}
                           href={`/user/${framework.user_id}`}
-                          onClick={() => setOpenSuggest(false)}
                         >
                           <Avatar>
                             <AvatarImage src={framework?.image} />

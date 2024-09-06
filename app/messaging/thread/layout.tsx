@@ -24,8 +24,8 @@ export default async function ThreadMessageLayout({
   const userInfoDb: any = await Users.findOne({ userId: userId }).lean();
   const userInfo = await fetchUserData(userInfoDb?._id);
   return (
-    <div className="h-full grid md:grid-cols-8 gap-6 sm:px-5 mt-3 md:mt-8">
-      <section className="col-span-full lg:col-span-6 w-full flex flex-col bg-white dark:bg-zinc-800 border dark:border-[var(--dark-border)] rounded-md md:rounded-lg md:h-[calc(100vh-10rem)]">
+    <div className="grid md:grid-cols-8 gap-6 sm:px-5 h-full md:h-auto">
+      <section className="col-span-full lg:col-span-6 w-full flex flex-col bg-white dark:bg-zinc-800 border dark:border-[var(--dark-border)] rounded-md md:rounded-lg ">
         <div className="sticky md:static top-[67px] flex items-center justify-between gap-4 px-4 pt-3 pb-1 border-b dark:border-[var(--dark-border)] bg-white dark:bg-zinc-800 z-10 rounded-t-md">
           <div className="flex items-center gap-4">
             <p className="font-bold">Messaging</p>
@@ -42,12 +42,12 @@ export default async function ThreadMessageLayout({
           </div>
           <HeadMessagingButton />
         </div>
-        <div className="h-full flex w-full max-h-dvh">
-          <div className="h-full w-full md:basis-2/5 border-r bg-white">
+        <div className="h-full flex w-full">
+          <div className="h-full w-full md:basis-2/5 border-r bg-white dark:bg-zinc-800  md:max-h-[calc(100vh-140px)]">
             <RecentMessage userInfo={userInfo} />
           </div>
-          <div className="h-full basis-3/5 hidden md:flex">
-            <div className="flex flex-col justify-between text-sm h-full w-full">
+          <div className="h-full basis-3/5 hidden md:flex  md:max-h-[calc(100vh-140px)]">
+            <div className="flex flex-col justify-between text-sm h-full w-full flex-1">
               {children}
             </div>
           </div>

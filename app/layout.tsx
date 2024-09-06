@@ -24,10 +24,10 @@ export default function RootLayout({
             {/* Toaster */}
             <Toaster position="bottom-left" />
 
-            <header className="border-b dark:border-[var(--dark-border)] sticky top-0 z-50 bg-white dark:bg-[var(--dark-post-background)] shadow-xl">
+            <header className="border-b dark:border-[var(--dark-border)] sticky top-0 z-50 pl-2.5 bg-white dark:bg-[var(--dark-post-background)] shadow-xl h-[65px] md:h-[57px]">
               <Header />
             </header>
-            <div className="bg-[#f4f2ed] flex-1 w-full dark:bg-zinc-900">
+            <div className="bg-[#f4f2ed] flex-1 w-full dark:bg-zinc-900 h-full">
               <main className="max-w-6xl mx-auto">{children}</main>
             </div>
           </ThemeProviders>
