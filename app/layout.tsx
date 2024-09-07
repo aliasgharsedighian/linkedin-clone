@@ -1,10 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import ThemeProviders from "@/components/ThemeProviders";
-import NotficationCheck from "@/components/NotficationCheck";
+import { Inter } from "next/font/google";
+
+export const viewport: Viewport = {
+  themeColor: "#fff",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--main-font",
+});
 
 export const metadata: Metadata = {
   title: "Linkedin Clone",
@@ -18,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className={`${inter.className}`} suppressHydrationWarning>
         <body className="min-h-screen flex flex-col transition-all duration-1000">
           <ThemeProviders>
             {/* Toaster */}

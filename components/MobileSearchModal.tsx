@@ -150,7 +150,7 @@ function MobileSearchModal() {
                           ? suggestionData.map((framework: any) =>
                               suggestionLink ? (
                                 <Link
-                                  className="w-full flex items-start gap-4 hover:font-IRANSansBold hover:bg-slate-100 py-2 border-b last:border-none px-2"
+                                  className="w-full flex items-start gap-4 hover:font-bold hover:bg-slate-100 py-2 border-b last:border-none px-2"
                                   key={framework.user_id}
                                   href={`/user/${framework.user_id}`}
                                   onClick={() => {

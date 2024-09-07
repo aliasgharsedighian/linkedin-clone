@@ -105,8 +105,8 @@ function PostOptions({ post }: { post: IPostDocument }) {
             const promise = likeOrUnlikePost();
 
             toast.promise(promise, {
-              loading: "Liking post...",
-              success: "Post liked",
+              loading: `${liked ? "Unliking" : "Liking"} post...`,
+              success: `Post ${liked ? "Unliked" : "Liked"}`,
               error: "Failed to like post",
             });
           }}

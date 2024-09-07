@@ -29,8 +29,10 @@ export const MessagingData: MessasingDataType = {
             },
           ],
           lastMessage: {
+            userId: "user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL",
             text: "this is a text with image test",
             fileOrImageUrl: "https://i.ibb.co/0Xbbbzz/OIG.jpg",
+            updatedAt: "2024-05-08T15:55:10.569+00:00",
           },
         },
         {
@@ -53,8 +55,10 @@ export const MessagingData: MessasingDataType = {
             },
           ],
           lastMessage: {
+            userId: "user_2g52KSQVEjcaSbzdpTJOsMJFER6",
             text: "hello ali.i'm fine",
-            fileOrImageUrl: "",
+            fileOrImageUrl: null,
+            updatedAt: "2024-05-08T15:57:10.569+00:00",
           },
         },
       ],
@@ -95,7 +99,7 @@ export const MessagingData: MessasingDataType = {
           },
           message: {
             text: "hello.how are you?",
-            fileOrImageUrl: "",
+            fileOrImageUrl: null,
           }, //this is message text && search keyword text with this
           reactions: ["userId"],
           createdAt: "2024-05-08T15:55:10.569+00:00",
@@ -112,7 +116,7 @@ export const MessagingData: MessasingDataType = {
           },
           message: {
             text: "hello.i'm fine thanks",
-            fileOrImageUrl: "",
+            fileOrImageUrl: null,
           }, //this is message text && search keyword text with this
           reactions: ["userId"],
           createdAt: "2024-05-08T15:56:10.569+00:00",
@@ -121,7 +125,7 @@ export const MessagingData: MessasingDataType = {
         {
           _id: "message_id3", //unique id for message to replay and forward message
           userInfo: {
-            userId: "user_2fr23z9Iwvn5zGWyJkZtNTP5i8i",
+            userId: "user_2ffnhf8RUYGmAFfDZVAhJ3vMVnL",
             firstname: "Ali asghar1",
             lastname: "Sedighian1",
             profileImage:
@@ -171,7 +175,7 @@ export const MessagingData: MessasingDataType = {
           },
           message: {
             text: "hello peyman.how are you?",
-            fileOrImageUrl: "",
+            fileOrImageUrl: null,
           }, //this is message text && search keyword text with this
           reactions: ["userId"],
           createdAt: "2024-05-08T15:55:10.569+00:00",
@@ -205,7 +209,7 @@ export const MessagingData: MessasingDataType = {
           },
           message: {
             text: "hello ali.i'm fine",
-            fileOrImageUrl: "",
+            fileOrImageUrl: null,
           }, //this is message text && search keyword text with this
           reactions: ["userId"],
           createdAt: "2024-05-08T15:57:10.569+00:00",
