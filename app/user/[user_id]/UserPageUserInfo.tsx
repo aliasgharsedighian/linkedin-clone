@@ -14,6 +14,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { toast } from "sonner";
+import { apiClient } from "@/lib/api-client";
 
 interface PageProps {
   userInfo: any;
@@ -67,6 +68,15 @@ function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
       throw new Error("Failed to follow or unfollow user");
     }
     location.reload();
+  };
+
+  const handleSignup = async () => {
+    const res = await apiClient.post(
+      "address",
+      //body
+      { email: "email", password: "password" },
+      { withCredentials: true }
+    );
   };
 
   return (

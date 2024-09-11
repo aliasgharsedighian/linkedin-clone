@@ -13,6 +13,9 @@ const nextConfig = {
       { protocol: "https", hostname: "i.ibb.co" },
     ],
   },
+  env: {
+    SERVER_ADDRESS: "http://localhost:4000",
+  },
 };
 
 export default nextConfig;
