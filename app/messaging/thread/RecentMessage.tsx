@@ -8,10 +8,11 @@ import PostFormMessage from "./PostFormMessage";
 import MobileMessageId from "./MobileMessageId";
 import MobileNewPage from "./MobileNewPage";
 import ReactTimeago from "react-timeago";
+import { useAppStore } from "@/store/store";
 
 function RecentMessage({ userInfo, data, userId }: any) {
   const path = usePathname();
-  const [showMessage, setShowMessage] = useState(false);
+  const { showMessage, setShowMessage } = useAppStore();
   const [messageSlug, setMessageSlug] = useState("");
 
   const getMessageData = (messageSlug: string) => {

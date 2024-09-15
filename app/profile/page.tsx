@@ -3,16 +3,17 @@ import connectDB from "@/mongodb/db";
 import { Users } from "@/mongodb/models/users";
 import React from "react";
 import UserInfo from "@/components/profile/UserInfo";
-import UserImage from "@/components/profile/UserImage";
 import ThemeSetting from "@/components/profile/ThemeSetting";
 import dynamic from "next/dynamic";
+import { revalidatePath } from "next/cache";
+import ProfileImage from "./ProfileImage";
 
 const NotficationCheck = dynamic(
   () => import("@/components/NotficationCheck"),
   { ssr: false }
 );
 
-export const revalidate = 0;
+export const revalidate = false;
 
 const fetchUserData = async (userId: string | null) => {
   const res = await fetch(`http://localhost:5050/api/users/${userId}`, {
@@ -28,6 +29,11 @@ export default async function ProfilePage() {
   const userInfoDb: any = await Users.findOne({ userId: userId }).lean();
   const userInfo = await fetchUserData(userInfoDb?._id);
 
+  async function revalidateData() {
+    "use server";
+    revalidatePath("/profile");
+  }
+
   if (userId) {
     return (
       <>
@@ -35,7 +41,11 @@ export default async function ProfilePage() {
         <div className="grid md:grid-cols-8 gap-6 sm:px-5">
           <section className="col-span-full md:col-span-6 w-full flex flex-col gap-6">
             <div className="flex flex-col gap-4">
-              <UserImage userInfo={userInfo} />
+              <ProfileImage
+                userInfo={userInfo}
+                userId={userId}
+                revalidateData={revalidateData}
+              />
               <UserInfo userInfo={userInfo} dbId={userInfoDb?._id.toString()} />
             </div>
             <ThemeSetting />

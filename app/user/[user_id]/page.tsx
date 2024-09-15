@@ -4,6 +4,7 @@ import { Users } from "@/mongodb/models/users";
 import { auth } from "@clerk/nextjs/server";
 import UserPageUserInfo from "./UserPageUserInfo";
 import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export const revalidate = 0;
 
@@ -55,6 +56,11 @@ export default async function UserPage({
     redirect("/profile");
   }
 
+  async function revalidateData() {
+    "use server";
+    revalidatePath(`/user/${userId}`);
+  }
+
   return (
     <div className="grid md:grid-cols-8 gap-6 sm:px-5">
       <section className="col-span-full md:col-span-6 w-full">
@@ -63,6 +69,7 @@ export default async function UserPage({
           <UserPageUserInfo
             userInfo={userInfo}
             currentUserFollowing={currentUserInfo?.following}
+            revalidateData={revalidateData}
           />
         </div>
       </section>

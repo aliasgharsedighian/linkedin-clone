@@ -11,10 +11,11 @@ const nextConfig = {
         hostname: "linkedinclone.blob.core.windows.net",
       },
       { protocol: "https", hostname: "i.ibb.co" },
+      { protocol: "http", hostname: "localhost", port: "4000" },
     ],
   },
   env: {
-    SERVER_ADDRESS: "http://localhost:4000",
+    SERVER_ADDRESS: "http://localhost:4000/",
   },
 };
 

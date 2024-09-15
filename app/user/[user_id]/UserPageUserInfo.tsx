@@ -19,9 +19,14 @@ import { apiClient } from "@/lib/api-client";
 interface PageProps {
   userInfo: any;
   currentUserFollowing: any;
+  revalidateData: any;
 }
 
-function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
+function UserPageUserInfo({
+  userInfo,
+  currentUserFollowing,
+  revalidateData,
+}: PageProps) {
   const { user } = useUser();
   const [followedUser, setFollowedUser] = useState("loading");
 
@@ -67,7 +72,7 @@ function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
       setFollowedUser(orginalFollowed);
       throw new Error("Failed to follow or unfollow user");
     }
-    location.reload();
+    revalidateData();
   };
 
   const handleSignup = async () => {
@@ -88,9 +93,15 @@ function UserPageUserInfo({ userInfo, currentUserFollowing }: PageProps) {
               const promise = handleFollowUser();
 
               toast.promise(promise, {
-                loading: "Follow/Unfollow user...",
-                success: "User Followed/Unfollowed",
-                error: "Failed to follow user",
+                loading: `${
+                  followedUser === "following" ? "Unfollowing" : "Following"
+                } user...`,
+                success: `User ${
+                  followedUser === "following" ? "unfollowed" : "followed"
+                }`,
+                error: `Failed to ${
+                  followedUser === "following" ? "fnfollow" : "follow"
+                } user`,
               });
             }}
             variant="ghost"

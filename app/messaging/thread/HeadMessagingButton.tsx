@@ -2,7 +2,11 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
-function HeadMessagingButton() {
+interface PageProps {
+  setShowMessage: (action: boolean) => void;
+}
+
+function HeadMessagingButton({ setShowMessage }: PageProps) {
   return (
     <div className="flex items-center h-[40px]">
       <Button className="p-1 md:p-2" variant="ghost">
@@ -22,7 +26,11 @@ function HeadMessagingButton() {
         </svg>
       </Button>
       <Link href="/messaging/thread/new">
-        <Button className="p-1 md:p-2" variant="ghost">
+        <Button
+          onClick={() => setShowMessage(true)}
+          className="p-1 md:p-2"
+          variant="ghost"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
