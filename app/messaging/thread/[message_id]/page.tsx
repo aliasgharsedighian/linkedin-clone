@@ -15,10 +15,6 @@ function UserMessaging({
 
   return (
     <>
-      <div className="py-1 px-3 border-b">
-        <p className="font-bold">Ali Asghar Sedighian</p>
-        <span className="text-[12px]">Active Now</span>
-      </div>
       <ChatContainer userId={userId} messageSlug={message_id} />
       <PostFormMessage />
     </>
