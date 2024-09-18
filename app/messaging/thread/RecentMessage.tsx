@@ -186,7 +186,7 @@ function RecentMessage({ userInfo, data, userId }: any) {
         />
       )}
       {showMessage && path === `/messaging/thread/new` && (
-        <MobileNewPage userInfo={userInfo} />
+        <MobileNewPage userInfo={userInfo} userId={userId} />
       )}
     </>
   );

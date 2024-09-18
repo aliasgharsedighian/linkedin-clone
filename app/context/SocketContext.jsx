@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppStore } from "@/store/store";
 import { useAuth } from "@clerk/nextjs";
 import { createContext, useContext, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
@@ -21,10 +22,25 @@ export const SocketProvider = ({ children }) => {
         query: { userId },
       });
       socket.current.on("connect", () => {
-        console.log("Connected to socket server");
+        console.log("Connected to socket servers");
       });
 
-      const handleRecieveMessage = (message) => {};
+      const handleRecieveMessage = (message) => {
+        const { selectedChatData, selectedChatType, addMessage } =
+          useAppStore.getState();
+
+        console.log(message);
+
+        if (
+          selectedChatType !== undefined &&
+          (selectedChatData._id === message.sender._id ||
+            selectedChatData._id === message.recipient._id)
+        ) {
+          console.log("message rcv", message);
+          console.log("test");
+          addMessage(message);
+        }
+      };
 
       socket.current.on("recieveMessage", handleRecieveMessage);
 

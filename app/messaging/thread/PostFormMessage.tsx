@@ -10,10 +10,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import EmojiPicker from "emoji-picker-react";
+import { useAppStore } from "@/store/store";
+import { useSocket } from "@/app/context/SocketContext";
+import { useAuth } from "@clerk/nextjs";
 
-function PostFormMessage() {
+function PostFormMessage({ userInfo }: any) {
+  const { userId } = useAuth();
   const emojiRef = useRef<any>();
   const path = usePathname();
+  const socket: any = useSocket();
+  const { selectedChatType, selectedChatData } = useAppStore();
+
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [emojiOpen, setEmojiOpen] = useState(false);
@@ -22,6 +29,10 @@ function PostFormMessage() {
     setMessage((prevInput) => prevInput + emojiObject.emoji);
     // setEmojiOpen(false);
   };
+
+  // useEffect(() => {
+  //   console.log(userInfo?._id);
+  // });
 
   useEffect(() => {
     let handler: any = (e: FormEvent<HTMLDivElement>) => {
@@ -35,8 +46,25 @@ function PostFormMessage() {
     };
   }, [emojiRef, emojiOpen]);
 
+  const handleSendMessage = async () => {
+    // e.preventDefault();
+    // console.log("test");
+    if (selectedChatType === "contact") {
+      socket.emit("sendMessage", {
+        sender: userInfo._id,
+        content: message,
+        recipient: selectedChatData._id,
+        messageType: "text",
+        fileUrl: undefined,
+      });
+    }
+  };
+
   return (
-    <form className="bottom-0 w-full bg-white dark:bg-zinc-800 z-10" action="">
+    <div
+      // onSubmit={handleSendMessage}
+      className="bottom-0 w-full bg-white dark:bg-zinc-800 z-10"
+    >
       <div className="py-2 px-3 border-b flex gap-2 items-start">
         <Textarea
           className="resize-none"
@@ -133,19 +161,16 @@ function PostFormMessage() {
           </div>
         </div>
         <Button
+          onClick={handleSendMessage}
           type="submit"
           className="bg-blue-600 text-white py-2 px-4 h-auto rounded-3xl text-[12px]"
           variant="ghost"
-          disabled={
-            path === "/messaging/thread/new"
-              ? friends.length === 0 || !message
-              : !message
-          }
+          disabled={!message}
         >
           Send
         </Button>
       </div>
-    </form>
+    </div>
   );
 }
 

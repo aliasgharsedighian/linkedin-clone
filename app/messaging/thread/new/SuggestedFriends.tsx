@@ -4,12 +4,20 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import PostFormMessage from "../PostFormMessage";
+import { useAppStore } from "@/store/store";
 
 interface PageProps {
   userInfo: any;
 }
 
 function SuggestedFriends({ userInfo }: PageProps) {
+  const { setSelectedChatData, setSelectedChatType } = useAppStore();
+
+  const selectedNewContact = (contact: any) => {
+    setSelectedChatType("contact");
+    setSelectedChatData(contact);
+  };
+
   return (
     <>
       <div className="px-3 border-b dark:border-[var(--dark-border)] flex-1 h-full overflow-auto">
@@ -17,6 +25,7 @@ function SuggestedFriends({ userInfo }: PageProps) {
           {userInfo.following ? (
             userInfo.following.map((follow: any) => (
               <Button
+                onClick={() => selectedNewContact(follow)}
                 key={follow.userId}
                 variant="ghost"
                 className="flex items-center justify-start gap-2 mx-4 px-0"
