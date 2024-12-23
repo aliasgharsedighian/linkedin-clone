@@ -6,6 +6,7 @@ import MobileSearchModal from "./MobileSearchModal";
 import HeaderNavigation from "./HeaderNavigation";
 import Link from "next/link";
 import SearchUsersInput from "./SearchUsersInput";
+import HeaderSignButton from "./HeaderSignButton";
 
 function Header() {
   return (
@@ -29,15 +30,7 @@ function Header() {
         <MobileSearchModal />
         <HeaderNavigation />
 
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-
-        <SignedOut>
-          <Button asChild variant="secondary">
-            <SignInButton />
-          </Button>
-        </SignedOut>
+        <HeaderSignButton />
       </div>
     </div>
   );

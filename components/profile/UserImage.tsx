@@ -26,7 +26,7 @@ function UserImage({ userInfo }: { userInfo: any }) {
             ? userInfo.imageUrl
             : "https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18yZmZoVDR2WDd3Q1pKU0FBUzBkSjFSdDRoSXgiLCJyaWQiOiJ1c2VyXzJnODE0eUxxWHBldTdTak42RENISGVYa1BWZCIsImluaXRpYWxzIjoiUFkifQ"
         }
-        alt={userInfo.imageUrl}
+        alt={userInfo.imageUrl || "profile-pic"}
         width={120}
         height={120}
       />

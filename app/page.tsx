@@ -7,6 +7,8 @@ import { Post } from "@/mongodb/models/Post";
 import connectMySql from "@/mySqldb/db";
 import { connectRedisDb } from "@/redisdb/db";
 import { SignedIn } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
+import { SignedInProvider } from "./SignedInProvider";
 
 export const revalidate = 0;
 
@@ -14,6 +16,7 @@ export default async function Home() {
   await connectDB();
   // await connectMySql();
   const posts = await Post.getAllPosts();
+  // const user = await currentUser();
 
   // await connectRedisDb.set("hello", "hello test");
 
@@ -24,9 +27,9 @@ export default async function Home() {
       </section>
 
       <section className="col-span-full md:col-span-6 xl:col-span-4 xl:max-w-xl mx-auto w-full">
-        <SignedIn>
+        <SignedInProvider>
           <PostForm />
-        </SignedIn>
+        </SignedInProvider>
 
         <PostFeed posts={posts} />
       </section>

@@ -7,7 +7,7 @@ import SearchContacts from "./SearchContacts";
 import NewChatContainer from "./NewChatContainer";
 
 const fetchUserData = async (userId: string | null) => {
-  const res = await fetch(`http://localhost:5050/api/users/${userId}`, {
+  const res = await fetch(`${process.env.API_ADDRESS}users/${userId}`, {
     cache: "no-cache",
   });
   const data = await res.json();

@@ -15,13 +15,15 @@ export interface IUsersBase {
     country: string;
     city: string;
   };
-  following: {
-    emailAddress: string;
-    userId: string;
-    firstName: string;
-    lastName: string;
-    imageUrl: string;
-  };
+  following: [
+    {
+      emailAddress: string;
+      userId: string;
+      firstName: string;
+      lastName: string;
+      imageUrl: string;
+    }
+  ];
 }
 
 export interface IUsers extends Document, IUsersBase {

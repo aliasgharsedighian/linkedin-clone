@@ -4,12 +4,15 @@ import { Users } from "@/mongodb/models/users";
 import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { ObjectId } from "mongodb";
+import { cookies } from "next/headers";
 
 export default async function updateProfileAction(
   userId: string,
   formData: FormData
 ) {
-  const user = await currentUser();
+  const cookieStore = await cookies();
+  // const user = await currentUser();
+  const token = cookieStore.get("jwt_token")?.value;
   const firstName = formData.get("firstNameInput");
   const lastName = formData.get("lastNameInput");
   const headline = formData.get("headlineInput");
@@ -17,18 +20,18 @@ export default async function updateProfileAction(
   const country = formData.get("countryInput");
   const city = formData.get("cityInput");
 
-  if (!user?.id) {
-    throw new Error("User not authenticated");
-  }
+  // if (!user?.id) {
+  //   throw new Error("User not authenticated");
+  // }
   const userProfile = await Users.findById(userId);
 
   if (!userProfile) {
     throw new Error("user not found");
   }
 
-  if (userProfile.userId !== user.id) {
-    throw new Error("profile does not blong to the user");
-  }
+  // if (userProfile.userId !== user.id) {
+  //   throw new Error("profile does not blong to the user");
+  // }
 
   try {
     const extendData = {

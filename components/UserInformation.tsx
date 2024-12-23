@@ -1,21 +1,39 @@
-import { currentUser } from "@clerk/nextjs/server";
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+// import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { IPostDocument } from "@/mongodb/models/Post";
 import MobileUserInformationExpand from "./MobileUserInformationExpand";
 import Link from "next/link";
+import { IUsers } from "@/mongodb/models/users";
+import { useAppStore } from "@/store/store";
+import useUserInfo from "@/hooks/useUserInfo";
+import { useEffect } from "react";
+import { SignedOutProvider } from "@/app/SignedOutProvider";
+import { SignedInProvider } from "@/app/SignedInProvider";
+import SignInButton from "./SignInButton";
 
-async function UserInformation({ posts }: { posts: IPostDocument[] }) {
-  const user = await currentUser();
+function UserInformation({
+  posts,
+}: // user,
+{
+  posts: IPostDocument[];
+  // user: any;
+}) {
+  const { userInfo } = useAppStore();
 
-  const firstName = user?.firstName;
-  const lastName = user?.lastName;
-  const imageUrl = user?.imageUrl;
+  const firstName = userInfo?.firstName;
+  const lastName = userInfo?.lastName;
+  const imageUrl = userInfo?.imageUrl;
 
-  const userPosts = posts?.filter((post) => post.user.userId === user?.id);
+  const userPosts = posts?.filter(
+    (post) => post.user.userId === userInfo?.userId
+  );
   const userComments = posts.flatMap((post) =>
-    post?.comments?.filter((comment) => comment.user.userId === user?.id || [])
+    post?.comments?.filter(
+      (comment) => comment.user.userId === userInfo?.userId || []
+    )
   );
 
   return (
@@ -25,10 +43,13 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
         href="/profile"
       >
         <Avatar>
-          {user?.id ? (
+          {userInfo?.userId ? (
             <AvatarImage src={imageUrl} />
           ) : (
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage
+              alt="profile-pic"
+              src="https://github.com/shadcn.png"
+            />
           )}
 
           <AvatarFallback>
@@ -36,7 +57,8 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
           </AvatarFallback>
         </Avatar>
 
-        <SignedIn>
+        {/* <SignedIn> */}
+        <SignedInProvider>
           <div className="text-center dark:text-white">
             <p className="font-semibold">
               {firstName} {lastName}
@@ -44,21 +66,25 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
 
             <p className="text-xs">
               @{firstName}
-              {lastName}-{user?.id.slice(-4)}
+              {lastName}-{userInfo?.userId.slice(-4)}
             </p>
           </div>
-        </SignedIn>
+        </SignedInProvider>
+        {/* </SignedIn> */}
       </Link>
 
-      <SignedOut>
+      {/* <SignedOut> */}
+      <SignedOutProvider>
         <div className="text-center space-y-2">
           <p className="dark:text-white">You are not signed in</p>
           <Button asChild className="bg-[#0b63c4] text-white">
-            <SignInButton>Sign in</SignInButton>
+            <SignInButton variant="default" />
           </Button>
         </div>
-      </SignedOut>
-      <SignedIn>
+      </SignedOutProvider>
+      {/* </SignedOut> */}
+      {/* <SignedIn> */}
+      <SignedInProvider>
         <div className="w-full hidden md:flex flex-col">
           <hr className="w-full border-gray-200 my-5 dark:border-[var(--dark-border)]" />
 
@@ -76,7 +102,8 @@ async function UserInformation({ posts }: { posts: IPostDocument[] }) {
           userPosts={userPosts}
           userComments={userComments}
         />
-      </SignedIn>
+      </SignedInProvider>
+      {/* </SignedIn> */}
     </div>
   );
 }

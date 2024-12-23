@@ -160,7 +160,7 @@ function UserPageUserInfo({
                   className="flex items-center gap-2 mx-4"
                 >
                   <Avatar>
-                    <AvatarImage src={follow?.imageUrl} />
+                    <AvatarImage alt="profile-pic" src={follow?.imageUrl} />
                     <AvatarFallback>
                       {follow?.firstName?.charAt(0)}
                       {follow?.lastName?.charAt(0)}
@@ -170,13 +170,13 @@ function UserPageUserInfo({
                     <p className="font-semibold dark:text-white">
                       {follow.firstName} {follow?.lastName}
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <div className="text-xs text-gray-400">
                       <p className="text-xs text-gray-400">
                         @{follow?.firstName}
                         {follow?.firstName}-
                         {follow?.userId?.toString().slice(-4)}
                       </p>
-                    </p>
+                    </div>
                   </div>
                 </Link>
               ))

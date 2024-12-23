@@ -1,3 +1,4 @@
+import { userInfo } from "os";
 import { create } from "zustand";
 
 // type Store = {
@@ -6,6 +7,8 @@ import { create } from "zustand";
 // };
 
 export const useAppStore = create()((set) => ({
+  userInfo: undefined,
+  setUserInfo: (userInfo) => set({ userInfo }),
   showMessage: false,
   setShowMessage: (action) => set((state) => ({ showMessage: action })),
   selectedChatType: undefined,
