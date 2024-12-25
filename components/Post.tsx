@@ -271,7 +271,12 @@ function Post({
           />
         )}
       </div>
-      <PostOptions post={post} userInfo={userInfo} />
+      <PostOptions
+        post={post}
+        userInfo={userInfo}
+        revalidateData={revalidateData}
+        token={token}
+      />
     </div>
   );
 }

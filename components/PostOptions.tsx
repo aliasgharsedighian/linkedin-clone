@@ -16,9 +16,13 @@ import { SignedInProvider } from "@/app/SignedInProvider";
 function PostOptions({
   post,
   userInfo,
+  revalidateData,
+  token,
 }: {
   post: IPostDocument;
   userInfo: any;
+  revalidateData: any;
+  token: any;
 }) {
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   // const { user } = useUser();
@@ -162,7 +166,12 @@ function PostOptions({
       {isCommentsOpen && (
         <div className="p-4">
           <SignedInProvider>
-            <CommentForm postId={post._id} userInfo={userInfo} />
+            <CommentForm
+              postId={post._id}
+              userInfo={userInfo}
+              revalidateData={revalidateData}
+              token={token}
+            />
           </SignedInProvider>
 
           <CommentFeed post={post} />

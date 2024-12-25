@@ -3,18 +3,29 @@
 import { useUser } from "@clerk/nextjs";
 import { useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import createCommentAction from "@/actions/createCommentAction";
+// import createCommentAction from "@/actions/createCommentAction";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
 import { useTransition } from "react";
+import createCommentAction from "@/actions/serverRequest/createCommentAction";
 
-function CommentForm({ postId, userInfo }: { postId: string; userInfo: any }) {
+function CommentForm({
+  postId,
+  userInfo,
+  revalidateData,
+  token,
+}: {
+  postId: string;
+  userInfo: any;
+  revalidateData: any;
+  token: any;
+}) {
   // const { user } = useUser();
   const ref = useRef<HTMLFormElement>(null);
 
   const [isPending, startTransition] = useTransition();
 
-  const createCommentActionWithPostId = createCommentAction.bind(null, postId);
+  // const createCommentActionWithPostId = createCommentAction.bind(null, postId);
 
   const handleCommentAction = async (formData: FormData): Promise<void> => {
     try {
@@ -26,7 +37,13 @@ function CommentForm({ postId, userInfo }: { postId: string; userInfo: any }) {
       ref.current?.reset();
       // server action
       startTransition(async () => {
-        const promise = createCommentActionWithPostId(formDataCopy);
+        // const promise = createCommentActionWithPostId(formDataCopy);
+        const promise = createCommentAction(
+          formDataCopy,
+          postId,
+          token,
+          revalidateData
+        );
         toast.promise(promise, {
           loading: "Creating comment...",
           success: "Comment created",
