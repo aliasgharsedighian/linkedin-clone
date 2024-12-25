@@ -41,7 +41,7 @@ export default async function Home() {
           <PostForm token={token} revalidateData={revalidateData} />
         </SignedInProvider>
 
-        <PostFeed posts={posts} />
+        <PostFeed posts={posts} token={token} revalidateData={revalidateData} />
       </section>
 
       <section className="hidden xl:inline justify-center col-span-2">

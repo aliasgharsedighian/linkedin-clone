@@ -19,17 +19,29 @@ import { Badge } from "./ui/badge";
 import ReactTimeago from "react-timeago";
 import { Button } from "./ui/button";
 import { Edit2Icon, Send, Trash2 } from "lucide-react";
-import deletePostAction from "@/actions/deletePostAction";
+// import deletePostAction from "@/actions/deletePostAction";
 import Image from "next/image";
 import PostOptions from "./PostOptions";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import editPostAction from "@/actions/editPostAction";
+// import editPostAction from "@/actions/editPostAction";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useAppStore } from "@/store/store";
+import deletePostAction from "@/actions/serverRequest/deletePostAction";
+import editPostAction from "@/actions/serverRequest/editPostAction";
 
-function Post({ post }: { post: IPostDocument }) {
-  const { user } = useUser();
+function Post({
+  post,
+  token,
+  revalidateData,
+}: {
+  post: IPostDocument;
+  token: any;
+  revalidateData: any;
+}) {
+  // const { user } = useUser();
+  const { userInfo } = useAppStore();
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
@@ -37,12 +49,12 @@ function Post({ post }: { post: IPostDocument }) {
   const [isPendingEdit, startTransitionEdit] = useTransition();
   const [edit, setEdit] = useState(false);
 
-  const isAuthor = user?.id === post.user?.userId;
+  const isAuthor = userInfo?.userId === post.user?.userId;
 
   const handleDeletePostAction = async (postId: string) => {
     try {
       startTransition(async () => {
-        const promise = deletePostAction(postId);
+        const promise = deletePostAction(postId, token, revalidateData);
         toast.promise(promise, {
           loading: "Deleting post...",
           success: "Post deleted",
@@ -57,7 +69,7 @@ function Post({ post }: { post: IPostDocument }) {
   const handleUpdatePostAction = async (postId: string, editText: string) => {
     try {
       startTransitionEdit(async () => {
-        const promise = editPostAction(postId, editText);
+        const promise = editPostAction(postId, editText, token, revalidateData);
         toast.promise(promise, {
           loading: "Updating post...",
           success: "Post updated",
@@ -75,7 +87,7 @@ function Post({ post }: { post: IPostDocument }) {
       <div className="p-4 flex space-x-2">
         <Link
           href={
-            post.user.userId === user?.id
+            post.user.userId === userInfo?.userId
               ? "/profile"
               : `/user/${post.user.userId}`
           }
@@ -192,6 +204,7 @@ function Post({ post }: { post: IPostDocument }) {
       <div>
         {edit ? (
           <form
+            className="px-3"
             action={(formData) => {
               const editInput = formData.get("editInput") as string;
               if (!editInput.trim()) {
@@ -211,7 +224,7 @@ function Post({ post }: { post: IPostDocument }) {
                 style={{ maxHeight: "150px" }}
               />
               <button
-                className="absolute right-0 bottom-3"
+                className="absolute right-0 bottom-3 mr-2"
                 type="submit"
                 aria-disabled={isPendingEdit}
                 disabled={isPendingEdit}
@@ -252,13 +265,13 @@ function Post({ post }: { post: IPostDocument }) {
           <Image
             src={post.imageUrl}
             alt="Post Image"
-            width={500}
+            width={1000}
             height={500}
             className="w-full mx-auto"
           />
         )}
       </div>
-      <PostOptions post={post} />
+      <PostOptions post={post} userInfo={userInfo} />
     </div>
   );
 }

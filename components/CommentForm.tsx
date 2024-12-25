@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { Send } from "lucide-react";
 import { useTransition } from "react";
 
-function CommentForm({ postId }: { postId: string }) {
-  const { user } = useUser();
+function CommentForm({ postId, userInfo }: { postId: string; userInfo: any }) {
+  // const { user } = useUser();
   const ref = useRef<HTMLFormElement>(null);
 
   const [isPending, startTransition] = useTransition();
@@ -18,7 +18,7 @@ function CommentForm({ postId }: { postId: string }) {
 
   const handleCommentAction = async (formData: FormData): Promise<void> => {
     try {
-      if (!user?.id) {
+      if (!userInfo?.userId) {
         throw new Error("User not authenticated");
       }
 
@@ -53,10 +53,10 @@ function CommentForm({ postId }: { postId: string }) {
       className="flex items-center space-x-1"
     >
       <Avatar>
-        <AvatarImage src={user?.imageUrl} />
+        <AvatarImage src={userInfo?.imageUrl} />
         <AvatarFallback>
-          {user?.firstName?.charAt(0)}
-          {user?.lastName?.charAt(0)}
+          {userInfo?.firstName?.charAt(0)}
+          {userInfo?.lastName?.charAt(0)}
         </AvatarFallback>
       </Avatar>
 

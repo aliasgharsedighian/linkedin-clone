@@ -2,11 +2,24 @@ import { IPostDocument } from "@/mongodb/models/Post";
 import React from "react";
 import Post from "./Post";
 
-function PostFeed({ posts }: { posts: IPostDocument[] }) {
+function PostFeed({
+  posts,
+  token,
+  revalidateData,
+}: {
+  posts: IPostDocument[];
+  token: any;
+  revalidateData: any;
+}) {
   return (
     <div className="space-y-2 pb-20">
       {posts.map((post) => (
-        <Post key={post._id} post={post} />
+        <Post
+          key={post._id}
+          post={post}
+          token={token}
+          revalidateData={revalidateData}
+        />
       ))}
     </div>
   );

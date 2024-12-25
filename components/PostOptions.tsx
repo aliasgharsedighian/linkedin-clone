@@ -1,7 +1,7 @@
 "use client";
 
 import { IPostDocument } from "@/mongodb/models/Post";
-import { SignedIn, useUser } from "@clerk/nextjs";
+// import { SignedIn, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, Repeat2, Send, ThumbsUpIcon } from "lucide-react";
@@ -11,21 +11,28 @@ import { UnlikePostRequestBody } from "@/app/api/posts/[post_id]/unlike/route";
 import CommentFeed from "./CommentFeed";
 import CommentForm from "./CommentForm";
 import { toast } from "sonner";
+import { SignedInProvider } from "@/app/SignedInProvider";
 
-function PostOptions({ post }: { post: IPostDocument }) {
+function PostOptions({
+  post,
+  userInfo,
+}: {
+  post: IPostDocument;
+  userInfo: any;
+}) {
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
-  const { user } = useUser();
+  // const { user } = useUser();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(post.likes);
 
   useEffect(() => {
-    if (user?.id && post.likes?.includes(user.id)) {
+    if (userInfo?.id && post.likes?.includes(userInfo.id)) {
       setLiked(true);
     }
-  }, [post, user]);
+  }, [post, userInfo]);
 
   const likeOrUnlikePost = async () => {
-    if (!user?.id) {
+    if (!userInfo?.id) {
       setTimeout(() => {
         toast.error("You must sign in");
       }, 500);
@@ -36,11 +43,11 @@ function PostOptions({ post }: { post: IPostDocument }) {
     const originalLikes = likes;
 
     const newLikes = liked
-      ? likes?.filter((like) => like !== user.id)
-      : [...(likes ?? []), user.id];
+      ? likes?.filter((like) => like !== userInfo.id)
+      : [...(likes ?? []), userInfo.id];
 
     const body: LikePostRequestBody | UnlikePostRequestBody = {
-      userId: user.id,
+      userId: userInfo.id,
     };
 
     setLiked(!liked);
@@ -154,9 +161,9 @@ function PostOptions({ post }: { post: IPostDocument }) {
 
       {isCommentsOpen && (
         <div className="p-4">
-          <SignedIn>
-            <CommentForm postId={post._id} />
-          </SignedIn>
+          <SignedInProvider>
+            <CommentForm postId={post._id} userInfo={userInfo} />
+          </SignedInProvider>
 
           <CommentFeed post={post} />
         </div>
