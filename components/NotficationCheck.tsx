@@ -7,21 +7,19 @@ function NotficationCheck({ userInfo }: any) {
   const { token, notificationPermissionStatus } = useFcmToken();
 
   async function sendNotficationTokenToDatabase() {
-    const promise = await fetch(
-      `/api/users/${userInfo._id}/notfication-token`,
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          pushNotficationToken: token,
-        }),
-      }
-    );
+    const promise = await fetch(`/api/users/${userInfo.id}/notfication-token`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        pushNotficationToken: token,
+        userId: userInfo.userId,
+      }),
+    });
 
     const data = await promise.json();
-    console.log(data);
+    // console.log(data);
   }
 
   useEffect(() => {

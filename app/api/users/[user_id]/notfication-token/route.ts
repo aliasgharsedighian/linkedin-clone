@@ -7,13 +7,13 @@ export async function POST(
   request: Request,
   { params }: { params: { user_id: string } }
 ) {
-  auth().protect();
+  // auth().protect();
   await connectDB();
-  const { userId } = auth();
+  // const { userId } = auth();
   const userReq = await request.json();
   //   const body = JSON.stringify(user);
 
-  if (!userId) {
+  if (!userReq.userId) {
     return NextResponse.json({ message: "user not athenticated" });
   }
 
@@ -27,7 +27,7 @@ export async function POST(
     }
 
     const updateUser = await Users.findOneAndUpdate(
-      { userId: userId },
+      { userId: userReq.userId },
       {
         pushNotficationToken: userReq.pushNotficationToken,
       }
@@ -39,7 +39,7 @@ export async function POST(
       //   { message: "user token for push notfication saved succsessfully" },
       {
         message: "user token for push notfication saved successfully",
-        updatedUser,
+        data: updatedUser,
       },
       { status: 200 }
     );

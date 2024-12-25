@@ -6,11 +6,34 @@ import { IUser } from "@/types/user";
 import { currentUser } from "@clerk/nextjs/server";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
 export default async function createPostAction(formData: FormData) {
-  const user = await currentUser();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("jwt_token")?.value;
+  let user = undefined;
+
+  const fetchUserIdByToken: any = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Access-Control-Allow-Credentials", "true");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_ADDRESS}api/auth/user-info-bearer`,
+      {
+        cache: "no-cache",
+        headers: myHeaders,
+      }
+    );
+    const data = await res.json();
+    return data.data;
+  };
+  const userClerk = await currentUser();
+  user = userClerk;
+  // || fetchUserIdByToken();
+
   if (!user) {
-    throw new Error("User not authenticated");
+    user = await fetchUserIdByToken();
+    // throw new Error("User not authenticated");
   }
 
   const postInput = formData.get("postInput") as string;

@@ -5,17 +5,27 @@ import { useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { ImageIcon, Send, XIcon } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
-import createPostAction from "@/actions/createPostActions";
+// import createPostAction from "@/actions/createPostActions";
 import { toast } from "sonner";
+import { useAppStore } from "@/store/store";
+import createPostAction from "@/actions/serverRequest/createPostAction";
 
-function PostForm() {
+function PostForm({
+  token,
+  revalidateData,
+}: {
+  token: any;
+  revalidateData: any;
+}) {
   const ref = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { user } = useUser();
+  const { userInfo } = useAppStore();
 
   const [isPending, startTransition] = useTransition();
 
   const [preview, setPreview] = useState<string | null>(null);
+  const [profileImageFile, setProfileImageFile] = useState<any>();
 
   const handlePostAction = async (formData: FormData) => {
     const formDataCopy = formData;
@@ -27,13 +37,21 @@ function PostForm() {
       setTimeout(() => {
         toast.error("You must provide a post input");
       }, 500);
-      throw new Error("You must provide a post input");
+      // throw new Error("You must provide a post input");
     }
     setPreview(null);
 
     try {
       startTransition(async () => {
-        const promise = createPostAction(formDataCopy);
+        //this is for use "use server" in next js
+        // const promise = createPostAction(formDataCopy);
+        const promise = createPostAction(
+          text,
+          profileImageFile,
+          token,
+          revalidateData
+        );
+
         //Toast notfication based on the promise above
         toast.promise(promise, {
           loading: "Creating post...",
@@ -46,10 +64,37 @@ function PostForm() {
     }
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
+  const handleImageChange = (e: any) => {
+    e.preventDefault();
+    const uploadFile = e.target.files[0];
+    const previewFile = e.target.files?.[0];
+    const timestamp = new Date().getTime();
+    const file_name = `${"randomUUID"}_${timestamp}`;
+
+    if (previewFile) {
+      if (previewFile?.size >= 5000000) {
+        toast.error("Max file 5Mb");
+        return;
+      } else if (
+        previewFile.type === "image/jpeg" ||
+        previewFile.type === "image/png" ||
+        previewFile.type === "image/webp"
+      ) {
+        const file = new File(
+          [uploadFile],
+          `${previewFile.name.replaceAll(" ", "-")}`,
+          { type: previewFile.type }
+        );
+        // const file = new File(
+        //   [uploadFile],
+        //   `${file_name}.${previewFile.type.slice(6)}`,
+        //   { type: previewFile.type }
+        // );
+        setPreview(URL.createObjectURL(previewFile));
+        setProfileImageFile(file);
+      } else {
+        toast.error("File format error");
+      }
     }
   };
 
@@ -64,13 +109,23 @@ function PostForm() {
         className="p-3 bg-white dark:bg-[var(--dark-post-background)] rounded-lg border dark:border-[var(--dark-border)]"
       >
         <div className="flex items-center space-x-2">
-          <Avatar>
-            <AvatarImage src={user?.imageUrl} />
-            <AvatarFallback>
-              {user?.firstName?.charAt(0)}
-              {user?.lastName?.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
+          {user ? (
+            <Avatar>
+              <AvatarImage src={user?.imageUrl} />
+              <AvatarFallback>
+                {user?.firstName?.charAt(0)}
+                {user?.lastName?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+          ) : (
+            <Avatar>
+              <AvatarImage src={userInfo?.imageUrl} />
+              <AvatarFallback>
+                {userInfo?.firstName?.charAt(0)}
+                {userInfo?.lastName?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+          )}
 
           <div className="relative flex flex-1 bg-white border dark:border-[var(--dark-border)] rounded-3xl overflow-scroll resize-none w-full max-w-full no-scrollbar h-auto">
             <textarea

@@ -11,7 +11,7 @@ const useUserInfo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
   const { userInfo, setUserInfo } = useAppStore();
-  const activity = localStorage.getItem("activity");
+  let activity: string | null = "view";
 
   const fetchUserInfo = async () => {
     try {
@@ -21,7 +21,7 @@ const useUserInfo = () => {
       if (!response) {
         // handle error
       }
-      console.log(response.data.data);
+      // console.log(response.data.data);
       if (response.status === 200) {
         setData(response.data.data);
         setUserInfo(response.data.data);
@@ -38,6 +38,7 @@ const useUserInfo = () => {
   };
 
   useEffect(() => {
+    activity = localStorage.getItem("activity");
     if (!userInfo && activity === "user") {
       fetchUserInfo();
     } else {

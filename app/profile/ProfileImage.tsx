@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
+import { useAppStore } from "@/store/store";
 
 function ProfileImage({
   userInfo,
@@ -32,6 +33,8 @@ function ProfileImage({
     null
   );
   const [profileImageFile, setProfileImageFile] = useState<any>();
+
+  const { setUserInfo } = useAppStore();
 
   const handleProfileImageSelect = (e: any) => {
     e.preventDefault();
@@ -71,16 +74,19 @@ function ProfileImage({
     // console.log("test");
     const formdata = new FormData();
     formdata.append("profile-image", profileImageFile);
-    formdata.append("userId", userId);
+    // formdata.append("userId", userId);
+    formdata.append("userId", userInfo.userId);
     const response = await apiClient.post(
-      `${process.env.SERVER_ADDRESS}api/auth/add-profile-image`,
-      formdata
+      `${process.env.NEXT_PUBLIC_SERVER_ADDRESS}api/auth/add-profile-image`,
+      formdata,
+      { withCredentials: true }
     );
     // console.log(response);
     if (response.status === 200 && response.data.data.image) {
       toast.success("Image updated successfully.");
       setAddPhotoTab(false);
       setDialogOpen(false);
+      setUserInfo({ ...userInfo, imageUrl: response.data.data.image });
       revalidateData();
     }
   };
