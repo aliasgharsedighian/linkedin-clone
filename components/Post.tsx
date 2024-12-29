@@ -2,7 +2,7 @@
 
 import { IPostDocument } from "@/mongodb/models/Post";
 import { useUser } from "@clerk/nextjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   AlertDialog,
@@ -30,6 +30,7 @@ import { useTheme } from "next-themes";
 import { useAppStore } from "@/store/store";
 import deletePostAction from "@/actions/serverRequest/deletePostAction";
 import editPostAction from "@/actions/serverRequest/editPostAction";
+import PostFormImages from "./PostFormImages";
 
 function Post({
   post,
@@ -261,14 +262,8 @@ function Post({
           </p>
         )}
         {/* If image uploaded put it here ... */}
-        {post.imageUrl && (
-          <Image
-            src={post.imageUrl}
-            alt="Post Image"
-            width={1000}
-            height={500}
-            className="w-full mx-auto"
-          />
+        {post.imageUrl?.length !== 0 && (
+          <PostFormImages images={post.imageUrl} />
         )}
       </div>
       <PostOptions

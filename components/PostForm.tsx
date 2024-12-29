@@ -4,11 +4,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { ImageIcon, Send, XIcon } from "lucide-react";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 // import createPostAction from "@/actions/createPostActions";
 import { toast } from "sonner";
 import { useAppStore } from "@/store/store";
 import createPostAction from "@/actions/serverRequest/createPostAction";
+import PostFormImages from "./PostFormImages";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 function PostForm({
   token,
@@ -24,8 +26,20 @@ function PostForm({
 
   const [isPending, startTransition] = useTransition();
 
-  const [preview, setPreview] = useState<string | null>(null);
-  const [profileImageFile, setProfileImageFile] = useState<any>();
+  // const [preview, setPreview] = useState<string | null>(null);
+  const [previews, setPreviews] = useState<any>([]);
+
+  // const [profileImageFile, setProfileImageFile] = useState<any>();
+  const [postImageFiles, setPostImageFiles] = useState<any>([]);
+  const [progress, setProgress] = useState({ started: false, pc: 0 });
+
+  useEffect(() => {
+    if (previews.length > 5) {
+      toast.error("Maximum file is 5!");
+      setPreviews(previews.slice(0, 5));
+      setPostImageFiles(postImageFiles.slice(0, 5));
+    }
+  }, [previews]);
 
   const handlePostAction = async (formData: FormData) => {
     const formDataCopy = formData;
@@ -38,8 +52,10 @@ function PostForm({
         toast.error("You must provide a post input");
       }, 500);
       // throw new Error("You must provide a post input");
+      return;
     }
-    setPreview(null);
+    // setPreview(null);
+    setPreviews([]);
 
     try {
       startTransition(async () => {
@@ -47,9 +63,10 @@ function PostForm({
         // const promise = createPostAction(formDataCopy);
         const promise = createPostAction(
           text,
-          profileImageFile,
+          postImageFiles,
           token,
-          revalidateData
+          revalidateData,
+          setProgress
         );
 
         //Toast notfication based on the promise above
@@ -66,36 +83,43 @@ function PostForm({
 
   const handleImageChange = (e: any) => {
     e.preventDefault();
-    const uploadFile = e.target.files[0];
-    const previewFile = e.target.files?.[0];
-    const timestamp = new Date().getTime();
-    const file_name = `${"randomUUID"}_${timestamp}`;
+    const uploadFiles = e.target.files;
+    const previewFiles = e.target?.files;
 
-    if (previewFile) {
-      if (previewFile?.size >= 5000000) {
-        toast.error("Max file 5Mb");
-        return;
-      } else if (
-        previewFile.type === "image/jpeg" ||
-        previewFile.type === "image/png" ||
-        previewFile.type === "image/webp"
-      ) {
-        const file = new File(
-          [uploadFile],
-          `${previewFile.name.replaceAll(" ", "-")}`,
-          { type: previewFile.type }
-        );
-        // const file = new File(
-        //   [uploadFile],
-        //   `${file_name}.${previewFile.type.slice(6)}`,
-        //   { type: previewFile.type }
-        // );
-        setPreview(URL.createObjectURL(previewFile));
-        setProfileImageFile(file);
-      } else {
-        toast.error("File format error");
+    let previewArray = [];
+    let fileArray = [];
+
+    if (previews.length !== 0) {
+      for (let j = 0; j < previews.length; j++) {
+        previewArray.push(previews[j]);
+        fileArray.push(postImageFiles[j]);
       }
     }
+
+    if (uploadFiles.length > 5) {
+      toast.error("You cannot choose more than 5 items");
+    }
+    if (uploadFiles.length > 0 && uploadFiles.length <= 5) {
+      for (let i = 0; i < uploadFiles.length; i++) {
+        previewArray.push(URL.createObjectURL(previewFiles[i]));
+        fileArray.push(uploadFiles[i]);
+
+        if (previewFiles[i].size >= 5000000) {
+          toast.error("Max file 5Mb");
+          return;
+        } else if (
+          previewFiles[i].type === "image/jpeg" ||
+          previewFiles[i].type === "image/png" ||
+          previewFiles[i].type === "image/webp"
+        ) {
+        } else {
+          toast.error("File format error");
+        }
+      }
+    }
+    setPreviews(previewArray);
+    // setPostImageFiles(uploadFiles);
+    setPostImageFiles(fileArray);
   };
 
   return (
@@ -138,8 +162,9 @@ function PostForm({
             <input
               ref={fileInputRef}
               type="file"
-              name="image"
+              name="posts-image"
               accept="image/*"
+              multiple={true}
               hidden
               onChange={handleImageChange}
             />
@@ -148,7 +173,7 @@ function PostForm({
               className="absolute right-0 bottom-3"
               type="submit"
               aria-disabled={isPending}
-              disabled={isPending}
+              disabled={isPending || progress.pc !== 0}
             >
               {isPending ? (
                 <div className="mr-4" role="status">
@@ -177,30 +202,60 @@ function PostForm({
           </div>
         </div>
         {/* Preview conditional check */}
-        {preview && (
-          <div className="mt-3">
-            <img src={preview} alt="preview" className="w-full object-cover" />
-          </div>
-        )}
+        {previews?.length !== 0 && <PostFormImages images={previews} />}
 
-        <div className="flex justify-end mt-2 space-x-2">
+        <div className="flex justify-end items-center mt-2 space-x-2 relative">
+          {progress.started && (
+            <CircularProgressbar
+              value={progress.pc}
+              text={`${progress.pc.toFixed()}%`}
+              className="w-12 h-12 absolute bottom-1 right-auto font-bold"
+              styles={buildStyles({
+                // Rotation of path and trail, in number of turns (0-1)
+                rotation: 0.25,
+
+                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                strokeLinecap: "butt",
+
+                // Text size
+                textSize: "20px",
+
+                // How long animation takes to go from one percentage to another, in seconds
+                pathTransitionDuration: 0.5,
+
+                // Can specify path transition in more detail, or remove it entirely
+                // pathTransition: 'none',
+
+                // Colors
+                pathColor: `rgba(62, 152, 199, ${progress.pc / 100})`,
+                textColor: "var(--linkedin-blue)",
+                trailColor: "#d6d6d6",
+                backgroundColor: "#3e98c7",
+              })}
+            />
+          )}
           <Button
-            className="dark:bg-[var(--dark-post-background)] dark:text-white dark:border-[var(--dark-border)]"
+            className={`dark:bg-[var(--dark-post-background)] dark:text-white dark:border-[var(--dark-border)] ${
+              progress.started ? "mt-4" : ""
+            }`}
             type="button"
-            variant={preview ? "secondary" : "outline"}
+            variant={previews?.length !== 0 ? "secondary" : "outline"}
             onClick={() => fileInputRef.current?.click()}
           >
             <ImageIcon className="mr-2" size={16} color="currentColor" />
-            {preview ? "Change" : "Add"} image
+            {previews?.length !== 0 ? "Add" : "Upload"} images
           </Button>
 
           {/* Add a remove Privew button */}
 
-          {preview && (
+          {previews?.length !== 0 && (
             <Button
               variant="outline"
               type="button"
-              onClick={() => setPreview(null)}
+              onClick={() => {
+                setPostImageFiles([]);
+                setPreviews([]);
+              }}
             >
               <XIcon className="mr-2" size={16} color="currentColor" />
               Remove image
@@ -209,6 +264,7 @@ function PostForm({
         </div>
       </form>
       <hr className="mt-2 border-gray-300 dark:border-[var(--dark-border)]" />
+      {/* {progress.started && <progress max={100} value={progress.pc}></progress>} */}
     </div>
   );
 }

@@ -2,52 +2,58 @@
 
 import { apiClient } from "@/lib/api-client";
 import { UPLOAD_POST_ROUTE } from "@/utils/constants";
+import axios from "axios";
+import { toast } from "sonner";
 
 const createPostAction = async (
   text: any,
-  profileImageFile: any,
+  postImageFiles: any,
   token: any,
-  revalidateData: any
+  revalidateData: any,
+  setProgress: any
 ) => {
-  // const postInput = formData.get("postInput") as string;
-  // const image = formData.get("image") as File;
-  // let config = {
-  //   headers: {
-  //     "Access-Control-Allow-Credentials": true,
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // };
-
-  // let body = {
-  //   text: postInput,
-  //   "posts-image": profileImageFile,
-  // };
-  // const { data, status } = await apiClient.post(
-  //   UPLOAD_POST_ROUTE,
-  //   body,
-  //   config
-  // );
   const myHeaders = new Headers();
   myHeaders.append("Access-Control-Allow-Credentials", "true");
   myHeaders.append("Authorization", `Bearer ${token}`);
   const formdata = new FormData();
-  formdata.append("posts-image", profileImageFile);
-  // formdata.append("userId", userId);
-  formdata.append("text", text);
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_ADDRESS}api/posts/upload-post`,
-    {
-      method: "POST",
-      body: formdata,
-      headers: myHeaders,
+  if (postImageFiles) {
+    for (let i = 0; i < postImageFiles.length; i++) {
+      formdata.append(`posts-image`, postImageFiles[i]);
     }
-  );
-  const res = await response.json();
-
-  if (res.status === 200) {
-    revalidateData();
-    // console.log(res);
   }
+  // formdata.append("posts-image", profileImageFile);
+  formdata.append("text", text);
+  setProgress((prevState: any) => {
+    return { ...prevState, started: true };
+  });
+  axios
+    .post(UPLOAD_POST_ROUTE, formdata, {
+      onUploadProgress: (progressEvent) => {
+        setProgress((prevState: any) => {
+          if (progressEvent.progress) {
+            return { ...prevState, pc: progressEvent?.progress * 100 };
+          }
+        });
+      },
+      headers: {
+        "Access-Control-Allow-Credentials": "true",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        revalidateData();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      toast.error(err.message);
+    })
+    .finally(() =>
+      setProgress((prevState: any) => {
+        return { ...prevState, started: false, pc: 0 };
+      })
+    );
 };
 
 export default createPostAction;

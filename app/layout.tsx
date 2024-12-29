@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import ThemeProviders from "@/components/ThemeProviders";
 import { Inter } from "next/font/google";
+import "react-circular-progressbar/dist/styles.css";
 
 export const viewport: Viewport = {
   themeColor: "#fff",

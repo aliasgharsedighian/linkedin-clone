@@ -6,7 +6,7 @@ import { ObjectId } from "mongodb";
 export interface IPostBase {
   user: IUser;
   text: string;
-  imageUrl?: string;
+  imageUrl?: string[];
   comments?: IComment[];
   likes?: string[];
 }
@@ -45,7 +45,7 @@ const PostSchema = new Schema<IPostDocument>(
       lastName: { type: String },
     },
     text: { type: String, required: true },
-    imageUrl: { type: String },
+    imageUrl: { type: [String], default: [] },
     comments: { type: [Schema.Types.ObjectId], ref: "Comment", default: [] },
     likes: { type: [String] },
   },
