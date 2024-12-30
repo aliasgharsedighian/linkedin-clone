@@ -12,6 +12,7 @@ import CommentFeed from "./CommentFeed";
 import CommentForm from "./CommentForm";
 import { toast } from "sonner";
 import { SignedInProvider } from "@/app/SignedInProvider";
+import { LIKE_UNLIKE_ROUTE } from "@/utils/constants";
 
 function PostOptions({
   post,
@@ -30,60 +31,57 @@ function PostOptions({
   const [likes, setLikes] = useState(post.likes);
 
   useEffect(() => {
-    if (userInfo?.id && post.likes?.includes(userInfo.id)) {
+    if (userInfo?.userId && post.likes?.includes(userInfo.userId)) {
       setLiked(true);
     }
   }, [post, userInfo]);
 
   const likeOrUnlikePost = async () => {
-    if (!userInfo?.id) {
-      setTimeout(() => {
-        toast.error("You must sign in");
-      }, 500);
-      throw new Error("User not authenticated");
-    }
-
     const originalLiked = liked;
     const originalLikes = likes;
 
     const newLikes = liked
-      ? likes?.filter((like) => like !== userInfo.id)
-      : [...(likes ?? []), userInfo.id];
+      ? likes?.filter((like) => like !== userInfo.userId)
+      : [...(likes ?? []), userInfo.userId];
 
     const body: LikePostRequestBody | UnlikePostRequestBody = {
-      userId: userInfo.id,
+      userId: userInfo.userId,
     };
 
     setLiked(!liked);
     setLikes(newLikes);
 
-    const response = await fetch(
-      `/api/posts/${post._id}/${liked ? "unlike" : "like"}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
-    );
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
 
-    if (!response.ok) {
+    const formdata = new FormData();
+    formdata.append(`postId`, post._id);
+    const response = await fetch(LIKE_UNLIKE_ROUTE, {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+    });
+    const res = await response.json();
+    if (res.status === 200) {
+      setLiked(!liked);
+      revalidateData();
+    }
+    if (res.status !== 200) {
       setLiked(originalLiked);
       setLikes(originalLikes);
       throw new Error("Failed to like or unlike post");
     }
 
-    const fetchLikesResponse = await fetch(`/api/posts/${post._id}/like`);
-    if (!fetchLikesResponse.ok) {
-      setLiked(originalLiked);
-      setLikes(originalLikes);
+    // const fetchLikesResponse = await fetch(`/api/posts/${post._id}/like`);
+    // if (!fetchLikesResponse.ok) {
+    //   setLiked(originalLiked);
+    //   setLikes(originalLikes);
 
-      throw new Error("Failed to fetch likes");
-    }
+    //   throw new Error("Failed to fetch likes");
+    // }
 
-    const newLikedData = await fetchLikesResponse.json();
-    setLikes(newLikedData);
+    // const newLikedData = await fetchLikesResponse.json();
+    // setLikes(newLikedData);
   };
 
   return (
