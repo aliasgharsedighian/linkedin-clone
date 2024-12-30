@@ -2,7 +2,7 @@
 
 import { IPostDocument } from "@/mongodb/models/Post";
 import { useUser } from "@clerk/nextjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   AlertDialog,
@@ -18,7 +18,7 @@ import {
 import { Badge } from "./ui/badge";
 import ReactTimeago from "react-timeago";
 import { Button } from "./ui/button";
-import { Edit2Icon, Send, Trash2 } from "lucide-react";
+import { Edit2Icon, ImageIcon, Send, Trash2 } from "lucide-react";
 // import deletePostAction from "@/actions/deletePostAction";
 import Image from "next/image";
 import PostOptions from "./PostOptions";
@@ -41,6 +41,7 @@ function Post({
   token: any;
   revalidateData: any;
 }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   // const { user } = useUser();
   const { userInfo } = useAppStore();
   const { systemTheme, theme, setTheme } = useTheme();
@@ -49,8 +50,78 @@ function Post({
   const [isPending, startTransition] = useTransition();
   const [isPendingEdit, startTransitionEdit] = useTransition();
   const [edit, setEdit] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number | undefined>(
+    undefined
+  );
+  const [postImageFiles, setPostImageFiles] = useState<any>([]);
+  const [removeFiles, setRemoveFiles] = useState([]);
+  const [previews, setPreviews] = useState<any>([]);
+  const [progress, setProgress] = useState({ started: false, pc: 0 });
 
   const isAuthor = userInfo?.userId === post.user?.userId;
+
+  useEffect(() => {
+    setPreviews(post?.imageUrl);
+  }, []);
+
+  useEffect(() => {
+    // console.log(currentIndex);
+    if (currentIndex !== undefined) {
+      setPreviews((prev: any) => {
+        return [
+          ...prev.slice(0, currentIndex), // All items before the index
+          ...prev.slice(currentIndex + 1), // All items after the index
+        ];
+      });
+      setPostImageFiles((prev: any) => {
+        return [
+          ...prev.slice(0, currentIndex), // All items before the index
+          ...prev.slice(currentIndex + 1), // All items after the index
+        ];
+      });
+    }
+  }, [currentIndex]);
+
+  const handleImageChange = (e: any) => {
+    e.preventDefault();
+    const uploadFiles = e.target.files;
+    const previewFiles = e.target?.files;
+
+    let previewArray = [];
+    let fileArray = [];
+
+    if (previews.length !== 0) {
+      for (let j = 0; j < previews.length; j++) {
+        previewArray.push(previews[j]);
+        fileArray.push(postImageFiles[j]);
+      }
+    }
+
+    if (uploadFiles.length > 5) {
+      toast.error("You cannot choose more than 5 items");
+    }
+    if (uploadFiles.length > 0 && uploadFiles.length <= 5) {
+      for (let i = 0; i < uploadFiles.length; i++) {
+        previewArray.push(URL.createObjectURL(previewFiles[i]));
+        fileArray.push(uploadFiles[i]);
+
+        if (previewFiles[i].size >= 5000000) {
+          toast.error("Max file 5Mb");
+          return;
+        } else if (
+          previewFiles[i].type === "image/jpeg" ||
+          previewFiles[i].type === "image/png" ||
+          previewFiles[i].type === "image/webp"
+        ) {
+        } else {
+          toast.error("File format error");
+        }
+      }
+    }
+    setPreviews(previewArray);
+    // setPostImageFiles(uploadFiles);
+    setPostImageFiles(fileArray);
+  };
 
   const handleDeletePostAction = async (postId: string) => {
     try {
@@ -70,7 +141,15 @@ function Post({
   const handleUpdatePostAction = async (postId: string, editText: string) => {
     try {
       startTransitionEdit(async () => {
-        const promise = editPostAction(postId, editText, token, revalidateData);
+        const promise = editPostAction(
+          postId,
+          editText,
+          postImageFiles,
+          removeFiles,
+          token,
+          setProgress,
+          revalidateData
+        );
         toast.promise(promise, {
           loading: "Updating post...",
           success: "Post updated",
@@ -124,6 +203,17 @@ function Post({
 
           {isAuthor && (
             <div className="flex items-start gap-2">
+              {edit && (
+                <Button
+                  className={`dark:bg-[var(--dark-post-background)] dark:text-white dark:border-[var(--dark-border)]`}
+                  type="button"
+                  variant={previews?.length !== 0 ? "secondary" : "outline"}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <ImageIcon className="mr-2" size={16} color="currentColor" />
+                  {previews?.length !== 0 ? "Add" : "Upload"} images
+                </Button>
+              )}
               <Button
                 variant={
                   edit
@@ -255,6 +345,15 @@ function Post({
                 )}
               </button>
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              name="posts-image"
+              accept="image/*"
+              multiple={true}
+              hidden
+              onChange={handleImageChange}
+            />
           </form>
         ) : (
           <p className="px-4 pb-2 mt-2 whitespace-break-spaces dark:text-white">
@@ -262,8 +361,14 @@ function Post({
           </p>
         )}
         {/* If image uploaded put it here ... */}
-        {post.imageUrl?.length !== 0 && (
-          <PostFormImages images={post.imageUrl} />
+        {previews?.length !== 0 && (
+          <PostFormImages
+            images={previews}
+            setCurrentIndex={setCurrentIndex}
+            edit={edit}
+            removeFiles={removeFiles}
+            setRemoveFiles={setRemoveFiles}
+          />
         )}
       </div>
       <PostOptions

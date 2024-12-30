@@ -77,7 +77,7 @@ export default async function createPostAction(formData: FormData) {
       const body: AddPostRequestBody = {
         user: userDB,
         text: postInput,
-        imageUrl: image_url,
+        ...(image_url && { image_url }),
       };
 
       await Post.create(body);

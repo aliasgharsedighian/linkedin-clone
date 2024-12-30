@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
-import { ImageIcon, Send, XIcon } from "lucide-react";
+import { ImageIcon, Send, X, XIcon } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 // import createPostAction from "@/actions/createPostActions";
 import { toast } from "sonner";
@@ -28,9 +28,13 @@ function PostForm({
 
   // const [preview, setPreview] = useState<string | null>(null);
   const [previews, setPreviews] = useState<any>([]);
+  const [currentIndex, setCurrentIndex] = useState<number | undefined>(
+    undefined
+  );
 
   // const [profileImageFile, setProfileImageFile] = useState<any>();
   const [postImageFiles, setPostImageFiles] = useState<any>([]);
+  const [removeFiles, setRemoveFiles] = useState([]);
   const [progress, setProgress] = useState({ started: false, pc: 0 });
 
   useEffect(() => {
@@ -40,6 +44,24 @@ function PostForm({
       setPostImageFiles(postImageFiles.slice(0, 5));
     }
   }, [previews]);
+
+  useEffect(() => {
+    // console.log(currentIndex);
+    if (currentIndex !== undefined) {
+      setPreviews((prev: any) => {
+        return [
+          ...prev.slice(0, currentIndex), // All items before the index
+          ...prev.slice(currentIndex + 1), // All items after the index
+        ];
+      });
+      setPostImageFiles((prev: any) => {
+        return [
+          ...prev.slice(0, currentIndex), // All items before the index
+          ...prev.slice(currentIndex + 1), // All items after the index
+        ];
+      });
+    }
+  }, [currentIndex]);
 
   const handlePostAction = async (formData: FormData) => {
     const formDataCopy = formData;
@@ -202,7 +224,17 @@ function PostForm({
           </div>
         </div>
         {/* Preview conditional check */}
-        {previews?.length !== 0 && <PostFormImages images={previews} />}
+        {previews?.length !== 0 && (
+          <div className="relative">
+            <PostFormImages
+              images={previews}
+              setCurrentIndex={setCurrentIndex}
+              edit={true}
+              removeFiles={removeFiles}
+              setRemoveFiles={setRemoveFiles}
+            />
+          </div>
+        )}
 
         <div className="flex justify-end items-center mt-2 space-x-2 relative">
           {progress.started && (

@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export interface AddPostRequestBody {
   user: IUser;
   text: string;
-  imageUrl?: string | null;
+  imageUrl?: string[] | null;
 }
 export async function POST(request: Request) {
   auth().protect(); //Protect the route with Clerk authentication
