@@ -172,7 +172,12 @@ function PostOptions({
             />
           </SignedInProvider>
 
-          <CommentFeed post={post} />
+          <CommentFeed
+            post={post}
+            userInfo={userInfo}
+            revalidateData={revalidateData}
+            token={token}
+          />
         </div>
       )}
     </div>

@@ -71,7 +71,7 @@ export function LoginForm() {
         )
         .then((res) => {
           if (res.status === 200) {
-            // console.log(res.data.data)
+            console.log(res.data.data);
             setUserInfo(res.data.data);
             localStorage.setItem("activity", "user");
             toast.success(res.data.message);

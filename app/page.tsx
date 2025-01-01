@@ -11,18 +11,27 @@ import { currentUser } from "@clerk/nextjs/server";
 import { SignedInProvider } from "./SignedInProvider";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { GET_ALL_POSTS } from "@/utils/constants";
 
 export const revalidate = 0;
+
+const fetchPosts = async (token: any) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
+  const res = await fetch(GET_ALL_POSTS, {
+    next: { revalidate: 0 },
+    headers: myHeaders,
+  });
+  const data = await res.json();
+  return data.data;
+};
 
 export default async function Home() {
   await connectDB();
   const cookieStore = await cookies();
   const token = cookieStore.get("jwt_token")?.value;
-  // await connectMySql();
-  const posts = await Post.getAllPosts();
-  // const user = await currentUser();
 
-  // await connectRedisDb.set("hello", "hello test");
+  const posts = await fetchPosts(token);
 
   async function revalidateData() {
     "use server";

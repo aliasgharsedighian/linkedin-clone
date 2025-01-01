@@ -26,80 +26,119 @@ import { IPostDocument } from "@/mongodb/models/Post";
 import { ThumbsUpIcon, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import deleteCommentAction from "@/actions/deleteCommentAction";
+import { UserInfoType } from "@/typing";
+import { LIKE_UNLIKE_COMMENT_ROUTE } from "@/utils/constants";
 
-function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
+function Comment({
+  post,
+  comment,
+  userInfo,
+  revalidateData,
+  token,
+}: {
+  post: IPostDocument;
+  comment: any;
+  userInfo: UserInfoType;
+  revalidateData: any;
+  token: any;
+}) {
   const [isPending, startTransition] = useTransition();
-  const { user } = useUser();
+  // const { user } = useUser();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(comment.likes);
-  const isAuthor = user?.id === post.user?.userId;
+  const isAuthor = userInfo?.userId === post.user?.userId;
 
   useEffect(() => {
-    if (user?.id && comment?.likes?.find((i: any) => i.userId === user?.id)) {
+    if (
+      userInfo?.userId &&
+      comment?.likes?.find((i: any) => i.userId === userInfo?.userId)
+    ) {
       setLiked(true);
     }
-  }, [comment, user]);
+  }, [comment, userInfo]);
 
   const likeOrUnlikeComment = async (commentId: string) => {
-    if (!user?.id) {
-      setTimeout(() => {
-        toast.error("You must sign in");
-      }, 500);
-      throw new Error("User not authenticated");
-    }
-
     const originalLiked = liked;
     const originalLikes = likes;
 
     const newLikes = liked
-      ? likes?.filter((like: any) => like !== user.id)
-      : [...(likes ?? []), user.id];
+      ? likes?.filter((like: any) => like.userId !== userInfo.userId)
+      : [
+          ...(likes ?? []),
+          {
+            userId: userInfo.userId,
+            userImage: userInfo?.imageUrl || "",
+            firstName: userInfo?.firstName || "",
+            lastName: userInfo?.lastName || "",
+          },
+        ];
 
-    const body: LikeCommentRequestBody | UnlikePostRequestBody = {
-      userId: {
-        userId: user.id,
-        userImage: user.imageUrl,
-        firstName: user.firstName || "",
-        lastName: user?.lastName || "",
-      },
-      commentId: commentId,
-    };
+    // const body: LikeCommentRequestBody | UnlikePostRequestBody = {
+    //   userId: {
+    //     userId: userInfo.userId,
+    //     userImage: userInfo.imageUrl,
+    //     firstName: userInfo.firstName || "",
+    //     lastName: userInfo?.lastName || "",
+    //   },
+    //   commentId: commentId,
+    // };
 
     setLiked(!liked);
     setLikes(newLikes);
 
-    const response = await fetch(
-      `/api/posts/${post._id}/comments/${commentId}/${
-        liked ? "unlike" : "like"
-      }`,
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
-    );
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    const formdata = new FormData();
+    formdata.append(`commentId`, commentId);
+    formdata.append(`postId`, post._id);
 
-    if (!response.ok) {
+    const response = await fetch(LIKE_UNLIKE_COMMENT_ROUTE, {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+    });
+    const res = await response.json();
+    if (res.status === 200) {
+      setLiked(!liked);
+      // revalidateData();
+    } else {
       setLiked(originalLiked);
       setLikes(originalLikes);
       throw new Error("Failed to like or unlike Comment");
     }
 
-    const fetchLikesResponse = await fetch(
-      `/api/posts/${post._id}/comments/${commentId}/like`
-    );
+    // const response = await fetch(
+    //   `/api/posts/${post._id}/comments/${commentId}/${
+    //     liked ? "unlike" : "like"
+    //   }`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-type": "application/json",
+    //     },
+    //     body: JSON.stringify(body),
+    //   }
+    // );
+
+    // if (!response.ok) {
+    //   setLiked(originalLiked);
+    //   setLikes(originalLikes);
+    //   throw new Error("Failed to like or unlike Comment");
+    // }
+
+    // const fetchLikesResponse = await fetch(
+    //   `/api/posts/${post._id}/comments/${commentId}/like`
+    // );
     // console.log(await fetchLikesResponse.json());
-    if (!fetchLikesResponse.ok) {
-      setLiked(originalLiked);
-      setLikes(originalLikes);
+    // if (!fetchLikesResponse.ok) {
+    //   setLiked(originalLiked);
+    //   setLikes(originalLikes);
 
-      throw new Error("Failed to fetch likes");
-    }
+    //   throw new Error("Failed to fetch likes");
+    // }
 
-    const newLikedData = await fetchLikesResponse.json();
-    setLikes(newLikedData);
+    // const newLikedData = await fetchLikesResponse.json();
+    // setLikes(newLikedData);
   };
 
   const handleDeleteComment = async (commentId: string) => {
@@ -121,7 +160,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
     <div className="flex flex-col gap-1">
       <div
         className={`flex gap-1 ${
-          comment.user.userId === user?.id
+          comment.user.userId === userInfo?.userId
             ? "flex-row-reverse"
             : "flex-row justify-start"
         }`}
@@ -136,7 +175,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
 
         <div
           className={`px-4 py-2 rounded-md w-full sm:w-auto md:min-w-[300px] ${
-            comment.user.userId === user?.id
+            comment.user.userId === userInfo?.userId
               ? "bg-sky-100 dark:bg-sky-950"
               : "bg-slate-100 dark:bg-gray-700"
           }`}
@@ -156,7 +195,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
               <p className="text-xs text-gray-400">
                 <ReactTimeago date={new Date(comment.createdAt)} />
               </p>
-              {comment.user.userId === user?.id &&
+              {comment.user.userId === userInfo?.userId &&
                 (isPending ? (
                   <div className="flex justify-end mr-1" role="status">
                     <svg
@@ -204,15 +243,21 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
           <p className="mt-3 text-sm dark:text-white">{comment.text}</p>
         </div>
       </div>
-      <div className={`flex gap-2 items-center`}>
+      <div
+        className={`flex gap-1 items-center ${
+          comment.user.userId === userInfo?.userId
+            ? "justify-end"
+            : "justify-start"
+        }`}
+      >
         <Button
           onClick={() => {
             const promise = likeOrUnlikeComment(comment._id);
 
             toast.promise(promise, {
-              loading: "Liking Comment...",
-              success: "Comment liked",
-              error: "Failed to like comment",
+              loading: `${liked ? "UnLiking" : "Liking"}  Comment...`,
+              success: `Comment ${liked ? "Unliked" : "Liked"}`,
+              error: "Failed to like or unlike comment",
             });
           }}
           className={`w-fit text-xs dark:text-white ${
@@ -246,7 +291,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
               </DialogHeader>
               <div className="flex flex-col gap-4">
                 {likes
-                  ?.filter((like: any) => like.userId === user?.id)
+                  ?.filter((like: any) => like.userId === userInfo?.userId)
                   .map((like: any) => (
                     <div
                       key={like}
@@ -268,7 +313,7 @@ function Comment({ post, comment }: { post: IPostDocument; comment: any }) {
                     </div>
                   ))}
                 {likes
-                  ?.filter((like: any) => like.userId !== user?.id)
+                  ?.filter((like: any) => like.userId !== userInfo?.userId)
                   .map((like: any) => (
                     <div key={like} className="flex items-center gap-2">
                       <Avatar>
