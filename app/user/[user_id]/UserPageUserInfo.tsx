@@ -107,11 +107,7 @@ function UserPageUserInfo({ userData, revalidateData }: PageProps) {
         </SignedInProvider>
 
         <SignedOutProvider>
-          <div className="text-center space-y-2">
-            <Button asChild className="bg-[#0b63c4] text-white">
-              <SignInButton variant={"default"}>Sign in</SignInButton>
-            </Button>
-          </div>
+          <SignInButton variant="default" />
         </SignedOutProvider>
       </div>
 

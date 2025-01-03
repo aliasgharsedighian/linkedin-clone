@@ -2,12 +2,15 @@
 
 import { apiClient } from "@/lib/api-client";
 import { useAppStore } from "@/store/store";
+import { UserInfoType } from "@/typing";
 import { PROFILE_ROUTE } from "@/utils/constants";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+let cachedUserInfo: null | UserInfoType = null;
+
 const useUserInfo = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(cachedUserInfo);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
   const { userInfo, setUserInfo } = useAppStore();
@@ -25,6 +28,7 @@ const useUserInfo = () => {
       if (response.status === 200) {
         setData(response.data.data);
         setUserInfo(response.data.data);
+        cachedUserInfo = response.data.data; // Update cache
         // toast.success(response.data.message);
       } else {
         toast.error(response.data.data);
@@ -39,15 +43,15 @@ const useUserInfo = () => {
 
   useEffect(() => {
     activity = localStorage.getItem("activity");
-    if (!userInfo && activity === "user") {
+    if (!data && activity === "user") {
       fetchUserInfo();
     } else {
       setLoading(false);
       // console.log(userInfo);
     }
-  }, [userInfo, setUserInfo]);
+  }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, setData };
 };
 
 export default useUserInfo;

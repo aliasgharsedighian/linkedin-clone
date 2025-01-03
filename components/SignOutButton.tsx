@@ -6,9 +6,11 @@ import { apiClient } from "@/lib/api-client";
 import { LOGOUT_ROUTE } from "@/utils/constants";
 import { toast } from "sonner";
 import { useAppStore } from "@/store/store";
+import useUserInfo from "@/hooks/useUserInfo";
 
 function SignOutButton() {
   const { setUserInfo } = useAppStore();
+  const { setData } = useUserInfo();
 
   const signOutButton = async () => {
     const { data } = await apiClient.get(LOGOUT_ROUTE, {
@@ -17,6 +19,7 @@ function SignOutButton() {
     if (data.status === 200) {
       toast.success(data.message);
       setUserInfo(undefined);
+      setData(null);
       localStorage.setItem("activity", "view");
     } else {
       toast.error(data.message);

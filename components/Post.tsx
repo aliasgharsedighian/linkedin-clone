@@ -31,19 +31,18 @@ import { useAppStore } from "@/store/store";
 import deletePostAction from "@/actions/serverRequest/deletePostAction";
 import editPostAction from "@/actions/serverRequest/editPostAction";
 import PostFormImages from "./PostFormImages";
+import { UserInfoType } from "@/typing";
 
 function Post({
   post,
-  token,
   revalidateData,
 }: {
   post: IPostDocument;
-  token: any;
   revalidateData: any;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   // const { user } = useUser();
-  const { userInfo } = useAppStore();
+  const { userInfo }: { userInfo: UserInfoType } = useAppStore();
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
@@ -126,7 +125,11 @@ function Post({
   const handleDeletePostAction = async (postId: string) => {
     try {
       startTransition(async () => {
-        const promise = deletePostAction(postId, token, revalidateData);
+        const promise = deletePostAction(
+          postId,
+          userInfo?.token,
+          revalidateData
+        );
         toast.promise(promise, {
           loading: "Deleting post...",
           success: "Post deleted",
@@ -146,7 +149,7 @@ function Post({
           editText,
           postImageFiles,
           removeFiles,
-          token,
+          userInfo?.token,
           setProgress,
           revalidateData
         );
@@ -375,7 +378,7 @@ function Post({
         post={post}
         userInfo={userInfo}
         revalidateData={revalidateData}
-        token={token}
+        token={userInfo?.token}
       />
     </div>
   );

@@ -20,4 +20,5 @@ export interface UserInfoType {
       imageUrl: string;
     }
   ];
+  token: string | undefined | null;
 }

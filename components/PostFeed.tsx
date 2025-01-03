@@ -14,12 +14,7 @@ function PostFeed({
   return (
     <div className="space-y-2 pb-20">
       {posts.map((post) => (
-        <Post
-          key={post._id}
-          post={post}
-          token={token}
-          revalidateData={revalidateData}
-        />
+        <Post key={post._id} post={post} revalidateData={revalidateData} />
       ))}
     </div>
   );

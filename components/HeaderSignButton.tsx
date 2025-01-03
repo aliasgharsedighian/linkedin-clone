@@ -8,7 +8,6 @@ import SignInButton from "./SignInButton";
 import UserButton from "./UserButton";
 
 function HeaderSignButton() {
-  const { data } = useUserInfo();
   return (
     <>
       <SignedInProvider>
