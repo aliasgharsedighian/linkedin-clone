@@ -17,7 +17,9 @@ export const revalidate = 0;
 
 const fetchPosts = async (token: any) => {
   const myHeaders = new Headers();
-  myHeaders.append("Authorization", `Bearer ${token}`);
+  if (token) {
+    myHeaders.append("Authorization", `Bearer ${token}`);
+  }
   const res = await fetch(GET_ALL_POSTS, {
     next: { revalidate: 0 },
     headers: myHeaders,

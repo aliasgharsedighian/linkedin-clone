@@ -43,7 +43,7 @@ function UserInfo({ userInfo, dbId }: PageProps) {
       </div>
       <div className="mt-4 dark:text-white">
         <p className="text-xl font-bold">
-          {userInfo.firstName} {userInfo.lastName}
+          {userInfo?.firstName} {userInfo?.lastName}
         </p>
         <p>{userInfo?.extendData?.headline}</p>
       </div>
@@ -62,7 +62,7 @@ function UserInfo({ userInfo, dbId }: PageProps) {
       <Dialog>
         <DialogTrigger className="flex flex-end">
           <p className="text-sm text-sky-600">
-            {userInfo.following?.length ? userInfo.following.length : "0"}{" "}
+            {userInfo?.following?.length ? userInfo?.following.length : "0"}{" "}
             connections
           </p>
         </DialogTrigger>
@@ -73,8 +73,8 @@ function UserInfo({ userInfo, dbId }: PageProps) {
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-4">
-            {userInfo.following ? (
-              userInfo.following.map((follow: any) => (
+            {userInfo?.following ? (
+              userInfo?.following.map((follow: any) => (
                 <Link
                   href={`/user/${follow?.userId}`}
                   key={follow.userId}
@@ -89,7 +89,7 @@ function UserInfo({ userInfo, dbId }: PageProps) {
                   </Avatar>
                   <div>
                     <p className="font-semibold dark:text-white">
-                      {follow.firstName} {follow?.lastName}
+                      {follow?.firstName} {follow?.lastName}
                     </p>
                     <p className="text-xs text-gray-400">
                       @{follow?.firstName}

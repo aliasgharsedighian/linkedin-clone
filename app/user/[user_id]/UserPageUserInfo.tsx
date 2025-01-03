@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
+// import { SignInButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import {
   Dialog,
   DialogContent,
@@ -15,32 +15,32 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
+import { useAppStore } from "@/store/store";
+import { SignedInProvider } from "@/app/SignedInProvider";
+import { SignedOutProvider } from "@/app/SignedOutProvider";
+import SignInButton from "@/components/SignInButton";
 
 interface PageProps {
-  userInfo: any;
-  currentUserFollowing: any;
+  userInfo?: any;
+  currentUserFollowing?: any;
+  userData?: any;
   revalidateData: any;
 }
 
-function UserPageUserInfo({
-  userInfo,
-  currentUserFollowing,
-  revalidateData,
-}: PageProps) {
-  const { user } = useUser();
+function UserPageUserInfo({ userData, revalidateData }: PageProps) {
+  // const { user } = useUser();
   const [followedUser, setFollowedUser] = useState("loading");
+  const { userInfo } = useAppStore();
 
   useEffect(() => {
     if (
-      currentUserFollowing?.find(
-        (item: any) => item.userId === userInfo?.userId
-      )
+      userInfo?.following.find((item: any) => item.userId === userInfo?.userId)
     ) {
       setFollowedUser("following");
     } else {
       setFollowedUser("follow");
     }
-  }, [currentUserFollowing, user]);
+  }, [userInfo?.following]);
 
   const handleFollowUser = async () => {
     const orginalFollowed = followedUser;
@@ -53,13 +53,13 @@ function UserPageUserInfo({
     }
 
     const promise = await fetch(
-      `/api/users/${userInfo._id}/${
+      `/api/users/${userData._id}/${
         followedUser === "following" ? "unfollow" : "follow"
       }`,
       {
         method: "POST",
         body: JSON.stringify({
-          id: userInfo.userId,
+          id: userData.userId,
         }),
         headers: {
           "content-type": "application/json",
@@ -75,19 +75,10 @@ function UserPageUserInfo({
     revalidateData();
   };
 
-  const handleSignup = async () => {
-    const res = await apiClient.post(
-      "address",
-      //body
-      { email: "email", password: "password" },
-      { withCredentials: true }
-    );
-  };
-
   return (
     <div className="flex flex-col gap-2 mx-6">
       <div className="flex justify-end">
-        <SignedIn>
+        <SignedInProvider>
           <Button
             onClick={() => {
               const promise = handleFollowUser();
@@ -113,35 +104,35 @@ function UserPageUserInfo({
               ? "Following"
               : "Follow"}
           </Button>
-        </SignedIn>
+        </SignedInProvider>
 
-        <SignedOut>
+        <SignedOutProvider>
           <div className="text-center space-y-2">
             <Button asChild className="bg-[#0b63c4] text-white">
-              <SignInButton>Sign in</SignInButton>
+              <SignInButton variant={"default"}>Sign in</SignInButton>
             </Button>
           </div>
-        </SignedOut>
+        </SignedOutProvider>
       </div>
 
       <div className="mt-4 dark:text-white">
         <p className="text-xl font-bold">
-          {userInfo.firstName} {userInfo.lastName}
+          {userData.firstName} {userData.lastName}
         </p>
-        <p>{userInfo?.extendData?.headline}</p>
+        <p>{userData?.extendData?.headline}</p>
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        {userInfo?.extendData?.currentPosition} {"Islamic Azad University"}
+        {userData?.extendData?.currentPosition} {"Islamic Azad University"}
       </p>
-      {userInfo?.extendData?.country && userInfo?.extendData?.city && (
+      {userData?.extendData?.country && userData?.extendData?.city && (
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {userInfo?.extendData?.city},{userInfo?.extendData?.country}
+          {userData?.extendData?.city},{userData?.extendData?.country}
         </p>
       )}
       <Dialog>
         <DialogTrigger className="flex flex-end">
           <p className="text-sm text-sky-600">
-            {userInfo?.following?.length ? userInfo?.following.length : "0"}{" "}
+            {userData?.following?.length ? userData?.following.length : "0"}{" "}
             connections
           </p>
         </DialogTrigger>
@@ -152,8 +143,8 @@ function UserPageUserInfo({
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-4">
-            {userInfo?.following ? (
-              userInfo?.following.map((follow: any) => (
+            {userData?.following ? (
+              userData?.following.map((follow: any) => (
                 <Link
                   href={`/user/${follow?.userId}`}
                   key={follow.userId}

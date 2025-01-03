@@ -76,9 +76,9 @@ export default async function ProfilePage() {
     );
   }
   const userInfo = await fetchUserByToken(token);
-  const userInfoDb: any = await Users.findOne({
-    userId: userInfo.userId,
-  }).lean();
+  // const userInfoDb: any = await Users.findOne({
+  //   userId: userInfo.userId,
+  // }).lean();
   return (
     <>
       <NotficationCheck userInfo={userInfo} />
@@ -90,7 +90,7 @@ export default async function ProfilePage() {
               userId={userId}
               revalidateData={revalidateData}
             />
-            <UserInfo userInfo={userInfo} dbId={userInfoDb?._id.toString()} />
+            <UserInfo userInfo={userInfo} dbId={userInfo?.id.toString()} />
           </div>
           <ThemeSetting />
         </section>

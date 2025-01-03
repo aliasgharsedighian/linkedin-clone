@@ -22,11 +22,14 @@ function UserImage({ userInfo }: { userInfo: any }) {
       <Image
         className="w-[120px] h-[120px] object-cover mx-8 absolute top-14 rounded-full border-4 border-[#f4f2ed]"
         src={
-          userInfo.imageUrl
-            ? userInfo.imageUrl
+          userInfo?.imageUrl
+            ? userInfo?.imageUrl
             : "https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18yZmZoVDR2WDd3Q1pKU0FBUzBkSjFSdDRoSXgiLCJyaWQiOiJ1c2VyXzJnODE0eUxxWHBldTdTak42RENISGVYa1BWZCIsImluaXRpYWxzIjoiUFkifQ"
         }
-        alt={userInfo.imageUrl || "profile-pic"}
+        alt={
+          `profile-pic for $${userInfo?.firstName} ${userInfo?.lastName}` ||
+          "profile-pic"
+        }
         width={120}
         height={120}
       />

@@ -42,7 +42,7 @@ export function LoginForm() {
   };
 
   const validateSignup = () => {
-    if (!signinEmail.length) {
+    if (!signupEmail.length) {
       toast.error("Email is required.");
       return false;
     }
