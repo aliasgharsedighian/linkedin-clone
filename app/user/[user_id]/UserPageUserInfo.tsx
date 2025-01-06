@@ -19,9 +19,11 @@ import { useAppStore } from "@/store/store";
 import { SignedInProvider } from "@/app/SignedInProvider";
 import { SignedOutProvider } from "@/app/SignedOutProvider";
 import SignInButton from "@/components/SignInButton";
+import { USER_FOLLOW_UNFOLLOW } from "@/utils/constants";
+import { UserInfoType } from "@/typing";
 
 interface PageProps {
-  userInfo?: any;
+  userInfo?: UserInfoType;
   currentUserFollowing?: any;
   userData?: any;
   revalidateData: any;
@@ -29,50 +31,40 @@ interface PageProps {
 
 function UserPageUserInfo({ userData, revalidateData }: PageProps) {
   // const { user } = useUser();
-  const [followedUser, setFollowedUser] = useState("loading");
-  const { userInfo } = useAppStore();
+  const [followedUser, setFollowedUser] = useState(false);
+  const { userInfo, setUserInfo } = useAppStore();
 
   useEffect(() => {
     if (
-      userInfo?.following.find((item: any) => item.userId === userInfo?.userId)
+      userInfo?.userId &&
+      userInfo?.following.find((item: any) => item.userId === userData?.userId)
     ) {
-      setFollowedUser("following");
-    } else {
-      setFollowedUser("follow");
+      setFollowedUser(true);
     }
-  }, [userInfo?.following]);
+  }, [userData, userInfo]);
 
   const handleFollowUser = async () => {
     const orginalFollowed = followedUser;
 
-    if (followedUser === "follow") {
-      setFollowedUser("following");
-    }
-    if (followedUser === "following") {
-      setFollowedUser("follow");
-    }
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${userInfo?.token}`);
 
-    const promise = await fetch(
-      `/api/users/${userData._id}/${
-        followedUser === "following" ? "unfollow" : "follow"
-      }`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          id: userData.userId,
-        }),
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
-    const data = await promise.json();
-
-    if (!promise.ok) {
+    const formdata = new FormData();
+    formdata.append(`followUserId`, userData.userId);
+    const response = await fetch(`${USER_FOLLOW_UNFOLLOW}`, {
+      method: "POST",
+      body: formdata,
+      headers: myHeaders,
+    });
+    const res = await response.json();
+    // console.log(res);
+    if (res.status === 200) {
+      setFollowedUser(res.data.follow);
+      setUserInfo(res.data.updatedInfo);
+    } else {
       setFollowedUser(orginalFollowed);
       throw new Error("Failed to follow or unfollow user");
     }
-    revalidateData();
   };
 
   return (
@@ -85,24 +77,16 @@ function UserPageUserInfo({ userData, revalidateData }: PageProps) {
 
               toast.promise(promise, {
                 loading: `${
-                  followedUser === "following" ? "Unfollowing" : "Following"
+                  followedUser ? "Unfollowing" : "Following"
                 } user...`,
-                success: `User ${
-                  followedUser === "following" ? "unfollowed" : "followed"
-                }`,
-                error: `Failed to ${
-                  followedUser === "following" ? "fnfollow" : "follow"
-                } user`,
+                success: `User ${followedUser ? "unfollowed" : "followed"}`,
+                error: `Failed to ${followedUser ? "fnfollow" : "follow"} user`,
               });
             }}
             variant="ghost"
             className="text-sm text-white bg-sky-600 hover:bg-sky-700 hover:text-white"
           >
-            {followedUser === "loading"
-              ? "Loading ..."
-              : followedUser === "following"
-              ? "Following"
-              : "Follow"}
+            {followedUser ? "Following" : "Follow"}
           </Button>
         </SignedInProvider>
 

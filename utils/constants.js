@@ -18,3 +18,4 @@ export const LIKE_UNLIKE_ROUTE = `${SERVER_ADDRESS}${POST_ROUTES}/like-unlike`;
 export const LIKE_UNLIKE_COMMENT_ROUTE = `${SERVER_ADDRESS}${POST_ROUTES}/like-unlike-comment`;
 //user routes
 export const GET_USER_INFO = `${SERVER_ADDRESS}${USER_ROUTES}/get-user-info`;
+export const USER_FOLLOW_UNFOLLOW = `${SERVER_ADDRESS}${USER_ROUTES}/user-follow-unfollow`;

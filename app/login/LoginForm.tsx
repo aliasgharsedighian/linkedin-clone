@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/store/store";
+import useUserInfo from "@/hooks/useUserInfo";
 
 export function LoginForm() {
   const { push } = useRouter();
@@ -28,6 +29,7 @@ export function LoginForm() {
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPassword, setSigninPassword] = useState("");
   const { setUserInfo } = useAppStore();
+  const { setData } = useUserInfo();
 
   const validateSignin = () => {
     if (!signinEmail.length) {
@@ -73,6 +75,7 @@ export function LoginForm() {
           if (res.status === 200) {
             console.log(res.data.data);
             setUserInfo(res.data.data);
+            setData(res.data.data);
             localStorage.setItem("activity", "user");
             toast.success(res.data.message);
             // push(`/user/${res.data.data.userId}`);
