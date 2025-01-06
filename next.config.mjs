@@ -13,6 +13,7 @@ const nextConfig = {
       },
       { protocol: "https", hostname: "i.ibb.co" },
       { protocol: "http", hostname: "localhost", port: "4000" },
+      { protocol: "http", hostname: "192.168.63.38", port: "4000" },
     ],
   },
 };
