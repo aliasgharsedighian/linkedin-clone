@@ -25,9 +25,10 @@ import { LikeCommentRequestBody } from "@/app/api/posts/[post_id]/comments/[comm
 import { IPostDocument } from "@/mongodb/models/Post";
 import { ThumbsUpIcon, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import deleteCommentAction from "@/actions/deleteCommentAction";
+// import deleteCommentAction from "@/actions/deleteCommentAction";
 import { UserInfoType } from "@/typing";
 import { LIKE_UNLIKE_COMMENT_ROUTE } from "@/utils/constants";
+import deleteCommentAction from "@/actions/serverRequest/deleteCommentAction";
 
 function Comment({
   post,
@@ -144,7 +145,7 @@ function Comment({
   const handleDeleteComment = async (commentId: string) => {
     try {
       startTransition(async () => {
-        const promise = deleteCommentAction(commentId);
+        const promise = deleteCommentAction(commentId, token, revalidateData);
         toast.promise(promise, {
           loading: "Deleting Comment...",
           success: "Comment deleted",

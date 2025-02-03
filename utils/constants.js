@@ -16,6 +16,7 @@ export const EDIT_POST_ROUTE = `${SERVER_ADDRESS}${POST_ROUTES}/edit-post`;
 export const COMMENT_ON_POST_ROUTE = `${SERVER_ADDRESS}${POST_ROUTES}/comment-on-post`;
 export const LIKE_UNLIKE_ROUTE = `${SERVER_ADDRESS}${POST_ROUTES}/like-unlike`;
 export const LIKE_UNLIKE_COMMENT_ROUTE = `${SERVER_ADDRESS}${POST_ROUTES}/like-unlike-comment`;
+export const REMOVE_COMMENT_ROUTE = `${SERVER_ADDRESS}${POST_ROUTES}/remove-comment`;
 //user routes
 export const GET_USER_INFO = `${SERVER_ADDRESS}${USER_ROUTES}/get-user-info`;
 export const USER_FOLLOW_UNFOLLOW = `${SERVER_ADDRESS}${USER_ROUTES}/user-follow-unfollow`;

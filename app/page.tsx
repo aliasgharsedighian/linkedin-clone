@@ -47,7 +47,7 @@ export default async function Home() {
         <UserInformation posts={posts} />
       </section>
 
-      <section className="col-span-full md:col-span-6 xl:col-span-4 xl:max-w-xl mx-auto w-full">
+      <section className="col-span-full md:col-span-6 lg:col-span-4 lg:max-w-xl mx-auto w-full">
         <SignedInProvider>
           <PostForm token={token} revalidateData={revalidateData} />
         </SignedInProvider>
@@ -55,7 +55,7 @@ export default async function Home() {
         <PostFeed posts={posts} token={token} revalidateData={revalidateData} />
       </section>
 
-      <section className="hidden xl:inline justify-center col-span-2">
+      <section className="hidden lg:inline justify-center col-span-2">
         <Widget />
       </section>
     </div>
