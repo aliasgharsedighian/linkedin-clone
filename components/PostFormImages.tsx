@@ -22,6 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 interface PageProps {
   images: string[] | undefined;
@@ -111,7 +112,7 @@ function PostFormImages({
                       className="absolute w-5 h-5 p-0.5 rounded-md right-3 top-2 cursor-pointer bg-white text-black opacity-60 z-10"
                     />
                   )}
-                  <img
+                  <Image
                     className="w-full object-contain flex items-center justify-center h-full"
                     src={image}
                     alt={`upload images ${i + 1}`}

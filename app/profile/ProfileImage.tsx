@@ -44,8 +44,8 @@ function ProfileImage({
     const file_name = `${"randomUUID"}_${timestamp}`;
 
     if (previewFile) {
-      if (previewFile?.size >= 5000000) {
-        toast.error("Max file 5Mb");
+      if (previewFile?.size >= 10 * 1024 * 1024) {
+        toast.error("Max file 10Mb");
         return;
       } else if (
         previewFile.type === "image/jpeg" ||

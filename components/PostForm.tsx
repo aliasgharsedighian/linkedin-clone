@@ -126,7 +126,7 @@ function PostForm({
         previewArray.push(URL.createObjectURL(previewFiles[i]));
         fileArray.push(uploadFiles[i]);
 
-        if (previewFiles[i].size >= 5000000) {
+        if (previewFiles[i].size >= 10 * 1024 * 1024) {
           toast.error("Max file 5Mb");
           return;
         } else if (
