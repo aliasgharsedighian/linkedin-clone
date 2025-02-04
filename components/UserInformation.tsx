@@ -32,7 +32,7 @@ function UserInformation({
   );
   const userComments = posts.flatMap((post) =>
     post?.comments?.filter(
-      (comment) => comment.user.userId === userInfo?.userId || []
+      (comment) => comment.user.userId === userInfo?.userId
     )
   );
 
